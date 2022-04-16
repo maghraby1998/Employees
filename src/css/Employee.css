@@ -1,0 +1,272 @@
+.employee-page{
+    padding-top: 1.813rem;
+    padding-left: 2.188rem;;
+    padding-right: 2.188rem;
+    margin-left: 6.625rem;
+}
+
+.search-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 49px;
+}
+
+.search-input-container{
+    background-color: white;
+    border-radius: 0.313rem;
+    height: 1.875rem;
+    padding: 0px 26px;
+    width: 100%;
+    margin-right: 0.75rem ;
+}
+
+.search-icon{
+    color: #23aaeb;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.search-input{
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 80%;
+}
+
+.add-btn{
+    width: 6.313rem;
+    background-color: #2764ac;
+    border-radius: 5px;
+    color: white;
+    font-family: Roboto;
+    font-size: 0.813rem;
+    height: 30px;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plus-icon{
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+/* Card */
+
+.card{
+    width: 400px;
+    height: 106.8px;
+    background-color: white;
+    margin-bottom: 1.5rem;
+    /* margin-right: 2.813rem; */
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
+    border: 1px solid #eaeef0;
+    padding: 12px 19px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    position: relative;
+}
+
+.card-margins{
+    width: 45px;
+    background-color: black;
+    height: 5px;
+}
+
+.image-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.user-img{
+    height: 64px;
+    width: 64px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.card-icon-img-container{
+    height: 64px;
+    width: 64px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon-img{
+    font-size: 2.5rem;
+}
+
+.user-icons-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-user-icon{
+    font-size: 0.8rem;
+    color: #8997a4;
+    cursor: pointer;
+}
+
+.card-line{
+    height: 80px;
+    width: 1px;
+    background-color: #8997a4;
+    opacity: 0.22;
+    margin-left: 21.5px;
+    margin-right: 23.5px;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.card-username{
+    text-transform: capitalize;
+    font-size: 1.25rem;
+    font-family: Lato-800;
+    margin-bottom: 5px;
+    color: #5c6974;
+}
+
+.user-info h4{
+    font-size: 0.813rem;
+    font-family: Roboto;
+    margin-bottom: 5px;
+    color: #313030;
+}
+
+.user-info p{
+ font-size: 0.625rem;
+ margin-bottom: 5px;
+ color: #5c6974;
+}
+
+.card-state{
+    color: #27b40c;
+    font-weight: 500;
+    width: 57px;
+    height: 17px;
+    background-color: #cfcfcf54;
+    text-align: center;
+    font-size: 0.688rem;
+    letter-spacing: 0.61px;
+}
+
+.present{
+    background-color: #28b40c1a;
+    color: #27b40c;
+}
+
+.absent{
+    background-color: #ff6a6a3d;
+    color: #ff6a6a;
+}
+
+.weekend{
+    background-color: #2765ac3d;
+    color: #2764ac;
+}
+
+.holiday{
+    background-color: #23a8eb3d;
+    color: #23aaeb;
+}
+
+.card-icons-container{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+    position: absolute;
+    right: 13px;
+    bottom: 11px;
+}
+
+.card-icon-container{
+    height: 20px;
+    width: 20px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.card-icon{
+    font-size: .7rem;
+    color: #313030;
+}
+
+.dropdown{
+    position: relative;
+}
+
+.dropdown-content{
+    width: 300px;
+    min-height: 100px;
+    position: absolute;
+    transform: translate(-250px, 5px);
+    border: 1px solid #eaeef0;
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
+    padding: 10px;
+    z-index: 3;
+    display: none;
+    background-color: white;
+}
+
+.dropdown-content-active{
+    display: block;
+}
+
+.dropdown-header{
+    color: #8997a4;
+    font-size: 0.7rem;
+    margin: 0px;
+    padding: 0px;
+    font-family: Roboto;
+}
+
+.dropdown-result{
+    color: #313030;
+    font-size: 0.7rem;
+    margin: 0px;
+    padding: 0px;
+    font-family: Roboto;
+}
+
+/* Card */
+
+@media only screen and (max-width:700px){
+    .employee-page{
+        /* margin-left: 6.625rem; */
+        margin-left: 0px;
+    }
+    .card{
+        width: 350px;
+    }
+    .search-input{
+        width: 60%;
+    }
+    .add-btn{
+        font-size: 10px;
+    }
+    .plus-icon{
+        font-size: .8rem;
+    }
+}

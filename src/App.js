@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react';
+import './css/App.css';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import SideNav from './components/SideNav';
+import TopNav from './components/TopNav';
+import Employee from './components/Employee';
 
-function App() {
+const App = () => {
+
+  const [employees, setEmployees] = useState([]);
+  const [sideNav, setSideNav] = useState(false);
+
+  const handleSideNav = (statu) => {
+    setSideNav(statu)
+  }
+  
+  useEffect( () => {
+    let localEmployees = JSON.parse(window.localStorage.getItem('employees'));
+    if(localEmployees){
+      setEmployees(localEmployees);
+    }
+  }, [])
+
+  useEffect( () => {
+    if(employees.length > 0){
+      window.localStorage.setItem('employees', JSON.stringify(employees))
+    }
+  }, [employees])
+
+  const handleEmployees = (newEmployee) => {
+    setEmployees( prev => {
+      return [...prev, newEmployee]
+    })
+  }
+
+  const deleteEmployee = (id) => {
+    setEmployees( prev => {
+      return prev.filter( employee => {
+        return employee.id != id
+      })
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <SideNav sideNav={sideNav} />
+      <TopNav sideNav={sideNav} handleSideNav={handleSideNav} />
+      <Routes>
+        <Route path='/employees' element={<Employee deleteEmployee={deleteEmployee} employees={employees} handleEmployees={handleEmployees} />} />
+      </Routes>
+    </Router>
   );
 }
 

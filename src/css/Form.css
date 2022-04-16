@@ -1,0 +1,159 @@
+.employee-form-page{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(40, 104, 174, 0.43);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.employee-form{
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 4px;
+    padding: 11px 32px 20px 20px;
+}
+
+.form-category{
+    margin-bottom: 20px;
+}
+
+.form-header{
+    font-size: 1.125rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    color: #23aaeb;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #23aaeb;
+    padding-bottom: 10.5px;
+    font-weight: bold;
+    margin-bottom: 10.5px;
+}
+
+.category-header{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #23aaeb;
+    font-size: 1rem;
+    margin: 0px;
+}
+
+.category-header-line{
+    height: 4px;
+    width: 44px;
+    border-radius: 3px;
+    background-color: rgba(35, 170, 235, 0.14);
+    margin: 5px 0px 25px 0px;
+}
+
+#imgInput{
+    display: none;
+}
+
+.img-upload-container{
+    height: 115px;
+    /* width: 100%; */
+    /* width: 300px; */
+    border: 2px dashed #707070;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.img-upload-container span{
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.813rem;
+    color: #5c6974;
+    text-transform: uppercase;
+}
+
+.employee-form input,
+.employee-form select{
+    border: 1px solid rgba(170, 170, 170, 0.84);
+    border-radius: 5px;
+    padding: 5px;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+.employee-form label{
+    font-size: 0.813rem;
+    color: #313030;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.employee-form input[type='text'],
+.employee-form input[type='email'],
+.employee-form input[type='date']
+{
+    width: 100%;
+}
+
+.check-box-container{
+    display: flex;
+    align-items: center;
+    width: max-content;
+}
+
+input[type='checkbox']{
+    margin: 0px 10px 0px 0px;
+    height: 14px;
+    width: 14px;
+    cursor: pointer;
+    padding: 0px;
+}
+
+.check-label{
+    color: #313030;
+    font-size: 0.813rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+.form-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+hr{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input[type='submit']{
+    height: 30px;
+    width: 85px;
+    background-color: #23aaeb;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+    padding: 0px;
+}
+
+.cancel-button{
+    height: 30px;
+    width: 85px;
+    background-color: #ff6a6a;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+    margin-right: 15px;
+}

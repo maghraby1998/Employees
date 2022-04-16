@@ -1,0 +1,89 @@
+.sidenav{
+    position: fixed;
+    width: 6.625rem;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background-image: linear-gradient(to bottom, #39a4dc, #2763ab);
+    padding-top: 3rem;
+    z-index: 2;
+}
+
+.sidenav-links{
+    list-style: none;
+    padding: 0px;
+}
+
+.sidenav-links li{
+    height: 6.125em;
+}
+
+.sidenav-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    text-decoration: none;
+    font-size: .75rem;
+    height: 100%;
+    width: 100%;
+    transition: all ease 0.3s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.sidenav-link span{
+    text-align: center;
+    width: 50%;
+}
+
+.sidenav-active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    text-decoration: none;
+    font-size: .75rem;
+    height: 100%;
+    width: 100%;
+    transition: all ease 0.3s;
+    font-family: 'Roboto', sans-serif;
+    border-left: solid 4px #59c203;
+    background-color: #2765ac;
+}
+
+.sidenav-active:hover{
+    color: white;
+}
+
+.sidenav-link:hover{
+    background-color: #2765ac;
+    border-left: 1px ;
+    color: white;
+    border-left: solid 4px #59c203;
+}
+
+.sidenav-icon{
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.sidenav-active{
+    width: auto;
+    padding: 0px;
+}
+
+@media only screen and (max-width:700px){
+    .sidenav{
+        overflow-x: hidden;
+        transform: translateX(-100%);
+        border: none;
+        padding: 0px;
+    }
+    .sidenav-active{
+        transform: translateX(0%);
+        width: auto;
+        padding: 0px;
+    }
+}

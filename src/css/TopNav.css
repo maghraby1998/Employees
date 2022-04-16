@@ -1,0 +1,136 @@
+.topnav{
+    background-color: white;
+    min-height: 4.938rem;
+    /* margin-left: 6.625rem; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2.188rem;
+    padding-left: 6.625rem;
+    min-width: 100vw;
+}
+
+.bars{
+    font-size: 1.5rem;
+    margin-right: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+.date{
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.938rem;
+    margin: 0px 3.063rem 0px 0px;
+    color: #474747;
+}
+
+.topnav button{
+    width: 5.875rem;
+    height: 1.688rem;
+    background-color: #27b40c;
+    border-radius: 5px;
+    margin-right: 1.531rem;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.813rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.split{
+    height: 2.813rem;
+    width: 1px;
+    background-color: #e8e4e4;
+}
+
+.noti-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    margin-left: 0.625rem;
+    margin-right: 0.4rem;
+    cursor: pointer;
+}
+
+.noti-icon{
+    color: #8997a4;
+}
+
+.noti-container p{
+    font-family: SegoeUI;
+    font-size: 0.563rem;
+    background-color: #27b40c;
+    height: 0.875rem;
+    width: 0.875rem;
+    margin: 0px;
+    display: grid;
+    place-items: center;
+    color: white;
+    border-radius: 50%;
+    transform: translate(-8px, -8px);
+    padding: 0px;
+}
+
+.user-container{
+    margin-left: 0.781rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-img-container{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    background-color: #f7f8f9;
+    display: grid;
+    place-items: center;
+    margin-right: 0.5rem;
+}
+
+.user-icon{
+    font-size: 1rem;
+}
+
+.username{
+    margin: 0px;
+    text-transform: capitalize;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.25rem;
+    color: #8997a4;
+    margin-right: 0.856rem;
+}
+
+.user-drop-icon{
+    font-size: 0.8rem;
+}
+
+
+@media only screen and (max-width:700px){
+    .topnav{
+        padding: 0px 10px;
+        justify-content: space-around;
+    }
+    .topnav-active{
+        margin-left: 6.625rem;
+    }
+    .bars{
+        display: block;
+    }
+    .date{
+        font-size: 0.5rem;
+        margin-right: 8px;
+    }
+    .username{
+        font-size: 0.8rem;
+        margin-right: 3px;
+    }
+    .topnav button{
+        width: 5rem;
+        height: 1.4rem;
+        font-size: 0.7rem;
+        margin-right: 5px;
+    }
+}
