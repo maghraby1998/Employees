@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDisplay, faHandsHolding, faMugSaucer } from '@fortawesome/free-solid-svg-icons';
 import People from '@material-ui/icons/People';
 import Dashboard from '@material-ui/icons/Dashboard';
-
+import { useSelector } from 'react-redux';
 
 const SideNav = (props) => {
 
+  const sidenav = useSelector( state => state.sidenav);
+
   return (
-    <div onClick={e => e.stopPropagation()}  className={props.sideNav ? 'sidenav sidenav-active' : 'sidenav'}>
+    <div onClick={e => e.stopPropagation()}  className={sidenav ? 'sidenav sidenav-active' : 'sidenav'}>
         <ul className='sidenav-links'>
           <li>
             <NavLink className={({ isActive }) => (isActive ? 'sidenav-active' : 'sidenav-link')} to='/dashboard'>

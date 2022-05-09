@@ -8,32 +8,6 @@ import DeleteForever from '@material-ui/icons/DeleteForever';
 
 const Card = (props) => {
 
-  useEffect(() => {
-    const dropdownBtns = document.querySelectorAll('.dropdown-button');
-    const dropdownContents = document.querySelectorAll('.dropdown-content');
-    for(let i = 0; i < dropdownBtns.length; i ++){
-      dropdownBtns[i].addEventListener('mouseenter', () => {
-        dropdownContents[i].classList.add('dropdown-content-active')
-      })
-      dropdownBtns[i].addEventListener('mouseleave', () => {
-        dropdownContents[i].classList.remove('dropdown-content-active')
-      })
-    }
-
-    const usernames = document.querySelectorAll('.card-username');
-
-    usernames.forEach(username => {
-      username.addEventListener('mouseenter', () => {
-        username.classList.add('card-username-active');
-      })
-
-      username.addEventListener('mouseleave', () => {
-        username.classList.remove('card-username-active');
-      })
-    })
-    
-  }, [])
-
     let {id, image, name, role, phone, email, startDate, department, attendance, manager, office, position, workFromHome} = props.employee;
     let imgDisplay;
     let attedanceStatu;

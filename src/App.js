@@ -8,11 +8,6 @@ import Employee from './components/Employee';
 const App = () => {
 
   const [employees, setEmployees] = useState([]);
-  const [sideNav, setSideNav] = useState(false);
-
-  const handleSideNav = (statu) => {
-    setSideNav(statu)
-  }
   
   useEffect( () => {
     let localEmployees = JSON.parse(window.localStorage.getItem('employees'));
@@ -43,8 +38,8 @@ const App = () => {
 
   return (
     <Router>
-      <SideNav sideNav={sideNav} />
-      <TopNav sideNav={sideNav} handleSideNav={handleSideNav} />
+      <SideNav />
+      <TopNav />
       <Routes>
         <Route path='/employees' element={<Employee deleteEmployee={deleteEmployee} employees={employees} handleEmployees={handleEmployees} />} />
       </Routes>
