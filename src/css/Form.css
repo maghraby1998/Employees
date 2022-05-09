@@ -129,7 +129,7 @@ label{
     position: absolute;
     bottom: -80%;
     border-radius: 5px;
-    padding: 6px 6px 0px 6px;
+    padding: 8px 8px 0px 8px;
     text-transform: capitalize;
     background-color: rgb(233, 233, 233);
     color: rgb(221, 1, 1);
@@ -157,11 +157,41 @@ label{
 }
 }
 
-.check-box-container{
+.checkbox-container{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
     width: max-content;
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.check-input{
+    -webkit-appearance: none;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.custom-check-input{
+    height: 14px;
+    width: 14px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 3px;
+    margin-right: 5px;
+    display: grid;
+    place-items: center;
+}
+
+.custom-check-input-active{
+    background-color: #2764ac;
+}
+
+.custom-check-input-icon{
+    color: white;
+    font-size: 10px;
 }
 
 input[type='checkbox']{

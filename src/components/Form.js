@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import '../css/Form.css';
 import { Col, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 const Form = (props) => {
@@ -22,6 +22,10 @@ const Form = (props) => {
         manager     : '',
         workFromHome : false
     })
+
+    useEffect( () => {
+        console.log(employee.workFromHome);
+    }, [employee])
 
     const [error, setError] = useState();
  
@@ -281,10 +285,26 @@ const Form = (props) => {
             <div className='form-category'>
                 <h3 className='category-header'>Work From Home</h3>
                 <div className='category-header-line'></div>
-                <div className='check-box-container'>
-                    <input className='form-check-input' checked={employee.workFromHome} onChange={handleChange} id='workHome' type='checkbox' />
+                <label htmlFor='workHome' className='checkbox-container'>
+                    <input className='check-input' checked={employee.workFromHome} onChange={handleChange} id='workHome' type='checkbox' />
+                        <div className={employee.workFromHome ? 'custom-check-input custom-check-input-active' : 'custom-check-input'}>
+                            {
+                                employee.workFromHome ?
+                                <FontAwesomeIcon className='custom-check-input-icon' icon={faCheck} />
+                                : ''
+                            }
+                        </div>
+                    Allow Employee To Work From Home.
+                </label>
+                {/* <div className='check-box-container'>
+                    <div className='check-input-container'>
+                        <input className='check-input' checked={employee.workFromHome} onChange={handleChange} id='workHome' type='checkbox' />
+                        <div className='custom-check-input'>
+                            <div className='check-input-icon'></div>
+                        </div>
+                    </div>
                     <label className='check-label' htmlFor='workHome'>Allow Employee To Work From Home</label>
-                </div>
+                </div> */}
             </div>
             {/* Work from home */}
             <hr></hr>
