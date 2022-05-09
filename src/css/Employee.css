@@ -3,6 +3,8 @@
     padding-left: 2.188rem;;
     padding-right: 2.188rem;
     margin-left: 6.625rem;
+    border: 1px solid red;
+    min-height: 100vh;
 }
 
 .search-container{
@@ -132,14 +134,20 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    width: 100%;
+    overflow: hidden;
 }
 
 .card-username{
+    width: 100%;
     text-transform: capitalize;
     font-size: 1.25rem;
     font-family: Lato-800;
     margin-bottom: 5px;
     color: #5c6974;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user-info h4{

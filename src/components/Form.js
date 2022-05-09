@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import '../css/Form.css';
 import { Col, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+
 
 const Form = (props) => {
 
@@ -114,33 +117,50 @@ const Form = (props) => {
             <div className='form-category'>
                 <h3 className='category-header'>Office Info</h3>
                 <div className='category-header-line'></div>
-                <div>
+                {/* <div>
                     <label>Office</label>
                     <input onChange={handleChange} type='text' name='office' />
+                </div> */}
+                <div>
+                    <label htmlFor='office'>Office</label>
+                    <div className='select-container'>
+                        <select onChange={handleChange} id='office' name='office' required>
+                            <option value=''>Select</option>
+                            <option value='arabic localizer'>Arabic Localizer</option>
+                            <option value='other'>Others</option>
+                        </select>
+                        <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                    </div>
                 </div>
                 <Row>
                     <Col md='6'>
                         <div>
                             <label htmlFor='department'>Department</label>
-                            <select onChange={handleChange} id='depratment' name='department' required>
-                                <option value=''>...</option>
-                                <option value='arabic localizer'>Arabic Localizer</option>
-                                <option value='astonish office'>Astonish Office</option>
-                                <option value='groundwork support'>Groundwork Support</option>
-                                <option value='other'>Others</option>
-                            </select>
+                            <div className='select-container'>
+                                <select onChange={handleChange} id='depratment' name='department' required>
+                                    <option value=''>Select</option>
+                                    <option value='arabic localizer'>Arabic Localizer</option>
+                                    <option value='astonish office'>Astonish Office</option>
+                                    <option value='groundwork support'>Groundwork Support</option>
+                                    <option value='other'>Others</option>
+                                </select>
+                                <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                         </div>
                     </Col>
                     <Col md='6'>
                         <div>
                             <label htmlFor='attendance'>Attendance Profile</label>
-                            <select onChange={handleChange} id='attendance' name='attendance'>
-                                <option value=''>...</option>
-                                <option value='present'>Present</option>
-                                <option value='absent'>Absent</option>
-                                <option value='weekend'>Weekend</option>
-                                <option value='holiday'>Holiday</option>
-                            </select>
+                            <div className='select-container'>
+                                <select onChange={handleChange} id='attendance' name='attendance'>
+                                    <option value=''>Select</option>
+                                    <option value='present'>Present</option>
+                                    <option value='absent'>Absent</option>
+                                    <option value='weekend'>Weekend</option>
+                                    <option value='holiday'>Holiday</option>
+                                </select>
+                                <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -148,25 +168,31 @@ const Form = (props) => {
                     <Col md='6'>
                         <div>
                             <label htmlFor='role'>Role</label>
-                            <select onChange={handleChange} id='role' name='role'>
-                                <option value=''>...</option>
-                                <option value='employee'>Employee</option>
-                                <option value='office manager'>Office Manager</option>
-                                <option value='receptionist'>Receptionist</option>
-                                <option value='other'>Others</option>
-                            </select>
+                            <div className='select-container'>
+                                <select onChange={handleChange} id='role' name='role'>
+                                    <option value=''>Select</option>
+                                    <option value='employee'>Employee</option>
+                                    <option value='office manager'>Office Manager</option>
+                                    <option value='receptionist'>Receptionist</option>
+                                    <option value='other'>Others</option>
+                                </select>
+                                <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                         </div>
                     </Col>
                     <Col md='6'>
                         <div>
                             <label htmlFor='position'>Position</label>
-                            <select onChange={handleChange} id='position' name='position' required>
-                                <option value=''>...</option>
-                                <option value='executive'>Executive</option>
-                                <option value='manager'>Manager</option>
-                                <option value='operations and production'>Operations And Production</option>
-                                <option value='other'>Others</option>
-                            </select>
+                            <div className='select-container'>
+                                <select onChange={handleChange} id='position' name='position' required>
+                                    <option value=''>Select</option>
+                                    <option value='executive'>Executive</option>
+                                    <option value='manager'>Manager</option>
+                                    <option value='operations and production'>Operations And Production</option>
+                                    <option value='other'>Others</option>
+                                </select>
+                                <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                         </div>
                     </Col>
                 </Row>
@@ -174,13 +200,16 @@ const Form = (props) => {
                     <Col md='6'>
                         <div>
                             <label htmlFor='manager'>Direct Manager</label>
-                            <select onChange={handleChange} id='manager' name='manager'>
-                                <option value=''>...</option>
-                                <option value='mohamed tarek'>Mohamed Tarek</option>
-                                <option value='eslam ahmed'>Eslam Ahmed</option>
-                                <option value='khaled youssef'>Khaled Youssef</option>
-                                <option value='other'>Others</option>
-                            </select>
+                            <div className='select-container'>
+                                <select onChange={handleChange} id='manager' name='manager'>
+                                    <option value=''>Select Option</option>
+                                    <option value='mohamed tarek'>Mohamed Tarek</option>
+                                    <option value='eslam ahmed'>Eslam Ahmed</option>
+                                    <option value='khaled youssef'>Khaled Youssef</option>
+                                    <option value='other'>Others</option>
+                                </select>
+                                <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                         </div>
                     </Col>
                 </Row>
