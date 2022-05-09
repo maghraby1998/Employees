@@ -23,11 +23,14 @@ const Form = (props) => {
         workFromHome : false
     })
 
-    useEffect( () => {
-        console.log(employee.workFromHome);
-    }, [employee])
-
     const [error, setError] = useState();
+
+    useEffect( () => {
+        document.body.style.overflowY = 'hidden';
+        return () => {
+            document.body.style.overflowY = 'scroll';
+          };
+    }, [])
  
     const handleChange = (e) => {
         let {name, value, type} = e.target;
@@ -175,7 +178,7 @@ const Form = (props) => {
                 <div>
                     <label htmlFor='office'>Office</label>
                     <div className='select-container'>
-                        <select onChange={handleChange} id='office' name='office'>
+                        <select style={{color: employee.office ? 'black' : 'grey', paddingLeft:'24px'}} onChange={handleChange} id='office' name='office'>
                             <option value=''>Select</option>
                             <option value='arabic localizer'>Arabic Localizer</option>
                             <option value='other'>Others</option>
@@ -188,7 +191,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='department'>Department</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='depratment' name='department'>
+                                <select style={{color: employee.department ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='depratment' name='department'>
                                     <option value=''>Select</option>
                                     <option value='arabic localizer'>Arabic Localizer</option>
                                     <option value='astonish office'>Astonish Office</option>
@@ -210,7 +213,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='attendance'>Attendance Profile</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='attendance' name='attendance'>
+                                <select style={{color: employee.attendance ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='attendance' name='attendance'>
                                     <option value=''>Select</option>
                                     <option value='present'>Present</option>
                                     <option value='absent'>Absent</option>
@@ -227,7 +230,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='role'>Role</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='role' name='role'>
+                                <select style={{color: employee.role ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='role' name='role'>
                                     <option value=''>Select</option>
                                     <option value='employee'>Employee</option>
                                     <option value='office manager'>Office Manager</option>
@@ -242,7 +245,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='position'>Position</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='position' name='position'>
+                                <select style={{color: employee.position ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='position' name='position'>
                                     <option value=''>Select</option>
                                     <option value='executive'>Executive</option>
                                     <option value='manager'>Manager</option>
@@ -266,7 +269,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='manager'>Direct Manager</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='manager' name='manager'>
+                                <select style={{color: employee.manager ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='manager' name='manager'>
                                     <option value=''>Select Option</option>
                                     <option value='mohamed tarek'>Mohamed Tarek</option>
                                     <option value='eslam ahmed'>Eslam Ahmed</option>
@@ -307,7 +310,8 @@ const Form = (props) => {
                 </div> */}
             </div>
             {/* Work from home */}
-            <hr></hr>
+            {/* <hr></hr> */}
+            <div className='form-line'></div>
             <div className='form-buttons'>
                 <button onClick={handleFormDisplay} className='cancel-button'>Cancel</button>
                 <input type='submit' value="Save" />
