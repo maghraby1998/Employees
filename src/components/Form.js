@@ -92,7 +92,7 @@ const Form = (props) => {
                         <Col sm={12} md={4}>
                             <div>
                                 <label htmlFor='name'>Name</label>
-                                <input onChange={handleChange} id='name' type='text' name='name' maxLength={30} required />
+                                <input onChange={handleChange} id='name' type='text' name='name' required />
                             </div>
                             <div>
                                 <label htmlFor='phone'>Phone</label>

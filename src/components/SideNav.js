@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
 import {NavLink} from 'react-router-dom';
 import '../css/SideNav.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDisplay, faHandsHolding, faMugSaucer, faObjectGroup, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+import { faDisplay, faHandsHolding, faMugSaucer } from '@fortawesome/free-solid-svg-icons';
+import People from '@material-ui/icons/People';
+import Dashboard from '@material-ui/icons/Dashboard';
 
 
 const SideNav = (props) => {
@@ -12,7 +13,7 @@ const SideNav = (props) => {
         <ul className='sidenav-links'>
           <li>
             <NavLink className={({ isActive }) => (isActive ? 'sidenav-active' : 'sidenav-link')} to='/dashboard'>
-              <FontAwesomeIcon className='sidenav-icon' icon={faObjectGroup} />
+              <Dashboard className='sidenav-icon' style={{fontSize: '35px'}} />
               <span>Dashboard</span>
             </NavLink>
           </li>
@@ -30,7 +31,8 @@ const SideNav = (props) => {
           </li>
           <li>
             <NavLink className={({ isActive }) => (isActive ? 'sidenav-active' : 'sidenav-link')} to='/employees'>
-              <FontAwesomeIcon className='sidenav-icon' icon={faUserGroup} />
+              {/* <FontAwesomeIcon className='sidenav-icon' icon={faUserGroup} /> */}
+              <People className='sidenav-icon' style={{fontSize:'35px'}} />
               <span>Employees</span>
             </NavLink>
           </li>

@@ -119,6 +119,18 @@
     cursor: pointer;
 }
 
+.icon-circle{
+    border: 1px solid #8997a4;
+    height: 6px;
+    width: 6px;
+    padding: 3px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
 .card-line{
     height: 80px;
     width: 1px;

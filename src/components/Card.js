@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faCirclePause, faTrash, faEnvelope, faPhone, faExclamation, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faPause, faTrash, faEnvelope, faPhone, faExclamation, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Col, Row } from 'react-bootstrap';
+import CallEnd from '@material-ui/icons/CallEnd';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 
 
 const Card = (props) => {
@@ -59,8 +61,9 @@ const Card = (props) => {
           {imgDisplay}
           <div className="user-icons-container">
             <FontAwesomeIcon className='card-user-icon' icon={faPen} />
-            <FontAwesomeIcon className='card-user-icon' icon={faCirclePause} />
-            <FontAwesomeIcon onClick={ () => props.deleteEmployee(id)} className='card-user-icon' icon={faTrash} />
+            <FontAwesomeIcon className='card-user-icon icon-circle' icon={faPause} />
+            <DeleteForever onClick={ () => props.deleteEmployee(id)} className='card-user-icon' style={{fontSize: '18px'}} />
+            {/* <FontAwesomeIcon className='card-user-icon' icon={faTrash } /> */}
           </div>
         </div>
         <span className='card-line'></span>
@@ -78,11 +81,11 @@ const Card = (props) => {
             <FontAwesomeIcon className='card-icon' icon={faEnvelope} />
           </div>
           <div className='card-icon-container'>
-            <FontAwesomeIcon className='card-icon' icon={faPhone} />
+            <CallEnd style={{fontSize: '10px'}} />
           </div>
           <div className='dropdown'>
             <div className='card-icon-container dropdown-button'>
-              <FontAwesomeIcon className='card-icon' icon={faExclamation} />
+              <FontAwesomeIcon className='card-icon' icon={faExclamation} />              
             </div>
             <div className='dropdown-content'>
               <Row>
