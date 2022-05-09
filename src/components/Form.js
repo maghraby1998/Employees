@@ -22,6 +22,8 @@ const Form = (props) => {
         manager     : '',
         workFromHome : false
     })
+
+    const [error, setError] = useState();
  
     const handleChange = (e) => {
         let {name, value, type} = e.target;
@@ -34,12 +36,29 @@ const Form = (props) => {
                 return {...prev, [name]: value, id: Math.random()};
             })
         }
+        if(employee.name.length > 0){
+            setError();
+        }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.handleEmployees(employee);
-        props.handleFormDisplay(false);
+        if (employee.name.length === 0) {
+            setError('emptyName');
+        } else if (employee.startDate.length === 0) {
+            setError('emptyDate');
+        } else if (employee.email.length === 0) {
+            setError('emptyEmail');
+        } else if (employee.email.indexOf('@') < 0) {
+            setError('invalidEmail');
+        } else if (employee.department.length === 0) {
+            setError('emptyDepartment');
+        } else if (employee.position.length === 0) {
+            setError('emptyPosition');
+        } else {
+            props.handleEmployees(employee);
+            props.handleFormDisplay(false);
+        }
     }
 
     const handleFormDisplay = (e) => {
@@ -90,9 +109,16 @@ const Form = (props) => {
                             <input onChange={handleImg} type='file' id='imgInput' name='image' />
                         </Col>
                         <Col sm={12} md={4}>
-                            <div>
+                            <div className='input-container'>
                                 <label htmlFor='name'>Name</label>
-                                <input onChange={handleChange} id='name' type='text' name='name' required />
+                                <input onChange={handleChange} id='name' type='text' name='name' />
+                                {
+                                    error === 'emptyName' ?
+                                    <div className='error-container'>
+                                        <p>Name is required!</p>
+                                    </div>
+                                    : ''
+                                }
                             </div>
                             <div>
                                 <label htmlFor='phone'>Phone</label>
@@ -100,13 +126,34 @@ const Form = (props) => {
                             </div>
                         </Col>
                         <Col sm={12} md={4}>
-                            <div>
+                            <div className='input-container'>
                                 <label htmlFor='date'>Start Date</label>
-                                <input onChange={handleChange} id='date' type='date' name='startDate' required />
+                                <input onChange={handleChange} id='date' type='date' name='startDate' />
+                                {
+                                    error === 'emptyDate' ?
+                                    <div className='error-container'>
+                                        <p>Date is required!</p>
+                                    </div>
+                                    : ''
+                                }
                             </div>
-                            <div>
+                            <div className='input-container'>
                                 <label htmlFor='email'>Email</label>
-                                <input onChange={handleChange} id='email' type='email' name='email' required maxLength={40} />
+                                <input onChange={handleChange} id='email' type='text' name='email' maxLength={40} />
+                                {
+                                    error === 'emptyEmail' ?
+                                    <div className='error-container'>
+                                        <p>Email is required!</p>
+                                    </div>
+                                    : ''
+                                }
+                                {
+                                    error === 'invalidEmail' ?
+                                    <div className='error-container'>
+                                        <p>Invalid Email!</p>
+                                    </div>
+                                    : ''
+                                }
                             </div>
                         </Col>
                     </Row>
@@ -124,7 +171,7 @@ const Form = (props) => {
                 <div>
                     <label htmlFor='office'>Office</label>
                     <div className='select-container'>
-                        <select onChange={handleChange} id='office' name='office' required>
+                        <select onChange={handleChange} id='office' name='office'>
                             <option value=''>Select</option>
                             <option value='arabic localizer'>Arabic Localizer</option>
                             <option value='other'>Others</option>
@@ -137,7 +184,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='department'>Department</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='depratment' name='department' required>
+                                <select onChange={handleChange} id='depratment' name='department'>
                                     <option value=''>Select</option>
                                     <option value='arabic localizer'>Arabic Localizer</option>
                                     <option value='astonish office'>Astonish Office</option>
@@ -145,6 +192,13 @@ const Form = (props) => {
                                     <option value='other'>Others</option>
                                 </select>
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                                {
+                                    error === 'emptyDepartment' ?
+                                    <div className='select-error-container error-container'>
+                                        <p>Department is required!</p>
+                                    </div>
+                                    : ''
+                                }
                             </div>
                         </div>
                     </Col>
@@ -184,7 +238,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='position'>Position</label>
                             <div className='select-container'>
-                                <select onChange={handleChange} id='position' name='position' required>
+                                <select onChange={handleChange} id='position' name='position'>
                                     <option value=''>Select</option>
                                     <option value='executive'>Executive</option>
                                     <option value='manager'>Manager</option>
@@ -192,6 +246,13 @@ const Form = (props) => {
                                     <option value='other'>Others</option>
                                 </select>
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                                {
+                                    error === 'emptyPosition' ?
+                                    <div className='select-error-container error-container'>
+                                        <p>Position is required!</p>
+                                    </div>
+                                    : ''
+                                }
                             </div>
                         </div>
                     </Col>

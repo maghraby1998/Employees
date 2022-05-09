@@ -4,6 +4,7 @@
     padding-right: 2.188rem;
     margin-left: 6.625rem;
     min-height: 100vh;
+    overflow-x: scroll;
 }
 
 .search-container{
