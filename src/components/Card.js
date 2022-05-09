@@ -17,6 +17,18 @@ const Card = (props) => {
         dropdownContents[i].classList.remove('dropdown-content-active')
       })
     }
+
+    const usernames = document.querySelectorAll('.card-username');
+
+    usernames.forEach(username => {
+      username.addEventListener('mouseenter', () => {
+        username.classList.add('card-username-active');
+      })
+
+      username.addEventListener('mouseleave', () => {
+        username.classList.remove('card-username-active');
+      })
+    })
     
   }, [])
 
@@ -53,7 +65,9 @@ const Card = (props) => {
         </div>
         <span className='card-line'></span>
         <div className='user-info'>
-          <h3 className='card-username'>{name}</h3>
+          <h3 className='card-username'>
+            {name}
+          </h3>
           <h4>HR Head</h4>
           <p>Business Development</p>
           {attedanceStatu}

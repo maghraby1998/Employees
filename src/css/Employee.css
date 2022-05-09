@@ -3,7 +3,6 @@
     padding-left: 2.188rem;;
     padding-right: 2.188rem;
     margin-left: 6.625rem;
-    border: 1px solid red;
     min-height: 100vh;
 }
 
@@ -135,11 +134,12 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
+    position: relative;
 }
 
 .card-username{
-    width: 100%;
+    width: 80%;
     text-transform: capitalize;
     font-size: 1.25rem;
     font-family: Lato-800;
@@ -148,12 +148,19 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: all ease 0.2s;
+}
+
+.card-username-active{
+    width: 100%;
+    background-color: white;
+    z-index: 999;
 }
 
 .user-info h4{
     font-size: 0.813rem;
     font-family: Roboto;
-    margin-bottom: 5px;
+    margin-bottom: px;
     color: #313030;
 }
 
@@ -209,7 +216,7 @@
     width: 20px;
     margin-right: 7px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #eaeef0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,7 +224,7 @@
 }
 
 .card-icon{
-    font-size: .7rem;
+    font-size: .5rem;
     color: #313030;
 }
 
