@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 999;
 }
 
 .employee-form{
@@ -63,8 +64,7 @@
 
 .img-upload-container{
     height: 115px;
-    /* width: 100%; */
-    /* width: 300px; */
+    /* height: 100%; */
     border: 2px dashed #707070;
     display: flex;
     align-items: center;
@@ -104,6 +104,11 @@
     height: 100%;
     width: 100%;
     cursor: pointer;
+    outline: none;
+}
+
+.input-error{
+    border: 1px solid red;
 }
 
 option:nth-child(1){
@@ -128,15 +133,16 @@ label{
 
 .input-container{
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .error-container{
-    position: absolute;
-    bottom: -80%;
+    /* position: absolute;
+    bottom: -80%; */
+    font-size: 14px;
     border-radius: 5px;
-    padding: 8px 8px 0px 8px;
     text-transform: capitalize;
-    background-color: rgb(233, 233, 233);
     color: rgb(221, 1, 1);
     width: 100%;
     display: flex;
@@ -145,10 +151,6 @@ label{
     animation-duration: 1s;
     animation-fill-mode: forwards;
     z-index: 999;
-}
-
-.select-error-container{
-    bottom: -135%;
 }
 
 @keyframes animateError{

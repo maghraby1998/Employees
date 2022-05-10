@@ -9,17 +9,18 @@ const App = () => {
 
   const [employees, setEmployees] = useState([]);
   
-  useEffect( () => {
-    let localEmployees = JSON.parse(window.localStorage.getItem('employees'));
-    if(localEmployees){
-      setEmployees(localEmployees);
-    }
-  }, [])
+  // useEffect( () => {
+  //   let localEmployees = JSON.parse(window.localStorage.getItem('employees'));
+  //   if(localEmployees){
+  //     setEmployees(localEmployees);
+  //   }
+  // }, [])
 
   useEffect( () => {
-    if(employees.length > 0){
-      window.localStorage.setItem('employees', JSON.stringify(employees))
-    }
+    // if(employees.length > 0){
+    //   window.localStorage.setItem('employees', JSON.stringify(employees))
+    // }
+    console.log(employees);
   }, [employees])
 
   const handleEmployees = (newEmployee) => {

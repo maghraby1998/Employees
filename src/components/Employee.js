@@ -45,7 +45,7 @@ const Employee = (props) => {
         <div className="search-container">
             <div className="search-input-container">
                 <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
-                <input onChange={handleChange} type='text' placeholder='Search' className="search-input" />
+                <input onChange={handleChange} className='search-input' type='text' placeholder='Search' className="search-input" />
             </div>
             <button onClick={handleAddBtn} className="add-btn">
                 <FontAwesomeIcon className="plus-icon" icon={faPlus} />
@@ -65,6 +65,7 @@ const Employee = (props) => {
         </Row>
         
         {formDisplay ? <Form handleFormDisplay={handleFormDisplay} handleEmployees={props.handleEmployees} /> : '' }
+        {/* <h1>Hello World</h1> */}
     </div>
   )
 }

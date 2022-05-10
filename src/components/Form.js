@@ -21,9 +21,21 @@ const Form = (props) => {
         position    : '',
         manager     : '',
         workFromHome : false
-    })
+    });
 
-    const [error, setError] = useState();
+    const [errors, setErrors] = useState({
+        name: '',
+        startDate: '',
+        email : '',
+        invalidEmail: false,
+        department: '',
+        position: '',
+        attendance: ''
+    });
+
+    useEffect( () => {
+        console.log(errors);
+    }, [errors])
 
     useEffect( () => {
         document.body.style.overflowY = 'hidden';
@@ -34,6 +46,7 @@ const Form = (props) => {
  
     const handleChange = (e) => {
         let {name, value, type} = e.target;
+        // console.log(value.length)
         if(type === 'checkbox'){
             setEmployee( prev => {
                 return {...prev, workFromHome: !prev.workFromHome}
@@ -43,26 +56,190 @@ const Form = (props) => {
                 return {...prev, [name]: value, id: Math.random()};
             })
         }
-        if(employee.name.length > 0){
-            setError();
+        switch (name) {
+            case 'name':
+                if (value.length > 0) {
+                    setErrors( prev => {
+                        return {...prev, name: ''}
+                    })
+                } else {
+                    setErrors( prev => {
+                        return {...prev, name:'emptyName'}
+                    })
+                }
+                break;
+            case 'startDate':
+                if (value.length > 0) {
+                    setErrors( prev => {
+                        return {...prev, startDate: ''}
+                    })
+                } else {
+                    setErrors( prev => {
+                        return {...prev, startDate:'emptyDate'}
+                    })
+                }
+                break;
+            case 'email':
+                if (value.length > 0) {
+                    if( value.indexOf('@') < 0){
+                        setErrors( prev => {
+                            return {...prev, invalidEmail: true}
+                        })
+                    } else {
+                        setErrors( prev => {
+                            return {...prev, invalidEmail: false}
+                        })
+                    }
+                    setErrors( prev => {
+                        return {...prev, email: ''}
+                    })
+                    // if (value.indexOf('Q') < 0){
+                    //     setErrors( prev => {
+                    //         return {...prev, invalidEmail: true}
+                    //     })
+                    // } else {
+                    //     setErrors( prev => {
+                    //         return {...prev, email: ''}
+                    //     })
+                    // }
+                } else {
+                    setErrors( prev => {
+                        return {...prev, email:'emptyEmail'}
+                    })
+                    setErrors( prev => {
+                        return {...prev, invalidEmail: false}
+                    })
+                }
+                break;
+            case 'position':
+                if (value.length > 0) {
+                    setErrors( prev => {
+                        return {...prev, position: ''}
+                    })
+                } else {
+                    setErrors( prev => {
+                        return {...prev, position:'emptyPosition'}
+                    })
+                }
+                break;
+            case 'attendance':
+                if (value.length > 0) {
+                    setErrors( prev => {
+                        return {...prev, attendance: ''}
+                    })
+                } else {
+                    setErrors( prev => {
+                        return {...prev, attendance:'emptyAttendance'}
+                    })
+                }
+                break;
+            case 'department':
+                if (value.length > 0) {
+                    setErrors( prev => {
+                        return {...prev, department: ''}
+                    })
+                } else {
+                    setErrors( prev => {
+                        return {...prev, department:'emptyDepartment'}
+                    })
+                }
+                break;
         }
+    }
+
+    const isEmptyName = () => {
+        if (employee.name.length === 0) {
+            setErrors( prev => {
+                return {...prev, name:'emptyName'}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, name: ''}
+            })
+        }
+    }
+    const isEmptyDate = () => {
+        if (employee.startDate.length === 0) {
+            setErrors( prev => {
+                return {...prev, startDate:'emptyDate'}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, startDate:''}
+            })
+        } 
+    }
+    const isEmptyEmail = () => {
+        if (employee.email.length === 0) {
+            setErrors( prev => {
+                return {...prev, email:'emptyEmail'}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, email:''}
+            })
+        } 
+    }
+    const isValidEmail = () => {
+        if (employee.email.length > 0 && employee.email.indexOf('@') < 0) {
+            setErrors( prev => {
+                return {...prev, invalidEmail: true}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, invalidEmail: false}
+            })
+        } 
+    }
+    const isEmptyAttendance = () => {
+        if (employee.attendance.length === 0) {
+            setErrors( prev => {
+                return {...prev, attendance: 'emptyAttendance'}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, attendance: ''}
+            })
+        }
+    }
+    const isEmptyDepartment = () => {
+        if (employee.department.length === 0) {
+            setErrors( prev => {
+                return {...prev, department: 'emptyDepartment'}
+            })
+        }  else {
+            setErrors( prev => {
+                return {...prev, department: ''}
+            })
+        }
+    }
+    const isEmptyPosition = () => {
+        if (employee.position.length === 0) {
+            setErrors( prev => {
+                return {...prev, position: 'emptyPosition'}
+            })
+        } else {
+            setErrors( prev => {
+                return {...prev, position: ''}
+            })  
+        } 
+    }
+
+    const checkValidation = () => {
+        isEmptyName();
+        isEmptyDate();
+        isEmptyEmail();
+        isValidEmail();
+        isEmptyDepartment();
+        isEmptyAttendance();
+        isEmptyPosition();
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (employee.name.length === 0) {
-            setError('emptyName');
-        } else if (employee.startDate.length === 0) {
-            setError('emptyDate');
-        } else if (employee.email.length === 0) {
-            setError('emptyEmail');
-        } else if (employee.email.indexOf('@') < 0) {
-            setError('invalidEmail');
-        } else if (employee.department.length === 0) {
-            setError('emptyDepartment');
-        } else if (employee.position.length === 0) {
-            setError('emptyPosition');
-        } else {
+        checkValidation();
+        let {name, startDate, email, invalidEmail, position, department, attendance} = errors;
+        if (name.length === 0 && startDate.length === 0 && email.length === 0 && position.length === 0 && !invalidEmail && department.length === 0 && attendance.length === 0){
             props.handleEmployees(employee);
             props.handleFormDisplay(false);
         }
@@ -118,9 +295,9 @@ const Form = (props) => {
                         <Col sm={12} md={4}>
                             <div className='input-container'>
                                 <label htmlFor='name'>Name</label>
-                                <input onChange={handleChange} id='name' type='text' name='name' />
+                                <input style={{border: errors.name.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='name' type='text' maxLength={35} name='name' />
                                 {
-                                    error === 'emptyName' ?
+                                    errors.name === 'emptyName' ?
                                     <div className='error-container'>
                                         <p>Name is required!</p>
                                     </div>
@@ -135,9 +312,9 @@ const Form = (props) => {
                         <Col sm={12} md={4}>
                             <div className='input-container'>
                                 <label htmlFor='date'>Start Date</label>
-                                <input onChange={handleChange} id='date' type='date' name='startDate' />
+                                <input style={{border: errors.startDate.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='date' type='date' name='startDate' />
                                 {
-                                    error === 'emptyDate' ?
+                                    errors.startDate === 'emptyDate' ?
                                     <div className='error-container'>
                                         <p>Date is required!</p>
                                     </div>
@@ -146,21 +323,28 @@ const Form = (props) => {
                             </div>
                             <div className='input-container'>
                                 <label htmlFor='email'>Email</label>
-                                <input onChange={handleChange} id='email' type='text' name='email' maxLength={40} />
+                                <input style={{border: errors.email.length > 0 || errors.invalidEmail ? '1px solid red' : ''}} onChange={handleChange} id='email' type='text' name='email' maxLength={40} />
                                 {
-                                    error === 'emptyEmail' ?
+                                    errors.email === 'emptyEmail' ?
                                     <div className='error-container'>
                                         <p>Email is required!</p>
                                     </div>
                                     : ''
                                 }
                                 {
-                                    error === 'invalidEmail' ?
+                                    errors.invalidEmail ?
                                     <div className='error-container'>
                                         <p>Invalid Email!</p>
                                     </div>
                                     : ''
                                 }
+                                {/* {
+                                    error === 'invalidEmail' ?
+                                    <div className='error-container'>
+                                        <p>Invalid Email!</p>
+                                    </div>
+                                    : ''
+                                } */}
                             </div>
                         </Col>
                     </Row>
@@ -191,7 +375,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='department'>Department</label>
                             <div className='select-container'>
-                                <select style={{color: employee.department ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='depratment' name='department'>
+                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.department ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='depratment' name='department'>
                                     <option value=''>Select</option>
                                     <option value='arabic localizer'>Arabic Localizer</option>
                                     <option value='astonish office'>Astonish Office</option>
@@ -199,21 +383,21 @@ const Form = (props) => {
                                     <option value='other'>Others</option>
                                 </select>
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
-                                {
-                                    error === 'emptyDepartment' ?
-                                    <div className='select-error-container error-container'>
-                                        <p>Department is required!</p>
-                                    </div>
-                                    : ''
-                                }
                             </div>
+                            {
+                                errors.department === 'emptyDepartment' ?
+                                <div className='select-error-container error-container'>
+                                    <p>Department is required!</p>
+                                </div>
+                                : ''
+                            }
                         </div>
                     </Col>
                     <Col md='6'>
                         <div>
                             <label htmlFor='attendance'>Attendance Profile</label>
                             <div className='select-container'>
-                                <select style={{color: employee.attendance ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='attendance' name='attendance'>
+                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.attendance ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='attendance' name='attendance'>
                                     <option value=''>Select</option>
                                     <option value='present'>Present</option>
                                     <option value='absent'>Absent</option>
@@ -222,6 +406,13 @@ const Form = (props) => {
                                 </select>
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
                             </div>
+                            {
+                                errors.attendance === 'emptyAttendance' ?
+                                <div className='select-error-container error-container'>
+                                    <p>Attendance is required!</p>
+                                </div>
+                                : ''
+                            }
                         </div>
                     </Col>
                 </Row>
@@ -245,7 +436,7 @@ const Form = (props) => {
                         <div>
                             <label htmlFor='position'>Position</label>
                             <div className='select-container'>
-                                <select style={{color: employee.position ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='position' name='position'>
+                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.position ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='position' name='position'>
                                     <option value=''>Select</option>
                                     <option value='executive'>Executive</option>
                                     <option value='manager'>Manager</option>
@@ -253,14 +444,14 @@ const Form = (props) => {
                                     <option value='other'>Others</option>
                                 </select>
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
+                            </div>
                                 {
-                                    error === 'emptyPosition' ?
+                                    errors.position === 'emptyPosition' ?
                                     <div className='select-error-container error-container'>
                                         <p>Position is required!</p>
                                     </div>
                                     : ''
                                 }
-                            </div>
                         </div>
                     </Col>
                 </Row>

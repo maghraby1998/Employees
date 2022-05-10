@@ -16,11 +16,13 @@
 }
 
 .search-input-container{
+    flex: 12;
     background-color: white;
     border-radius: 0.313rem;
     height: 1.875rem;
     padding: 0px 26px;
-    width: 100%;
+    /* width: 100%; */
+    /* width: 85%; */
     margin-right: 0.75rem ;
 }
 
@@ -34,17 +36,18 @@
     border: none;
     outline: none;
     height: 100%;
-    width: 80%;
+    width: 90%;
 }
 
 .add-btn{
-    width: 6.313rem;
+    flex: 1;
+    /* width: 6.313rem; */
     background-color: #2764ac;
     border-radius: 5px;
     color: white;
     font-family: Roboto;
     font-size: 0.813rem;
-    height: 30px;
+    height: 1.875rem;
     border: none;
     outline: none;
     display: flex;
@@ -115,10 +118,6 @@
     width: 64px;
     border-radius: 50%;
     margin-bottom: 10px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
 }
 
 .card-icon-img-container{
@@ -142,27 +141,26 @@
 }
 
 .card-user-icon{
-    font-size: 0.8rem;
+    height: 9.6px;
+    width: 9.6px;
     color: #8997a4;
     cursor: pointer;
 }
 
 .icon-circle{
     border: 1px solid #8997a4;
-    height: 6px;
-    width: 6px;
-    padding: 3px;
+    /* height: 6px;
+    width: 6px; */
+    height: 5px;
+    width: 5px;
+    padding: 2px;
     border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
 }
 
 .card-line{
     height: 80px;
-    width: 1px;
-    background-color: #8997a4;
+    border-left: 1px solid #8997a4;
+    /* background-color: #8997a4; */
     opacity: 0.22;
     margin-left: 21.5px;
     margin-right: 23.5px;
@@ -181,7 +179,7 @@
 /* show username on hover */
 
 .card-username{
-    width: 80%;
+    width: 75%;
     text-transform: capitalize;
     font-size: 1.25rem;
     font-family: Lato-800;
@@ -191,13 +189,51 @@
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all ease 0.2s;
+    /* position: relative; */
 }
 
-.card-username:hover{
+.card-full-username{
+    width: 80%;
+    text-transform: capitalize;
+    font-size: .85rem;
+    font-family: Lato-800;
+    margin-bottom: 5px;
+    color: #5c6974;
+    white-space: nowrap;
+    /* overflow: hidden;
+    text-overflow: ellipsis; */
+    transition: all ease 0.2s;
+    position: absolute;
+    top: 22px;
+    background-color: rgb(237, 237, 237);
+    padding: 5px;
+    display: none;
+    animation-name: animateUsername;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    width: max-content;
+}
+
+.card-username:hover .card-full-username{
+    display: block;
+}
+
+@keyframes animateUsername {
+    0%{
+        opacity: 0;
+        transform: translateY(-10px);
+}
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+}
+}
+
+/* .card-username:hover{
     width: 100%;
     background-color: white;
     z-index: 999;
-}
+} */
 
 .user-info h4{
     font-size: 0.813rem;
@@ -285,10 +321,6 @@
     z-index: 3;
     display: none;
     background-color: white;
-    -webkit-transform: translate(-250px, 5px);
-    -moz-transform: translate(-250px, 5px);
-    -ms-transform: translate(-250px, 5px);
-    -o-transform: translate(-250px, 5px);
     z-index: 999;
 }
 
@@ -324,13 +356,43 @@
     .card{
         width: 350px;
     }
-    .search-input{
+    /* .search-input{
         width: 60%;
-    }
+    } */
     .add-btn{
         font-size: 10px;
     }
     .plus-icon{
         font-size: .8rem;
+    }
+}
+
+@media only screen and (max-width: 1250px){
+    .search-input-container{
+        flex: 7;
+    }
+}
+
+@media only screen and (max-width: 1000px){
+    .search-container{
+        flex-direction: column;
+    }
+
+    .search-input-container{
+        width: 100%;
+        margin: 0px;
+        margin-bottom: 10px;
+    }
+
+    .add-btn{
+        width: 100%;
+        margin: 0px;
+        padding: 3px;
+    }
+}
+
+@media only screen and (max-width:700px) {
+    .card-username{
+        width: 70%;
     }
 }

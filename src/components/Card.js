@@ -36,7 +36,7 @@ const Card = (props) => {
           <div className="user-icons-container">
             <FontAwesomeIcon className='card-user-icon' icon={faPen} />
             <FontAwesomeIcon className='card-user-icon icon-circle' icon={faPause} />
-            <DeleteForever onClick={ () => props.deleteEmployee(id)} className='card-user-icon' style={{fontSize: '18px'}} />
+            <DeleteForever onClick={ () => props.deleteEmployee(id)} className='card-user-icon' style={{height:'15px', width:'15px', color:'#8997a4'}}/>
             {/* <FontAwesomeIcon className='card-user-icon' icon={faTrash } /> */}
           </div>
         </div>
@@ -44,6 +44,9 @@ const Card = (props) => {
         <div className='user-info'>
           <h3 className='card-username'>
             {name}
+            <span className='card-full-username'>
+              {name}
+            </span>
           </h3>
           <h4>HR Head</h4>
           <p>Business Development</p>
