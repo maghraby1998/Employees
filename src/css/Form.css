@@ -104,7 +104,7 @@
     height: 100%;
     width: 100%;
     cursor: pointer;
-    outline: none;
+    /* outline: none; */
 }
 
 .input-error{
@@ -121,7 +121,7 @@ label{
     width: 100%;
     cursor: pointer;
     user-select: none;
-    margin-top: 8px;
+    /* margin-bottom: 8px; */
 }
 
 .employee-form input[type='text'],
@@ -147,9 +147,9 @@ label{
     width: 100%;
     display: flex;
     align-items: center;
-    animation-name: animateError;
+    /* animation-name: animateError;
     animation-duration: 1s;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; */
     z-index: 999;
 }
 

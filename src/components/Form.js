@@ -282,8 +282,9 @@ const Form = (props) => {
             <div className='form-category'>
                 <h3 className='category-header'>Personal Info</h3>
                 <div className='category-header-line'></div>
-                    <Row>
-                        <Col style={{display: 'flex', alignItems:'flex-start'}} sm={12} md={4}>
+                    {/* personal info grid contianer */}
+                    <div className='grid gap-3 grid-cols-1 md:grid-cols-3'>
+                        <div className='flex items-center'>
                             <label htmlFor="imgInput">
                                 <div className='img-upload-container'>
                                     {imageDisplay}
@@ -291,11 +292,12 @@ const Form = (props) => {
                                 </div>
                             </label>
                             <input onChange={handleImg} type='file' id='imgInput' name='image' />
-                        </Col>
-                        <Col sm={12} md={4}>
+                        </div>
+                        {/* name and phone container */}
+                        <div sm={12} md={4}>
                             <div className='input-container'>
                                 <label htmlFor='name'>Name</label>
-                                <input style={{border: errors.name.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='name' type='text' maxLength={35} name='name' />
+                                <input style={{border: errors.name.length > 0 ? '1px solid red' : '', outline: errors.name.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='name' type='text' maxLength={35} name='name' />
                                 {
                                     errors.name === 'emptyName' ?
                                     <div className='error-container'>
@@ -308,11 +310,13 @@ const Form = (props) => {
                                 <label htmlFor='phone'>Phone</label>
                                 <input onChange={handleChange} id='phone' type='text' name='phone' maxLength={11} />
                             </div>
-                        </Col>
-                        <Col sm={12} md={4}>
+                        </div>
+                        {/* date and email container */}
+                        <div sm={12} md={4}>
+                            {/* date */}
                             <div className='input-container'>
                                 <label htmlFor='date'>Start Date</label>
-                                <input style={{border: errors.startDate.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='date' type='date' name='startDate' />
+                                <input style={{border: errors.startDate.length > 0 ? '1px solid red' : '', outline: errors.startDate.length > 0 ? '1px solid red' : ''}} onChange={handleChange} id='date' type='date' name='startDate' />
                                 {
                                     errors.startDate === 'emptyDate' ?
                                     <div className='error-container'>
@@ -321,9 +325,10 @@ const Form = (props) => {
                                     : ''
                                 }
                             </div>
+                            {/* email */}
                             <div className='input-container'>
                                 <label htmlFor='email'>Email</label>
-                                <input style={{border: errors.email.length > 0 || errors.invalidEmail ? '1px solid red' : ''}} onChange={handleChange} id='email' type='text' name='email' maxLength={40} />
+                                <input style={{border: errors.email.length > 0 || errors.invalidEmail ? '1px solid red' : '', outline: errors.email.length > 0 || errors.invalidEmail ? '1px solid red' : ''}} onChange={handleChange} id='email' type='text' name='email' maxLength={40} />
                                 {
                                     errors.email === 'emptyEmail' ?
                                     <div className='error-container'>
@@ -338,16 +343,9 @@ const Form = (props) => {
                                     </div>
                                     : ''
                                 }
-                                {/* {
-                                    error === 'invalidEmail' ?
-                                    <div className='error-container'>
-                                        <p>Invalid Email!</p>
-                                    </div>
-                                    : ''
-                                } */}
                             </div>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
             </div>
             {/* personal info */}
 
@@ -355,10 +353,7 @@ const Form = (props) => {
             <div className='form-category'>
                 <h3 className='category-header'>Office Info</h3>
                 <div className='category-header-line'></div>
-                {/* <div>
-                    <label>Office</label>
-                    <input onChange={handleChange} type='text' name='office' />
-                </div> */}
+                {/* office */}
                 <div>
                     <label htmlFor='office'>Office</label>
                     <div className='select-container'>
@@ -370,12 +365,14 @@ const Form = (props) => {
                         <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
                     </div>
                 </div>
-                <Row>
-                    <Col md='6'>
+                {/* attendance and department */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-3'>
+                    {/* department */}
+                    <div md='6'>
                         <div>
                             <label htmlFor='department'>Department</label>
                             <div className='select-container'>
-                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.department ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='depratment' name='department'>
+                                <select style={{border: errors.department.length > 0 ? '1px solid red' : '', color: employee.department ? 'black' : 'grey', paddingLeft:'24px', outline: errors.department.length > 0 ? '1px solid red' : ''}}  onChange={handleChange} id='depratment' name='department'>
                                     <option value=''>Select</option>
                                     <option value='arabic localizer'>Arabic Localizer</option>
                                     <option value='astonish office'>Astonish Office</option>
@@ -392,12 +389,13 @@ const Form = (props) => {
                                 : ''
                             }
                         </div>
-                    </Col>
-                    <Col md='6'>
+                    </div>
+                    {/* attendance */}
+                    <div md='6'>
                         <div>
                             <label htmlFor='attendance'>Attendance Profile</label>
                             <div className='select-container'>
-                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.attendance ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='attendance' name='attendance'>
+                                <select style={{border: errors.attendance.length > 0 ? '1px solid red' : '', color: employee.attendance ? 'black' : 'grey', paddingLeft:'24px', outline: errors.attendance.length > 0 ? '1px solid red' : ''}}  onChange={handleChange} id='attendance' name='attendance'>
                                     <option value=''>Select</option>
                                     <option value='present'>Present</option>
                                     <option value='absent'>Absent</option>
@@ -414,10 +412,12 @@ const Form = (props) => {
                                 : ''
                             }
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md='6'>
+                    </div>
+                </div>
+                {/* role and position */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-3'>
+                    {/* role */}
+                    <div>
                         <div>
                             <label htmlFor='role'>Role</label>
                             <div className='select-container'>
@@ -431,12 +431,13 @@ const Form = (props) => {
                                 <FontAwesomeIcon className='select-icon' icon={faAngleDown} />
                             </div>
                         </div>
-                    </Col>
-                    <Col md='6'>
+                    </div>
+                    {/* position */}
+                    <div>
                         <div>
                             <label htmlFor='position'>Position</label>
                             <div className='select-container'>
-                                <select style={{border: errors.name.length > 0 ? '1px solid red' : '', color: employee.position ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='position' name='position'>
+                                <select style={{border: errors.position.length > 0 ? '1px solid red' : '', outline: errors.position.length > 0 ? '1px solid red' : '', color: employee.position ? 'black' : 'grey', paddingLeft:'24px'}}  onChange={handleChange} id='position' name='position'>
                                     <option value=''>Select</option>
                                     <option value='executive'>Executive</option>
                                     <option value='manager'>Manager</option>
@@ -453,8 +454,8 @@ const Form = (props) => {
                                     : ''
                                 }
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 <Row>
                     <Col md='6'>
                         <div>

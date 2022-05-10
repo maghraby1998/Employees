@@ -30,7 +30,7 @@ const Card = (props) => {
       attedanceStatu = <span className='card-state none'></span>
     }
     return (
-      <div className="card">
+      <div className="flex items-center justify-start bg-white relative py-[12px] px-[19px]">
         <div className="img-container">
           {imgDisplay}
           <div className="user-icons-container">
@@ -48,7 +48,7 @@ const Card = (props) => {
               {name}
             </span>
           </h3>
-          <h4>HR Head</h4>
+          <h4 className='text-[13px] text-[#313030]'>HR Head</h4>
           <p>Business Development</p>
           {attedanceStatu}
           {/* <span className='card-state'>Present</span> */}
