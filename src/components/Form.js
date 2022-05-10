@@ -238,8 +238,8 @@ const Form = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         checkValidation();
-        let {name, startDate, email, invalidEmail, position, department, attendance} = errors;
-        if (name.length === 0 && startDate.length === 0 && email.length === 0 && position.length === 0 && !invalidEmail && department.length === 0 && attendance.length === 0){
+        let {name, startDate, email, attendance, position, department} = employee;
+        if (name.length > 0 && startDate.length > 0 && email.length > 0 && email.indexOf('@') >= 0 && attendance.length > 0 && position.length > 0 && department.length > 0){
             props.handleEmployees(employee);
             props.handleFormDisplay(false);
         }
@@ -283,7 +283,7 @@ const Form = (props) => {
                 <h3 className='category-header'>Personal Info</h3>
                 <div className='category-header-line'></div>
                     <Row>
-                        <Col sm={12} md={4}>
+                        <Col style={{display: 'flex', alignItems:'flex-start'}} sm={12} md={4}>
                             <label htmlFor="imgInput">
                                 <div className='img-upload-container'>
                                     {imageDisplay}
