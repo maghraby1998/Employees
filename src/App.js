@@ -8,13 +8,13 @@ import Employee from './components/Employee';
 const App = () => {
 
   const [employees, setEmployees] = useState([
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'},
-    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'random', department:'random'}
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'absent', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'holiday', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'present', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'present', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'holiday', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'absent', department:'random'},
+    {name: 'ahmed', startDate:'2/3/2000', email:'ahmed@gmail.com', position:'random', attendance:'holiday', department:'random'}
   ]);
 
   

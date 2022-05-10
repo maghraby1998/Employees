@@ -70,11 +70,11 @@
     /* margin-bottom: 1.5rem; */
     /* margin-right: 2.813rem; */
     /* serpartor */
-    /* box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
-    border: 1px solid #eaeef0; */
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
+    /* border: 1px solid #eaeef0; */
     /* animation-name: animateCard;
     animation-duration: 1s;
-    animation-fill-mode: forwards; */
+    animation-fill-mode: forwards;*/
 }
 
 .card-margins{
