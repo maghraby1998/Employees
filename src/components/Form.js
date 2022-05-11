@@ -3,7 +3,7 @@ import "../css/Form.css";
 import { Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { inputErrorHandler, inputBorderHandler, handleErrors } from "../functions/validation";
+import { inputErrorMessageHandler, inputBorderHandler, handleErrors, handleSubmitting } from "../functions/validation";
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -56,10 +56,13 @@ const Form = (props) => {
   };
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
     setFormSubmission(true);
-    // props.handleEmployees(employee);
-    // props.handleFormDisplay(false);
+    if (handleSubmitting(errors)) {
+      props.handleEmployees(employee);
+      props.handleFormDisplay(false);
+    }
   };
 
   const handleFormDisplay = (e) => {
@@ -140,7 +143,7 @@ const Form = (props) => {
                   maxLength={35}
                   name="name"
                 />
-                {inputErrorHandler(formSubmission, errors, "name")}
+                {inputErrorMessageHandler(formSubmission, errors, "name")}
                 </div>
                 {/* date */}
                 <div>
@@ -152,7 +155,7 @@ const Form = (props) => {
                   type="date"
                   name="startDate"
                 />
-                {inputErrorHandler(formSubmission ,errors, "startDate")}
+                {inputErrorMessageHandler(formSubmission ,errors, "startDate")}
                 </div>
               </div>
               {/* phone and email */}
@@ -179,7 +182,7 @@ const Form = (props) => {
                   name="email"
                   maxLength={40}
                 />
-                {inputErrorHandler(formSubmission, errors, "email")}
+                {inputErrorMessageHandler(formSubmission, errors, "email")}
                 </div>
               </div>
             </div>
@@ -196,10 +199,6 @@ const Form = (props) => {
             <label htmlFor="office">Office</label>
             <div className="select-container">
               <select
-                style={{
-                  color: employee.office ? "black" : "grey",
-                  paddingLeft: "24px",
-                }}
                 onChange={handleChange}
                 id="office"
                 name="office"
@@ -234,7 +233,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {inputErrorHandler(formSubmission, errors, "department")}
+                {inputErrorMessageHandler(formSubmission, errors, "department")}
               </div>
             </div>
             {/* attendance */}
@@ -256,7 +255,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {inputErrorHandler(formSubmission, errors, "attendance")}
+                {inputErrorMessageHandler(formSubmission, errors, "attendance")}
               </div>
             </div>
           </div>
@@ -303,7 +302,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {inputErrorHandler(formSubmission, errors, "position")}
+                {inputErrorMessageHandler(formSubmission, errors, "position")}
               </div>
             </div>
           </div>

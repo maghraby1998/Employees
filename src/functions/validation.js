@@ -1,4 +1,4 @@
-export const inputErrorHandler = (formSubmission, errors, inputName) => {
+export const inputErrorMessageHandler = (formSubmission, errors, inputName) => {
     let errorMessage;
     let result;
 
@@ -71,4 +71,25 @@ export const handleErrors = (name, value, errors) => {
 
     return errors;
     
+}
+
+export const handleSubmitting = (errors) => {
+
+    let submit;
+
+    if (
+        errors.name ||
+        errors.startDate ||
+        errors.email ||
+        errors.attendacne ||
+        errors.department ||
+        errors.position
+    ) {
+        submit = false;
+    } else {
+        submit = true;
+    }
+
+    return submit;
+
 }

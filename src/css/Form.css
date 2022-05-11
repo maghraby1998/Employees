@@ -105,6 +105,10 @@
     /* outline: none; */
 }
 
+.employee-form select{
+    padding-left: 24px;
+}
+
 .input-error{
     border: 1px solid red;
 }
