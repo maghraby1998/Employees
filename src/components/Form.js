@@ -293,9 +293,9 @@ const Form = (props) => {
         <div className="form-category">
           <h3 className="category-header">Personal Info</h3>
           <div className="category-header-line"></div>
-          {/* personal info grid contianer */}
-          <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
-            <div className="flex items-center">
+          <div className="min-h-[112px] grid gap-2 grid-cols-1 md:grid-cols-10">
+            {/* image */}
+            <div className="flex items-center md:col-span-2">
               <label htmlFor="imgInput">
                 <div className="img-upload-container">
                   {imageDisplay}
@@ -309,11 +309,14 @@ const Form = (props) => {
                 name="image"
               />
             </div>
-            {/* name and phone container */}
-            <div sm={12} md={4}>
-              <div className="input-container">
-                <label htmlFor="name">Name</label>
-                <input
+            {/* personal info other than image */}
+            <div className="md:col-span-8 grid grid-cols-1">
+              {/* name and date */}
+              <div className="grid md:gap-3 grid-cols-1 md:grid-cols-2">
+                {/* name */}
+                <div>
+                  <label htmlFor="name">Name</label>
+                  <input
                   style={{
                     border: errors.name.length > 0 ? "none" : "",
                     outline: errors.name.length > 0 ? "1px solid red" : "",
@@ -331,24 +334,11 @@ const Form = (props) => {
                 ) : (
                   ""
                 )}
-              </div>
-              <div>
-                <label htmlFor="phone">Phone</label>
-                <input
-                  onChange={handleChange}
-                  id="phone"
-                  type="text"
-                  name="phone"
-                  maxLength={11}
-                />
-              </div>
-            </div>
-            {/* date and email container */}
-            <div sm={12} md={4}>
-              {/* date */}
-              <div className="input-container">
-                <label htmlFor="date">Start Date</label>
-                <input
+                </div>
+                {/* date */}
+                <div>
+                  <label htmlFor="date">Date</label>
+                  <input
                   style={{
                     border: errors.startDate.length > 0 ? "none" : "",
                     outline: errors.startDate.length > 0 ? "1px solid red" : "",
@@ -365,11 +355,25 @@ const Form = (props) => {
                 ) : (
                   ""
                 )}
+                </div>
               </div>
-              {/* email */}
-              <div className="input-container">
-                <label htmlFor="email">Email</label>
-                <input
+              {/* phone and email */}
+              <div className="grid md:gap-3 grid-cols-1 md:grid-cols-2">
+                {/* phone */}
+                <div>
+                  <label htmlFor="phone">Phone</label>
+                  <input
+                  onChange={handleChange}
+                  id="phone"
+                  type="text"
+                  name="phone"
+                  maxLength={11}
+                />
+                </div>
+                {/* email */}
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input
                   style={{
                     border:
                       errors.email.length > 0 || errors.invalidEmail
@@ -400,6 +404,7 @@ const Form = (props) => {
                 ) : (
                   ""
                 )}
+                </div>
               </div>
             </div>
           </div>

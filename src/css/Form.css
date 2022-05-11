@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+    /* overflow-y: scroll; */
 }
 
 .employee-form{
@@ -18,12 +19,13 @@
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 4px;
     padding: 11px 32px 20px 20px;
-    height: 80vh;
+    max-height: 80vh;
     overflow-y: scroll;
 }
 
 .form-category{
-    margin-bottom: 20px;
+    margin-bottom: 13px;
+    width: 100%;
 }
 
 .form-header{
@@ -51,11 +53,7 @@
     width: 44px;
     border-radius: 3px;
     background-color: rgba(35, 170, 235, 0.14);
-    margin: 5px 0px 25px 0px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
+    margin: 5px 0px 14px 0px;
 }
 
 #imgInput{
@@ -101,7 +99,7 @@
     border: 1px solid rgba(170, 170, 170, 0.84);
     border-radius: 5px;
     padding: 5px;
-    height: 100%;
+    height: 30px;
     width: 100%;
     cursor: pointer;
     /* outline: none; */
