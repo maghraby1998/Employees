@@ -3,6 +3,7 @@ import "../css/Form.css";
 import { Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { inputErrorHandler, inputBorderHandler, handleErrors } from "../functions/validation";
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -22,18 +23,15 @@ const Form = (props) => {
   });
 
   const [errors, setErrors] = useState({
-    name: "",
-    startDate: "",
-    email: "",
-    invalidEmail: false,
-    department: "",
-    position: "",
-    attendance: "",
+    name: true,
+    startDate: true,
+    email: 'empty',
+    department: true,
+    position: true,
+    attendance: true
   });
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  const [formSubmission, setFormSubmission] = useState(false);
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -44,7 +42,6 @@ const Form = (props) => {
 
   const handleChange = (e) => {
     let { name, value, type } = e.target;
-    // console.log(value.length)
     if (type === "checkbox") {
       setEmployee((prev) => {
         return { ...prev, workFromHome: !prev.workFromHome };
@@ -55,205 +52,17 @@ const Form = (props) => {
       });
     }
 
-    switch (name) {
-      case "name":
-        if (value.length > 0) {
-          setErrors((prev) => {
-            return { ...prev, name: "" };
-          });
-        } else {
-          setErrors((prev) => {
-            return { ...prev, name: "emptyName" };
-          });
-        }
-        break;
-      case "startDate":
-        if (value.length > 0) {
-          setErrors((prev) => {
-            return { ...prev, startDate: "" };
-          });
-        } else {
-          setErrors((prev) => {
-            return { ...prev, startDate: "emptyDate" };
-          });
-        }
-        break;
-      case "email":
-        if (value.length > 0) {
-          if (value.indexOf("@") < 0) {
-            setErrors((prev) => {
-              return { ...prev, invalidEmail: true };
-            });
-          } else {
-            setErrors((prev) => {
-              return { ...prev, invalidEmail: false };
-            });
-          }
-          setErrors((prev) => {
-            return { ...prev, email: "" };
-          });
-          // if (value.indexOf('Q') < 0){
-          //     setErrors( prev => {
-          //         return {...prev, invalidEmail: true}
-          //     })
-          // } else {
-          //     setErrors( prev => {
-          //         return {...prev, email: ''}
-          //     })
-          // }
-        } else {
-          setErrors((prev) => {
-            return { ...prev, email: "emptyEmail" };
-          });
-          setErrors((prev) => {
-            return { ...prev, invalidEmail: false };
-          });
-        }
-        break;
-      case "position":
-        if (value.length > 0) {
-          setErrors((prev) => {
-            return { ...prev, position: "" };
-          });
-        } else {
-          setErrors((prev) => {
-            return { ...prev, position: "emptyPosition" };
-          });
-        }
-        break;
-      case "attendance":
-        if (value.length > 0) {
-          setErrors((prev) => {
-            return { ...prev, attendance: "" };
-          });
-        } else {
-          setErrors((prev) => {
-            return { ...prev, attendance: "emptyAttendance" };
-          });
-        }
-        break;
-      case "department":
-        if (value.length > 0) {
-          setErrors((prev) => {
-            return { ...prev, department: "" };
-          });
-        } else {
-          setErrors((prev) => {
-            return { ...prev, department: "emptyDepartment" };
-          });
-        }
-        break;
-    }
-  };
-
-  const isEmptyName = () => {
-    if (employee.name.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, name: "emptyName" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, name: "" };
-      });
-    }
-  };
-  const isEmptyDate = () => {
-    if (employee.startDate.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, startDate: "emptyDate" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, startDate: "" };
-      });
-    }
-  };
-  const isEmptyEmail = () => {
-    if (employee.email.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, email: "emptyEmail" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, email: "" };
-      });
-    }
-  };
-  const isValidEmail = () => {
-    if (employee.email.length > 0 && employee.email.indexOf("@") < 0) {
-      setErrors((prev) => {
-        return { ...prev, invalidEmail: true };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, invalidEmail: false };
-      });
-    }
-  };
-  const isEmptyAttendance = () => {
-    if (employee.attendance.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, attendance: "emptyAttendance" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, attendance: "" };
-      });
-    }
-  };
-  const isEmptyDepartment = () => {
-    if (employee.department.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, department: "emptyDepartment" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, department: "" };
-      });
-    }
-  };
-  const isEmptyPosition = () => {
-    if (employee.position.length === 0) {
-      setErrors((prev) => {
-        return { ...prev, position: "emptyPosition" };
-      });
-    } else {
-      setErrors((prev) => {
-        return { ...prev, position: "" };
-      });
-    }
-  };
-
-  const checkValidation = () => {
-    isEmptyName();
-    isEmptyDate();
-    isEmptyEmail();
-    isValidEmail();
-    isEmptyDepartment();
-    isEmptyAttendance();
-    isEmptyPosition();
+    handleErrors(name, value, errors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    checkValidation();
-    let { name, startDate, email, attendance, position, department } = employee;
-    if (
-      name.length > 0 &&
-      startDate.length > 0 &&
-      email.length > 0 &&
-      email.indexOf("@") >= 0 &&
-      attendance.length > 0 &&
-      position.length > 0 &&
-      department.length > 0
-    ) {
-      props.handleEmployees(employee);
-      props.handleFormDisplay(false);
-    }
+    setFormSubmission(true);
+    // props.handleEmployees(employee);
+    // props.handleFormDisplay(false);
   };
 
   const handleFormDisplay = (e) => {
-    // e.preventDefault();
     props.handleFormDisplay(false);
   };
 
@@ -273,6 +82,13 @@ const Form = (props) => {
       });
     }
   };
+
+  // const inputBorderHandler = (inputName) => {
+  //   return {
+  //     border: errors[inputName] ? "none" : "",
+  //     outline: errors[inputName] ? "1px solid red" : "",
+  //   };
+  // }
 
   let imageDisplay;
   if (employee.image) {
@@ -317,44 +133,26 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="name">Name</label>
                   <input
-                  style={{
-                    border: errors.name.length > 0 ? "none" : "",
-                    outline: errors.name.length > 0 ? "1px solid red" : "",
-                  }}
+                  style={inputBorderHandler(formSubmission, errors, "name")}
                   onChange={handleChange}
                   id="name"
                   type="text"
                   maxLength={35}
                   name="name"
                 />
-                {errors.name === "emptyName" ? (
-                  <div className="error-container">
-                    <p>Name is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission, errors, "name")}
                 </div>
                 {/* date */}
                 <div>
                   <label htmlFor="date">Date</label>
                   <input
-                  style={{
-                    border: errors.startDate.length > 0 ? "none" : "",
-                    outline: errors.startDate.length > 0 ? "1px solid red" : "",
-                  }}
+                  style={inputBorderHandler(formSubmission, errors, "startDate")}
                   onChange={handleChange}
                   id="date"
                   type="date"
                   name="startDate"
                 />
-                {errors.startDate === "emptyDate" ? (
-                  <div className="error-container">
-                    <p>Date is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission ,errors, "startDate")}
                 </div>
               </div>
               {/* phone and email */}
@@ -374,36 +172,14 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="email">Email</label>
                   <input
-                  style={{
-                    border:
-                      errors.email.length > 0 || errors.invalidEmail
-                        ? "none"
-                        : "",
-                    outline:
-                      errors.email.length > 0 || errors.invalidEmail
-                        ? "1px solid red"
-                        : "",
-                  }}
+                  style={inputBorderHandler(formSubmission, errors, "email")}
                   onChange={handleChange}
                   id="email"
                   type="text"
                   name="email"
                   maxLength={40}
                 />
-                {errors.email === "emptyEmail" ? (
-                  <div className="error-container">
-                    <p>Email is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
-                {errors.invalidEmail ? (
-                  <div className="error-container">
-                    <p>Invalid Email!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission, errors, "email")}
                 </div>
               </div>
             </div>
@@ -443,13 +219,7 @@ const Form = (props) => {
                 <label htmlFor="department">Department</label>
                 <div className="select-container">
                   <select
-                    style={{
-                      border: errors.department.length > 0 ? "none" : "",
-                      color: employee.department ? "black" : "grey",
-                      paddingLeft: "24px",
-                      outline:
-                        errors.department.length > 0 ? "1px solid red" : "",
-                    }}
+                    style={inputBorderHandler(formSubmission, errors, "department")}
                     onChange={handleChange}
                     id="depratment"
                     name="department"
@@ -464,13 +234,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {errors.department === "emptyDepartment" ? (
-                  <div className="select-error-container error-container">
-                    <p>Department is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission, errors, "department")}
               </div>
             </div>
             {/* attendance */}
@@ -479,13 +243,7 @@ const Form = (props) => {
                 <label htmlFor="attendance">Attendance Profile</label>
                 <div className="select-container">
                   <select
-                    style={{
-                      border: errors.attendance.length > 0 ? "none" : "",
-                      color: employee.attendance ? "black" : "grey",
-                      paddingLeft: "24px",
-                      outline:
-                        errors.attendance.length > 0 ? "1px solid red" : "",
-                    }}
+                    style={inputBorderHandler(formSubmission, errors, "attendance")}
                     onChange={handleChange}
                     id="attendance"
                     name="attendance"
@@ -498,13 +256,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {errors.attendance === "emptyAttendance" ? (
-                  <div className="select-error-container error-container">
-                    <p>Attendance is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission, errors, "attendance")}
               </div>
             </div>
           </div>
@@ -516,10 +268,6 @@ const Form = (props) => {
                 <label htmlFor="role">Role</label>
                 <div className="select-container">
                   <select
-                    style={{
-                      color: employee.role ? "black" : "grey",
-                      paddingLeft: "24px",
-                    }}
                     onChange={handleChange}
                     id="role"
                     name="role"
@@ -540,12 +288,7 @@ const Form = (props) => {
                 <label htmlFor="position">Position</label>
                 <div className="select-container">
                   <select
-                    style={{
-                      border: errors.position.length > 0 ? "1px solid red" : "",
-                      outline: errors.position.length > 0 ? "none" : "",
-                      color: employee.position ? "black" : "grey",
-                      paddingLeft: "24px",
-                    }}
+                    style={inputBorderHandler(formSubmission, errors, "position")}
                     onChange={handleChange}
                     id="position"
                     name="position"
@@ -560,13 +303,7 @@ const Form = (props) => {
                   </select>
                   <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
                 </div>
-                {errors.position === "emptyPosition" ? (
-                  <div className="select-error-container error-container">
-                    <p>Position is required!</p>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {inputErrorHandler(formSubmission, errors, "position")}
               </div>
             </div>
           </div>
