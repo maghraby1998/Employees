@@ -33,12 +33,12 @@ const Form = (props) => {
 
   const [formSubmission, setFormSubmission] = useState(false);
 
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    return () => {
-      document.body.style.overflowY = "scroll";
-    };
-  }, []);
+    useEffect(() => {
+      document.body.style.overflowY = "hidden";
+      return () => {
+        document.body.style.overflowY = "scroll";
+      };
+    }, []);
 
   const handleChange = (e) => {
     let { name, value, type } = e.target;
@@ -52,7 +52,9 @@ const Form = (props) => {
       });
     }
 
-    handleErrors(name, value, errors);
+    let updatedErrors = handleErrors(name, value, errors);
+
+    setErrors(updatedErrors);
   };
 
   const handleSubmit = (e) => {
@@ -103,18 +105,18 @@ const Form = (props) => {
   return (
     <div onClick={handleFormDisplay} className="employee-form-page">
       <form
+        className="employee-form"
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
-        className="employee-form"
       >
         <h2 className="form-header">NEW EMPLOYEE</h2>
         {/* personal info */}
         <div className="form-category">
           <h3 className="category-header">Personal Info</h3>
           <div className="category-header-line"></div>
-          <div className="min-h-[112px] grid gap-2 grid-cols-1 md:grid-cols-10">
+          <div className="min-h-[112px] flex flex-col md:flex-row items-center justitfy-center">
             {/* image */}
-            <div className="flex items-center md:col-span-2">
+            <div className="flex items-center w-full md:w-auto lg:w-[258px] md:mr-[13px]">
               <label htmlFor="imgInput">
                 <div className="img-upload-container">
                   {imageDisplay}
@@ -129,14 +131,14 @@ const Form = (props) => {
               />
             </div>
             {/* personal info other than image */}
-            <div className="md:col-span-8 grid grid-cols-1">
+            <div className="w-full">
               {/* name and date */}
-              <div className="grid md:gap-3 grid-cols-1 md:grid-cols-2">
+              <div className="grid md:gap-[25.8px] grid-cols-1 md:grid-cols-2">
                 {/* name */}
                 <div>
                   <label htmlFor="name">Name</label>
                   <input
-                  style={inputBorderHandler(formSubmission, errors, "name")}
+                  className={inputBorderHandler(formSubmission, errors, "name") ? 'form-input form-input-error' : 'form-input'}
                   onChange={handleChange}
                   id="name"
                   type="text"
@@ -149,7 +151,7 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="date">Date</label>
                   <input
-                  style={inputBorderHandler(formSubmission, errors, "startDate")}
+                  className={inputBorderHandler(formSubmission, errors, "startDate") ? 'form-input form-input-error' : 'form-input'}
                   onChange={handleChange}
                   id="date"
                   type="date"
@@ -159,11 +161,12 @@ const Form = (props) => {
                 </div>
               </div>
               {/* phone and email */}
-              <div className="grid md:gap-3 grid-cols-1 md:grid-cols-2">
+              <div className="grid md:gap-[25.8px] grid-cols-1 md:grid-cols-2">
                 {/* phone */}
                 <div>
                   <label htmlFor="phone">Phone</label>
                   <input
+                  className="form-input"
                   onChange={handleChange}
                   id="phone"
                   type="text"
@@ -175,7 +178,7 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="email">Email</label>
                   <input
-                  style={inputBorderHandler(formSubmission, errors, "email")}
+                  className={inputBorderHandler(formSubmission, errors, "email") ? 'form-input form-input-error' : 'form-input'}
                   onChange={handleChange}
                   id="email"
                   type="text"
@@ -199,6 +202,7 @@ const Form = (props) => {
             <label htmlFor="office">Office</label>
             <div className="select-container">
               <select
+                className="non-required-selects"
                 onChange={handleChange}
                 id="office"
                 name="office"
@@ -211,14 +215,14 @@ const Form = (props) => {
             </div>
           </div>
           {/* attendance and department */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
             {/* department */}
             <div md="6">
               <div>
                 <label htmlFor="department">Department</label>
                 <div className="select-container">
                   <select
-                    style={inputBorderHandler(formSubmission, errors, "department")}
+                  className={inputBorderHandler(formSubmission, errors, "department") ? 'form-input form-input-error' : 'form-input'}
                     onChange={handleChange}
                     id="depratment"
                     name="department"
@@ -242,7 +246,7 @@ const Form = (props) => {
                 <label htmlFor="attendance">Attendance Profile</label>
                 <div className="select-container">
                   <select
-                    style={inputBorderHandler(formSubmission, errors, "attendance")}
+                  className={inputBorderHandler(formSubmission, errors, "attendance") ? 'form-input form-input-error' : 'form-input'}
                     onChange={handleChange}
                     id="attendance"
                     name="attendance"
@@ -260,13 +264,14 @@ const Form = (props) => {
             </div>
           </div>
           {/* role and position */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
             {/* role */}
             <div>
               <div>
                 <label htmlFor="role">Role</label>
                 <div className="select-container">
                   <select
+                    className="non-required-selects"
                     onChange={handleChange}
                     id="role"
                     name="role"
@@ -287,7 +292,7 @@ const Form = (props) => {
                 <label htmlFor="position">Position</label>
                 <div className="select-container">
                   <select
-                    style={inputBorderHandler(formSubmission, errors, "position")}
+                    className={inputBorderHandler(formSubmission, errors, "position") ? 'form-input form-input-error' : 'form-input'}
                     onChange={handleChange}
                     id="position"
                     name="position"
@@ -312,10 +317,7 @@ const Form = (props) => {
                 <label htmlFor="manager">Direct Manager</label>
                 <div className="select-container">
                   <select
-                    style={{
-                      color: employee.manager ? "black" : "grey",
-                      paddingLeft: "24px",
-                    }}
+                    className="non-required-selects"
                     onChange={handleChange}
                     id="manager"
                     name="manager"
@@ -346,23 +348,18 @@ const Form = (props) => {
               id="workHome"
               type="checkbox"
             />
-            <div
-              className={
-                employee.workFromHome
-                  ? "custom-check-input custom-check-input-active"
-                  : "custom-check-input"
-              }
-            >
-              {employee.workFromHome ? (
-                <FontAwesomeIcon
-                  className="custom-check-input-icon"
+            {
+            employee.workFromHome 
+              ? <FontAwesomeIcon
+                  className={employee.workFromHome ? 'custom-check-input-icon custom-input-active' : 'custom-check-input-icon'}
                   icon={faCheck}
                 />
-              ) : (
-                ""
-              )}
-            </div>
-            Allow Employee To Work From Home.
+              : <FontAwesomeIcon
+                  className='empty-custom-check-input'
+                  icon={faCheck}
+                />
+            }
+            <p className={!employee.workFromHome ? 'check-p-off' : ''}>Allow Employee To Work From Home.</p>
           </label>
           {/* <div className='check-box-container'>
                     <div className='check-input-container'>
@@ -375,7 +372,6 @@ const Form = (props) => {
                 </div> */}
         </div>
         {/* Work from home */}
-        {/* <hr></hr> */}
         <div className="form-line"></div>
         <div className="form-buttons">
           <button onClick={handleFormDisplay} className="cancel-button">

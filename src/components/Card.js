@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faPause, faTrash, faEnvelope, faPhone, faExclamation, faUser } from '@fortawesome/free-solid-svg-icons'
-import { Col, Row } from 'react-bootstrap';
+import { faPen, faPause, faTrash, faEnvelope, faPhone, faExclamation, faUser, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import CallEnd from '@material-ui/icons/CallEnd';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 
@@ -31,7 +30,7 @@ const Card = (props) => {
     }
     return (
       <div className="flex items-center justify-start bg-white relative py-[12px] px-[19px] card">
-        <div className="img-container">
+        <div>
           {imgDisplay}
           <div className="user-icons-container">
             <FontAwesomeIcon className='card-user-icon' icon={faPen} />
@@ -61,32 +60,33 @@ const Card = (props) => {
             <CallEnd style={{fontSize: '10px'}} />
           </div>
           <div className='dropdown'>
-            <div className='card-icon-container dropdown-button'>
+            <div className='card-icon-container'>
               <FontAwesomeIcon className='card-icon' icon={faExclamation} />              
             </div>
             <div className='dropdown-content'>
-              <Row>
-                <Col xs={4} className='dropdown-category'>
+              <div className='dropdown-notch'></div>
+              <div className='grid grid-cols-3'>
+                <div className='dropdown-category'>
                   <p className='dropdown-header'>Office</p>
                   <p className='dropdown-result'>{office ? office : '---'}</p>
-                </Col>
-                <Col xs={4} className='dropdown-category'>
+                </div>
+                <div className='dropdown-category'>
                   <p className='dropdown-header'>Role</p>
                   <p className='dropdown-result'>{role ? role : '---'}</p>
-                </Col>
-                <Col xs={4} className='dropdown-category'>
+                </div>
+                <div className='dropdown-category'>
                   <p className='dropdown-header'>Copied Manager</p>
                   <p className='dropdown-result'>{manager ? manager : '---'}</p>
-                </Col>
-                <Col xs={4} className='dropdown-category'>
+                </div>
+                <div className='dropdown-category'>
                   <p className='dropdown-header'>Joining Date</p>
                   <p className='dropdown-result'>{startDate ? startDate : '---'}</p>
-                </Col>
-                <Col xs={4} className='dropdown-category'>
+                </div>
+                <div className='dropdown-category'>
                   <p className='dropdown-header'>Manager</p>
                   <p className='dropdown-result'>{manager ? manager : '---'}</p>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
         </div>

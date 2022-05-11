@@ -39,12 +39,16 @@ export const inputErrorMessageHandler = (formSubmission, errors, inputName) => {
 }
 
 export const inputBorderHandler = (formSubmission, errors, inputName) => {
+    let error;;
     if (formSubmission){
-        return {
-        border: errors[inputName] ? "none" : "",
-        outline: errors[inputName] ? "1px solid red" : "",
-        };
+        if (errors[inputName]){
+            error = true;
+        } else {
+            error = false;
+        }
     }
+
+    return error;
 }
 
 export const handleErrors = (name, value, errors) => {

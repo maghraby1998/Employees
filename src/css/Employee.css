@@ -269,6 +269,10 @@
     cursor: pointer;
 }
 
+.card-icon-container:hover{
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.3);
+}
+
 .card-icon{
     font-size: .5rem;
     color: #313030;
@@ -282,7 +286,7 @@
     width: 300px;
     min-height: 100px;
     position: absolute;
-    transform: translate(-250px, 5px);
+    transform: translate(-250px, 10px);
     border: 1px solid #eaeef0;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
     padding: 10px;
@@ -292,9 +296,22 @@
     z-index: 999;
 }
 
+.dropdown-notch{
+    position: absolute;
+    top: 0;
+    right: 35px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid white;
+    transform: scale(1.7) translateY(-70%);
+    z-index: -50;
+}
+
 /* show tooltip on hover */
 
-.dropdown-button:hover ~ .dropdown-content{
+.dropdown:hover .dropdown-content{
     display: block;
 }
 
