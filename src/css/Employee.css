@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
 .employee-page{
     padding-top: 1.813rem;
     padding-left: 2.188rem;;
@@ -42,12 +44,12 @@
 .add-btn{
     /* flex: 1; */
     /* width: 6.313rem; */
-    background-color: #2764ac;
+    /* background-color: #2764ac; */
     border-radius: 5px;
     color: white;
     font-family: Roboto;
-    font-size: 0.813rem;
-    height: 1.875rem;
+    /* font-size: 0.813rem; */
+    /* height: 1.875rem; */
     border: none;
     outline: none;
     display: flex;
@@ -144,19 +146,21 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
     width: 100%;
     position: relative;
+    overflow: hidden;
+    /* border: 1px solid red; */
 }
 
 /* show username on hover */
 
 .card-username{
-    width: 75%;
+    width: 100%;
     text-transform: capitalize;
-    font-size: 1.25rem;
+    font-size: 20px;
     font-family: Lato-800;
-    margin-bottom: 5px;
+    /* margin-bottom: 3px; */
     color: #5c6974;
     white-space: nowrap;
     overflow: hidden;
@@ -169,7 +173,6 @@
     text-transform: capitalize;
     font-size: .85rem;
     font-family: Lato-800;
-    margin-bottom: 5px;
     color: #5c6974;
     white-space: nowrap;
     transition: all ease 0.2s;
@@ -207,9 +210,10 @@
 } */
 
 .user-info p{
- font-size: 0.625rem;
- margin-bottom: 5px;
+ font-size: 10px;
+ margin-bottom: 9px;
  color: #5c6974;
+ font-family: 'Roboto', sans-serif;
 }
 
 .card-state{

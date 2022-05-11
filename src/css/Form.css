@@ -1,5 +1,5 @@
 .employee-form-page{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -19,7 +19,7 @@
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 4px;
     padding: 11px 32px 20px 20px;
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: scroll;
 }
 
@@ -98,7 +98,7 @@
     text-overflow: '';
     border: 1px solid rgba(170, 170, 170, 0.84);
     border-radius: 5px;
-    padding: 5px;
+    padding: 0px 5px;
     height: 30px;
     width: 100%;
     cursor: pointer;

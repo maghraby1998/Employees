@@ -42,15 +42,15 @@ const Employee = (props) => {
 
   return (
     <div className="employee-page pr-5 mx-auto ml-[6.625rem]">
-        {/* search contianer that includes the input and the add button */}
-        <div className="w-full grid grid-col-1 md:grid-cols-12 justify-between bg-white mb-[49px]">
-            {/* search icon and input */}
-            <div className="w-full col-span-12 mb-3 md:mb-0 md:col-span-10 lg:col-span-11 flex items-center justify-center">
-                <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
-                <input onChange={handleChange} className='search-input' type='text' placeholder='Search' />
+        {/* search contianer & add button */}
+        <div className='w-full grid gap-0 md:gap-3 grid-col-1 md:grid-cols-12 mb-[49px]'>
+            {/* search container */}
+            <div className='flex items-center justify-start h-[30px] bg-white p-1 col-span-12 mb-3 md:mb-0 md:col-span-10 lg:col-span-11'>
+                <FontAwesomeIcon className="ml-[26px] search-icon" icon={faMagnifyingGlass} />
+                <input onChange={handleChange} className='w-full h-full outline-none' type='text' placeholder='Search' />
             </div>
             {/* add button */}
-            <button onClick={handleAddBtn} className="add-btn col-span-12 md:col-span-2 lg:col-span-1">
+            <button onClick={handleAddBtn} className="h-[30px] bg-[#2764ac] rounded text-[0.813rem] border-0 outline-0 text-white flex items-center justify-center col-span-12 md:col-span-2 lg:col-span-1 add-btn">
                 <FontAwesomeIcon className="plus-icon" icon={faPlus} />
                 <span>Add new</span>
             </button>

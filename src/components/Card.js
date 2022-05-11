@@ -48,7 +48,7 @@ const Card = (props) => {
               {name}
             </span>
           </h3>
-          <h4 className='text-[13px] text-[#313030] font-semibold'>HR Head</h4>
+          <h4 className='text-[13px] text-[#313030] font-semibold m-0'>HR Head</h4>
           <p>Business Development</p>
           {attedanceStatu}
           {/* <span className='card-state'>Present</span> */}

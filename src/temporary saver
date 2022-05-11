@@ -1,0 +1,12 @@
+<div className="w-full grid grid-col-1 md:grid-cols-12 justify-between bg-white mb-[49px]">
+            {/* search icon and input */}
+            <div className="w-full col-span-12 mb-3 md:mb-0 md:col-span-10 lg:col-span-11 flex items-center justify-center">
+                <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
+                <input onChange={handleChange} className='search-input' type='text' placeholder='Search' />
+            </div>
+            {/* add button */}
+            <button onClick={handleAddBtn} className="add-btn col-span-12 md:col-span-2 lg:col-span-1">
+                <FontAwesomeIcon className="plus-icon" icon={faPlus} />
+                <span>Add new</span>
+            </button>
+        </div>

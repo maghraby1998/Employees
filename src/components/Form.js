@@ -278,7 +278,7 @@ const Form = (props) => {
   if (employee.image) {
     imageDisplay = <img src={employee.image} style={{ height: "100%" }} />;
   } else {
-    imageDisplay = <span>Click to upload</span>;
+    imageDisplay = <span className="text-center">Click to upload</span>;
   }
 
   return (
