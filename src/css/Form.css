@@ -64,7 +64,7 @@
 .img-upload-container{
     height: 115px;
     /* height: 100%; */
-    border: 2px dashed #7070706c;
+    border: 2px dashed #707070a8;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,7 +97,7 @@
     -moz-appearance: none;
     text-indent: 1px;
     text-overflow: '';
-    border: 1px solid rgba(170, 170, 170, 0.84);
+    border: 1px solid rgba(170, 170, 170, 0.603);
     border-radius: 5px;
     padding: 0px 5px;
     height: 30px;
@@ -117,7 +117,7 @@
     -moz-appearance: none;
     text-indent: 1px;
     text-overflow: '';
-    border: 1px solid rgba(170, 170, 170, 0.84);
+    border: 1px solid rgba(170, 170, 170, 0.603);
     border-radius: 5px;
     padding-left: 24px;
     height: 30px;

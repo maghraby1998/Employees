@@ -116,7 +116,7 @@ const Form = (props) => {
           <div className="category-header-line"></div>
           <div className="min-h-[112px] flex flex-col md:flex-row items-center justitfy-center">
             {/* image */}
-            <div className="flex items-center w-full md:w-auto lg:w-[258px] md:mr-[13px]">
+            <div className="flex items-center w-full md:w-auto lg:min-w-[258px] md:mr-[13px]">
               <label htmlFor="imgInput">
                 <div className="img-upload-container">
                   {imageDisplay}
