@@ -99,11 +99,11 @@
     text-overflow: '';
     border: 1px solid rgba(170, 170, 170, 0.603);
     border-radius: 5px;
-    padding: 0px 5px;
     height: 30px;
     width: 100%;
     cursor: pointer;
     font-size: 13px;
+    padding: 0px 5px 0px 15px;
     /* outline: none; */
 }
 
