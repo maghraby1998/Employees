@@ -1,13 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .employee-page{
     padding-top: 1.813rem;
     padding-left: 2.188rem;;
     /* padding-right: 2.188rem; */
     /* margin-left: 6.625rem; */
-    min-height: 100vh;
-    overflow-x: scroll;
-    padding-bottom: 200px;
+    /* min-height: 90vh; */
+    overflow-x: hidden;
+    padding-bottom: 120px;
+    /* border: 1px solid red; */
+    @apply pr-5 mx-auto ml-[6.625rem];
 }
 
 .search-container{

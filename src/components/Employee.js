@@ -3,15 +3,18 @@ import Card from "./Card";
 import '../css/Employee.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { Col, Row } from 'react-bootstrap';
 import Form from "./Form";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { openForm, closeForm } from "../actions/formDisplayActions";
 
 const Employee = (props) => {
 
     const [filter, setFilter] = useState('');
-    const [formDisplay, setFormDisplay] = useState(false);
+    // const [formDisplay, setFormDisplay] = useState(false);
+    const dispatch = useDispatch();
 
+    const formDisplay = useSelector( state => state.formDisplay);
+    
     function filterEmployees(employees){
         if(filter){
             return employees.filter( employee => {
@@ -22,17 +25,11 @@ const Employee = (props) => {
         }
     }
 
-
     let filteredEmployees = filterEmployees(props.employees);
-
-
-    const handleFormDisplay = (statu) => {
-        setFormDisplay(statu)
-    } 
 
     const handleAddBtn = (e) => {
         e.stopPropagation();
-        handleFormDisplay(true)
+        dispatch(openForm());
     }
 
     const handleChange = (e) => {
@@ -41,7 +38,7 @@ const Employee = (props) => {
     }
 
   return (
-    <div className="employee-page pr-5 mx-auto ml-[6.625rem]">
+    <div className="employee-page">
         {/* search contianer & add button */}
         <div className='w-full grid gap-0 md:gap-3 grid-col-1 md:grid-cols-12 mb-[49px]'>
             {/* search container */}
@@ -76,7 +73,7 @@ const Employee = (props) => {
             }               
         </Row> */}
         
-        {formDisplay ? <Form handleFormDisplay={handleFormDisplay} handleEmployees={props.handleEmployees} /> : '' }
+        {formDisplay ? <Form handleEmployees={props.handleEmployees} /> : '' }
     </div>
   )
 }

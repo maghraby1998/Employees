@@ -30,7 +30,7 @@ const Card = (props) => {
     }
     return (
       <div className="grid grid-cols-12 bg-white relative py-[12px] px-[19px] card">
-        {/* ///////////////////////// */}
+        {/* Card Image */}
         <div className='col-span-2 md:col-span-3 flex flex-col items-between justify-center'>
           {imgDisplay}
           <div className="user-icons-container">
@@ -40,15 +40,13 @@ const Card = (props) => {
             {/* <FontAwesomeIcon className='card-user-icon' icon={faTrash } /> */}
           </div>
         </div>
-        {/* ///////////////////////// */}
 
-        {/* ///////////////////////// */}
+        {/* Card Line */}
         <span className='col-span-1 grid place-items-center'>
           <div className='h-full w-[1px] bg-[#8997a4]/30'></div>
         </span>
-        {/* ///////////////////////// */}
 
-        {/* ///////////////////////// */}
+        {/* Card Info */}
         <div className='col-span-9 md:col-span-8 user-info'>
           <h3 className='card-username'>
             {name}
@@ -61,8 +59,6 @@ const Card = (props) => {
           {attedanceStatu}
           {/* <span className='card-state'>Present</span> */}
         </div>
-        {/* ///////////////////////// */}
-
 
         <div className='card-icons-container'>
           <div className='card-icon-container'>

@@ -4,6 +4,8 @@ import { Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { inputErrorMessageHandler, inputBorderHandler, handleErrors, handleSubmitting } from "../functions/validation";
+import { closeForm } from "../actions/formDisplayActions";
+import { useDispatch } from 'react-redux';
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -31,14 +33,15 @@ const Form = (props) => {
     attendance: true
   });
 
+  const dispatch = useDispatch();
   const [formSubmission, setFormSubmission] = useState(false);
 
-    useEffect(() => {
-      document.body.style.overflowY = "hidden";
-      return () => {
-        document.body.style.overflowY = "scroll";
-      };
-    }, []);
+    // useEffect(() => {
+    //   document.body.style.overflowY = "hidden";
+    //   return () => {
+    //     document.body.style.overflowY = "scroll";
+    //   };
+    // }, []);
 
   const handleChange = (e) => {
     let { name, value, type } = e.target;
@@ -63,12 +66,8 @@ const Form = (props) => {
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
       props.handleEmployees(employee);
-      props.handleFormDisplay(false);
+      dispatch(closeForm());
     }
-  };
-
-  const handleFormDisplay = (e) => {
-    props.handleFormDisplay(false);
   };
 
   const handleImg = (e) => {
@@ -88,13 +87,6 @@ const Form = (props) => {
     }
   };
 
-  // const inputBorderHandler = (inputName) => {
-  //   return {
-  //     border: errors[inputName] ? "none" : "",
-  //     outline: errors[inputName] ? "1px solid red" : "",
-  //   };
-  // }
-
   let imageDisplay;
   if (employee.image) {
     imageDisplay = <img src={employee.image} style={{ height: "100%" }} />;
@@ -103,7 +95,7 @@ const Form = (props) => {
   }
 
   return (
-    <div onClick={handleFormDisplay} className="employee-form-page">
+    <div onClick={ () => dispatch(closeForm())} className="employee-form-page">
       <form
         className="employee-form"
         onClick={(e) => e.stopPropagation()}
@@ -374,7 +366,7 @@ const Form = (props) => {
         {/* Work from home */}
         <div className="form-line"></div>
         <div className="form-buttons">
-          <button onClick={handleFormDisplay} className="cancel-button">
+          <button onClick={ () => dispatch(closeForm())} className="cancel-button">
             Cancel
           </button>
           <input type="submit" value="Save" />
