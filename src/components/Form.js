@@ -129,11 +129,11 @@ const Form = (props) => {
               />
             </div>
             {/* personal info other than image */}
-            <div className="w-full">
+            <div className="w-full min-h-[115px] flex flex-col items-between justify-between">
               {/* name and date */}
               <div className="grid md:gap-[25.8px] grid-cols-1 md:grid-cols-2">
                 {/* name */}
-                <div>
+                <div className="flex flex-col items-start justify-start">
                   <label htmlFor="name">Name</label>
                   <input
                   className={inputBorderHandler(formSubmission, errors, "name") ? 'form-input form-input-error' : 'form-input'}
@@ -147,7 +147,7 @@ const Form = (props) => {
                 {inputErrorMessageHandler(formSubmission, errors, "name")}
                 </div>
                 {/* date */}
-                <div>
+                <div className="flex flex-col items-start justify-start">
                   <label htmlFor="date">Date</label>
                   <input
                   className={inputBorderHandler(formSubmission, errors, "startDate") ? 'form-input form-input-error' : 'form-input'}
