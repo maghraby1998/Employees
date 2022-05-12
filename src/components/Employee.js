@@ -42,23 +42,23 @@ const Employee = (props) => {
   return (
     <div className="employee-page">
         {/* search contianer & add button */}
-        <div className='w-full grid gap-0 md:gap-3 grid-col-1 md:grid-cols-12 mb-[49px]'>
+        <div className='flex w-full mb-[49px]'>
             {/* search container */}
-            <div className='flex items-center justify-start h-[30px] bg-white p-1 col-span-12 mb-3 md:mb-0 md:col-span-10 lg:col-span-11'>
+            <div className='w-full flex items-center justify-start h-[30px] bg-white p-1'>
                 <FontAwesomeIcon className="ml-[26px] search-icon" icon={faMagnifyingGlass} />
-                <input onChange={handleChange} className='w-full h-full outline-none text-[13px] text-[#707070]' type='text' placeholder='Search' />
+                <input onChange={handleChange} className='w-full h-full outline-none text-[13px]' type='text' placeholder='Search' />
             </div>
             {/* add button */}
-            <button onClick={handleAddBtn} className="h-[30px] bg-[#2764ac] rounded text-[0.813rem] border-0 outline-0 text-white flex items-center justify-center col-span-12 md:col-span-2 lg:col-span-1 add-btn">
+            <button onClick={handleAddBtn} className="h-[30px] bg-[#2764ac] rounded text-[13px] border-0 outline-0 text-white flex items-center justify-center w-[101px] add-btn ml-[12px]">
                 <FontAwesomeIcon className="plus-icon" icon={faPlus} />
                 <span>Add new</span>
             </button>
         </div>
         <div className='grid gap-[45px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {
-               filteredEmployees.map( employee => {
+               filteredEmployees.map( (employee, index) => {
                 return (
-                    <Card key={employee.id} employee={employee} />
+                    <Card key={`${employee.id}-${index}`} employee={employee} />
                 )
             })
             }         

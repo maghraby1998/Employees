@@ -3,17 +3,22 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import SideNav from './components/SideNav';
 import TopNav from './components/TopNav';
 import Employee from './components/Employee';
+import { useSelector } from 'react-redux';
 
 const App = () => {
 
+  const formDisplay = useSelector( state => state.formDisplay);
+
   return (
-    <Router>
-      <SideNav />
-      <TopNav />
-      <Routes>
-        <Route path='/employees' element={<Employee />} />
-      </Routes>
-    </Router>
+    <div className={ formDisplay ? 'h-screen overflow-hidden' : ''}>
+    <Router >
+        <SideNav />
+        <TopNav />
+        <Routes>
+          <Route path='/employees' element={<Employee />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

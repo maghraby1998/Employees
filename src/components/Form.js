@@ -45,7 +45,9 @@ const Form = (props) => {
     // }, []);
 
   const handleChange = (e) => {
+    console.log(employee)
     let { name, value, type } = e.target;
+    value = value.trim();
     if (type === "checkbox") {
       setEmployee((prev) => {
         return { ...prev, workFromHome: !prev.workFromHome };
@@ -62,11 +64,9 @@ const Form = (props) => {
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
-      // props.handleEmployees(employee);
       dispatch(addEmployee(employee));
       dispatch(closeForm());
     }
@@ -88,6 +88,10 @@ const Form = (props) => {
       });
     }
   };
+
+  const handleCancelButton = () => {
+    dispatch(closeForm());
+  }
 
   let imageDisplay;
   if (employee.image) {
@@ -306,28 +310,29 @@ const Form = (props) => {
               </div>
             </div>
           </div>
-          <Row>
-            <Col md="6">
-              <div>
-                <label htmlFor="manager">Direct Manager</label>
-                <div className="select-container">
-                  <select
-                    className="non-required-selects"
-                    onChange={handleChange}
-                    id="manager"
-                    name="manager"
-                  >
-                    <option value="">Select Option</option>
-                    <option value="mohamed tarek">Mohamed Tarek</option>
-                    <option value="eslam ahmed">Eslam Ahmed</option>
-                    <option value="khaled youssef">Khaled Youssef</option>
-                    <option value="other">Others</option>
-                  </select>
-                  <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
+          {/* direct manager */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
+            <div>
+                <div>
+                  <label htmlFor="manager">Direct Manager</label>
+                    <div className="select-container">
+                      <select
+                        className="non-required-selects"
+                        onChange={handleChange}
+                        id="manager"
+                        name="manager"
+                      >
+                        <option value="">Select Option</option>
+                        <option value="mohamed tarek">Mohamed Tarek</option>
+                        <option value="eslam ahmed">Eslam Ahmed</option>
+                        <option value="khaled youssef">Khaled Youssef</option>
+                        <option value="other">Others</option>
+                      </select>
+                      <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
+                    </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
         </div>
         {/* office info */}
 
@@ -369,10 +374,13 @@ const Form = (props) => {
         {/* Work from home */}
         <div className="form-line"></div>
         <div className="form-buttons">
-          <button onClick={ () => dispatch(closeForm())} className="cancel-button">
+
+          <button className="submit-button">Save</button>
+
+          <button onClick={handleCancelButton} className="cancel-button">
             Cancel
           </button>
-          <input type="submit" value="Save" />
+
         </div>
       </form>
     </div>

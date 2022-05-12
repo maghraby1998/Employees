@@ -1,3 +1,5 @@
+
+import "../css/Card.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPause, faTrash, faEnvelope, faPhone, faExclamation, faUser, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import CallEnd from '@material-ui/icons/CallEnd';
@@ -12,7 +14,7 @@ const Card = (props) => {
 
     let {id, image, name, role, phone, email, startDate, department, attendance, manager, office, position, workFromHome} = props.employee;
     let imgDisplay;
-    let attedanceStatu;
+    
     if(image){
       imgDisplay = <div className='w-full flex items-center justify-center'>
                     <img src={image} className="user-img" alt='user-img' />
@@ -22,6 +24,8 @@ const Card = (props) => {
                       <FontAwesomeIcon className='card-icon-img' icon={faUser} />
                     </div>
     }
+    let attedanceStatu;
+    
     if(attendance === 'present'){
       attedanceStatu = <span className='card-state present'>Present</span>
     } else if (attendance === 'absent'){
@@ -52,16 +56,15 @@ const Card = (props) => {
 
         {/* Card Info */}
         <div className='user-info'>
-          <h3 className='card-username'>
-            {name}
-            <span className='card-full-username'>
+            <h3 className='card-username'>
               {name}
-            </span>
-          </h3>
-          <h4 className='text-[13px] text-[#313030] font-semibold m-0'>HR Head</h4>
-          <p>Business Development</p>
-          {attedanceStatu}
-          {/* <span className='card-state'>Present</span> */}
+              <span className='card-full-username'>
+                {name}
+              </span>
+            </h3>
+            <h4 className='text-[13px] text-[#313030] font-semibold m-0'>HR Head</h4>
+            <p>Business Development</p>
+            {attedanceStatu}
         </div>
 
         <div className='card-icons-container'>

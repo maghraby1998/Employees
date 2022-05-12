@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 const SideNav = (props) => {
 
   const sidenav = useSelector( state => state.sidenav);
+  const employeesNumber = useSelector( state => state.employees).length;
 
   return (
     <div onClick={e => e.stopPropagation()}  className={sidenav ? 'sidenav sidenav-active' : 'sidenav'}>
@@ -34,7 +35,11 @@ const SideNav = (props) => {
           <li>
             <NavLink className={({ isActive }) => (isActive ? 'sidenav-active' : 'sidenav-link')} to='/employees'>
               {/* <FontAwesomeIcon className='sidenav-icon' icon={faUserGroup} /> */}
-              <People className='sidenav-icon' style={{fontSize:'35px'}} />
+              <div className='relative'>
+                <People className='sidenav-icon' style={{fontSize:'35px'}} />
+                {/* number of employees */}
+                <span className='h-[15px] w-[15px] bg-[#ff6a6a] absolute top-0 -right-1 text-white rounded-full flex items-center justify-center text-[10px]'>{employeesNumber}</span>
+              </div>
               <span>Employees</span>
             </NavLink>
           </li>
