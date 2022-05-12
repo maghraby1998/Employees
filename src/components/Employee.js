@@ -10,10 +10,12 @@ import { openForm, closeForm } from "../actions/formDisplayActions";
 const Employee = (props) => {
 
     const [filter, setFilter] = useState('');
-    // const [formDisplay, setFormDisplay] = useState(false);
+    
     const dispatch = useDispatch();
 
     const formDisplay = useSelector( state => state.formDisplay);
+
+    const employees = useSelector( state => state.employees);
     
     function filterEmployees(employees){
         if(filter){
@@ -25,7 +27,7 @@ const Employee = (props) => {
         }
     }
 
-    let filteredEmployees = filterEmployees(props.employees);
+    let filteredEmployees = filterEmployees(employees);
 
     const handleAddBtn = (e) => {
         e.stopPropagation();
@@ -44,7 +46,7 @@ const Employee = (props) => {
             {/* search container */}
             <div className='flex items-center justify-start h-[30px] bg-white p-1 col-span-12 mb-3 md:mb-0 md:col-span-10 lg:col-span-11'>
                 <FontAwesomeIcon className="ml-[26px] search-icon" icon={faMagnifyingGlass} />
-                <input onChange={handleChange} className='w-full h-full outline-none' type='text' placeholder='Search' />
+                <input onChange={handleChange} className='w-full h-full outline-none text-[13px] text-[#707070]' type='text' placeholder='Search' />
             </div>
             {/* add button */}
             <button onClick={handleAddBtn} className="h-[30px] bg-[#2764ac] rounded text-[0.813rem] border-0 outline-0 text-white flex items-center justify-center col-span-12 md:col-span-2 lg:col-span-1 add-btn">
@@ -56,24 +58,13 @@ const Employee = (props) => {
             {
                filteredEmployees.map( employee => {
                 return (
-                    <Card key={employee.id} deleteEmployee={props.deleteEmployee} employee={employee} />
+                    <Card key={employee.id} employee={employee} />
                 )
             })
             }         
         </div>
-        {/* <Row>
-            {
-               filteredEmployees.map( employee => {
-                return (
-                    <Col key={employee.id} md='auto'>
-                        <Card deleteEmployee={props.deleteEmployee} employee={employee} />
-                    </Col>
-                )
-            })
-            }               
-        </Row> */}
         
-        {formDisplay ? <Form handleEmployees={props.handleEmployees} /> : '' }
+        {formDisplay ? <Form /> : '' }
     </div>
   )
 }

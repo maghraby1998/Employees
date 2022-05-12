@@ -71,18 +71,7 @@
 /* Card */
 
 .card{
-    /* width: 400px; */
-    /* height: 106.8px; */
-    /* width: 100%; */
-    /* border: 1px solid yellow; */
-    /* margin-bottom: 1.5rem; */
-    /* margin-right: 2.813rem; */
-    /* serpartor */
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.09);
-    /* border: 1px solid #eaeef0; */
-    /* animation-name: animateCard;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;*/
 }
 
 .card-margins{
@@ -103,6 +92,7 @@
     width: 64px;
     border-radius: 50%;
     margin-bottom: 10px;
+    
 }
 
 .card-icon-img-container{

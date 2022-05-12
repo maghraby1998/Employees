@@ -1,17 +1,22 @@
-import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPause, faTrash, faEnvelope, faPhone, faExclamation, faUser, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import CallEnd from '@material-ui/icons/CallEnd';
 import DeleteForever from '@material-ui/icons/DeleteForever';
+import { deleteEmployee } from '../actions/employeesActions';
+ import { useDispatch } from 'react-redux';
 
 
 const Card = (props) => {
+
+    const dispatch = useDispatch();
 
     let {id, image, name, role, phone, email, startDate, department, attendance, manager, office, position, workFromHome} = props.employee;
     let imgDisplay;
     let attedanceStatu;
     if(image){
-      imgDisplay = <img src={image} className="user-img" alt='user-img' />
+      imgDisplay = <div className='w-full flex items-center justify-center'>
+                    <img src={image} className="user-img" alt='user-img' />
+                  </div>
     } else {
       imgDisplay =  <div className='card-icon-img-container'>
                       <FontAwesomeIcon className='card-icon-img' icon={faUser} />
@@ -29,25 +34,24 @@ const Card = (props) => {
       attedanceStatu = <span className='card-state none'></span>
     }
     return (
-      <div className="grid grid-cols-12 bg-white relative py-[12px] px-[19px] card">
+      <div className="flex itesm-center justify-center bg-white relative py-[12px] px-[19px] card">
         {/* Card Image */}
-        <div className='col-span-2 md:col-span-3 flex flex-col items-between justify-center'>
+        <div className='w-[25%] md:w-[30%] flex flex-col items-between justify-center'>
           {imgDisplay}
           <div className="user-icons-container">
             <FontAwesomeIcon className='card-user-icon' icon={faPen} />
             <FontAwesomeIcon className='card-user-icon icon-circle' icon={faPause} />
-            <DeleteForever onClick={ () => props.deleteEmployee(id)} className='card-user-icon' style={{height:'15px', width:'15px', color:'#8997a4'}}/>
-            {/* <FontAwesomeIcon className='card-user-icon' icon={faTrash } /> */}
+            <DeleteForever onClick={ () => dispatch(deleteEmployee(id))} className='card-user-icon' style={{height:'15px', width:'15px', color:'#8997a4'}}/>
           </div>
         </div>
 
         {/* Card Line */}
-        <span className='col-span-1 grid place-items-center'>
-          <div className='h-full w-[1px] bg-[#8997a4]/30'></div>
+        <span className='w-[20%] grid place-items-center'>
+          <div className='h-full w-[1px] bg-[#8997a4]/20'></div>
         </span>
 
         {/* Card Info */}
-        <div className='col-span-9 md:col-span-8 user-info'>
+        <div className='user-info'>
           <h3 className='card-username'>
             {name}
             <span className='card-full-username'>

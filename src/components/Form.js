@@ -6,6 +6,7 @@ import { faAngleDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { inputErrorMessageHandler, inputBorderHandler, handleErrors, handleSubmitting } from "../functions/validation";
 import { closeForm } from "../actions/formDisplayActions";
 import { useDispatch } from 'react-redux';
+import { addEmployee } from "../actions/employeesActions";
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -65,7 +66,8 @@ const Form = (props) => {
     e.preventDefault();
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
-      props.handleEmployees(employee);
+      // props.handleEmployees(employee);
+      dispatch(addEmployee(employee));
       dispatch(closeForm());
     }
   };
@@ -136,6 +138,7 @@ const Form = (props) => {
                   type="text"
                   maxLength={35}
                   name="name"
+                  autoFocus={true}
                 />
                 {inputErrorMessageHandler(formSubmission, errors, "name")}
                 </div>

@@ -108,6 +108,7 @@
     cursor: pointer;
     font-size: 13px;
     padding: 0px 5px 0px 15px;
+    outline: none;
     /* outline: none; */
 }
 
