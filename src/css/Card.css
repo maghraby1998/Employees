@@ -15,14 +15,15 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow: hidden;
+    border: 1px solid red;
 }
 
 .user-img{
-    height: 64px;
-    width: 64px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    
+    height: 100%;
+    width: 100%;
+    /* border-radius: 50%;
+    margin-bottom: 10px; */
 }
 
 .card-icon-img-container{
@@ -54,12 +55,51 @@
     cursor: pointer;
 }
 
-.icon-circle{
+.edit-icon{
+    height: 9.6px;
+    width: 9.6px;
+    color: #8997a4;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.edit-icon:hover{
+    color: grey;
+    opacity: 1;
+}
+
+.pause-icon{
+    height: 7px;
+    width: 7px;
+    color: #8997a4;
+    cursor: pointer;
     border: 1px solid #8997a4;
-    height: 5px;
-    width: 5px;
-    padding: 2px;
     border-radius: 50%;
+    padding: 2px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    opacity: 0.6;
+}
+
+.pause-icon:hover{
+    color: rgb(204, 204, 0);
+    border: 1px solid rgb(204, 204, 0);
+    opacity: 1;
+}
+
+.delete-icon{
+    height: 15px;
+    width: 15px;
+    color: #8997a4;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.delete-icon:hover{
+    color: red;
+    opacity: 1;
 }
 
 .card-line{
@@ -82,6 +122,7 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    line-height: initial;
 }
 
 /* show username on hover */
@@ -205,7 +246,7 @@
 }
 
 .card-icon{
-    font-size: .5rem;
+    font-size: .65rem;
     color: #313030;
 }
 
@@ -260,5 +301,6 @@
     margin: 0px;
     padding: 0px;
     font-family: Roboto;
+    text-transform: capitalize;
 }
 

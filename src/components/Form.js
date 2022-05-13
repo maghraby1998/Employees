@@ -45,7 +45,7 @@ const Form = (props) => {
     // }, []);
 
   const handleChange = (e) => {
-    console.log(employee)
+    // console.log(employee);
     let { name, value, type } = e.target;
     value = value.trim();
     if (type === "checkbox") {
@@ -134,7 +134,7 @@ const Form = (props) => {
               <div className="grid md:gap-[25.8px] grid-cols-1 md:grid-cols-2">
                 {/* name */}
                 <div className="flex flex-col items-start justify-start">
-                  <label htmlFor="name">Name</label>
+                  <label className="leading-[10px] mb-[5px] mt-[10px] md:mt-0" htmlFor="name">Name</label>
                   <input
                   className={inputBorderHandler(formSubmission, errors, "name") ? 'form-input form-input-error' : 'form-input'}
                   onChange={handleChange}
@@ -148,7 +148,7 @@ const Form = (props) => {
                 </div>
                 {/* date */}
                 <div className="flex flex-col items-start justify-start">
-                  <label htmlFor="date">Date</label>
+                  <label className="leading-[10px] mb-[5px] mt-[6px] md:mt-0" htmlFor="date">Date</label>
                   <input
                   className={inputBorderHandler(formSubmission, errors, "startDate") ? 'form-input form-input-error' : 'form-input'}
                   onChange={handleChange}
@@ -383,6 +383,7 @@ const Form = (props) => {
 
         </div>
       </form>
+      
     </div>
   );
 };

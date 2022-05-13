@@ -10,3 +10,5 @@
                 <span>Add new</span>
             </button>
         </div>
+
+        style={{height:'15px', width:'15px', color:'#8997a4'}}

@@ -16,7 +16,7 @@ const Card = (props) => {
     let imgDisplay;
     
     if(image){
-      imgDisplay = <div className='w-full flex items-center justify-center'>
+      imgDisplay = <div className='w-full flex items-center justify-center h-[64px] w-[64px] rounded-full overflow-hidden mb-[10px]'>
                     <img src={image} className="user-img" alt='user-img' />
                   </div>
     } else {
@@ -43,9 +43,9 @@ const Card = (props) => {
         <div className='w-[25%] md:w-[30%] flex flex-col items-between justify-center'>
           {imgDisplay}
           <div className="user-icons-container">
-            <FontAwesomeIcon className='card-user-icon' icon={faPen} />
-            <FontAwesomeIcon className='card-user-icon icon-circle' icon={faPause} />
-            <DeleteForever onClick={ () => dispatch(deleteEmployee(id))} className='card-user-icon' style={{height:'15px', width:'15px', color:'#8997a4'}}/>
+            <FontAwesomeIcon className='edit-icon' icon={faPen} />
+            <FontAwesomeIcon className='pause-icon' icon={faPause} />
+            <DeleteForever onClick={ () => dispatch(deleteEmployee(id))} className='delete-icon' style={{height:'16px', width:'16px'}} />
           </div>
         </div>
 
@@ -58,9 +58,13 @@ const Card = (props) => {
         <div className='user-info'>
             <h3 className='card-username'>
               {name}
-              <span className='card-full-username'>
-                {name}
-              </span>
+              {
+                name.length > 18
+                ? <span className='card-full-username'>
+                  {name}
+                  </span>
+                : ''
+              }
             </h3>
             <h4 className='text-[13px] text-[#313030] font-semibold m-0'>HR Head</h4>
             <p>Business Development</p>
@@ -72,7 +76,7 @@ const Card = (props) => {
             <FontAwesomeIcon className='card-icon' icon={faEnvelope} />
           </div>
           <div className='card-icon-container'>
-            <CallEnd style={{fontSize: '10px'}} />
+            <CallEnd style={{fontSize: '.65rem'}} />
           </div>
           <div className='dropdown'>
             <div className='card-icon-container'>
