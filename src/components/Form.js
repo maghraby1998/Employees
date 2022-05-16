@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../css/Form.css";
-import { Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { inputErrorMessageHandler, inputBorderHandler, handleErrors, handleSubmitting } from "../functions/validation";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  inputErrorMessageHandler,
+  inputBorderHandler,
+  handleErrors,
+  handleSubmitting,
+} from "../functions/validation";
 import { closeForm } from "../actions/formDisplayActions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { addEmployee } from "../actions/employeesActions";
+import SelectBox from "./SelectBox";
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -28,21 +33,36 @@ const Form = (props) => {
   const [errors, setErrors] = useState({
     name: true,
     startDate: true,
-    email: 'empty',
+    email: "empty",
     department: true,
     position: true,
-    attendance: true
+    attendance: true,
   });
 
   const dispatch = useDispatch();
   const [formSubmission, setFormSubmission] = useState(false);
 
-    // useEffect(() => {
-    //   document.body.style.overflowY = "hidden";
-    //   return () => {
-    //     document.body.style.overflowY = "scroll";
-    //   };
-    // }, []);
+  const positions = [
+    "executive",
+    "manager",
+    "operations and production",
+    "others",
+  ];
+  const attendance = ["present", "absent", "weekend", "holiday"];
+  const office = ["arabic localizer", "others"];
+  const department = [
+    "arabic localizer",
+    "astonish office",
+    "groudnwork support",
+    "others",
+  ];
+  const role = ["employee", "office manager", "receptionist", "others"];
+  const directManager = [
+    "mohamed tarek",
+    "eslam ahmed",
+    "khaled youssef",
+    "others",
+  ];
 
   const handleChange = (e) => {
     // console.log(employee);
@@ -61,6 +81,17 @@ const Form = (props) => {
     let updatedErrors = handleErrors(name, value, errors);
 
     setErrors(updatedErrors);
+  };
+
+  const handleSelectChange = (name, value) => {
+    setEmployee((prev) => {
+      return { ...prev, [name]: value };
+    });
+    if (value) {
+      setErrors((prev) => {
+        return { ...prev, [name]: false };
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -91,17 +122,21 @@ const Form = (props) => {
 
   const handleCancelButton = () => {
     dispatch(closeForm());
-  }
+  };
 
   let imageDisplay;
   if (employee.image) {
     imageDisplay = <img src={employee.image} style={{ height: "100%" }} />;
   } else {
-    imageDisplay = <span className="text-center text-[rgba(40, 104, 174, 0.43)] tracking-widest">Click to upload</span>;
+    imageDisplay = (
+      <span className="text-center text-[rgba(40, 104, 174, 0.43)] tracking-widest">
+        Click to upload
+      </span>
+    );
   }
 
   return (
-    <div onClick={ () => dispatch(closeForm())} className="employee-form-page">
+    <div onClick={() => dispatch(closeForm())} className="employee-form-page">
       <form
         className="employee-form"
         onClick={(e) => e.stopPropagation()}
@@ -134,29 +169,51 @@ const Form = (props) => {
               <div className="grid md:gap-[25.8px] grid-cols-1 md:grid-cols-2">
                 {/* name */}
                 <div className="flex flex-col items-start justify-start">
-                  <label className="leading-[10px] mb-[5px] mt-[10px] md:mt-0" htmlFor="name">Name</label>
+                  <label
+                    className="leading-[10px] mb-[5px] mt-[10px] md:mt-0"
+                    htmlFor="name"
+                  >
+                    Name
+                  </label>
                   <input
-                  className={inputBorderHandler(formSubmission, errors, "name") ? 'form-input form-input-error' : 'form-input'}
-                  onChange={handleChange}
-                  id="name"
-                  type="text"
-                  maxLength={35}
-                  name="name"
-                  autoFocus={true}
-                />
-                {inputErrorMessageHandler(formSubmission, errors, "name")}
+                    className={
+                      inputBorderHandler(formSubmission, errors, "name")
+                        ? "form-input form-input-error"
+                        : "form-input"
+                    }
+                    onChange={handleChange}
+                    id="name"
+                    type="text"
+                    maxLength={35}
+                    name="name"
+                    autoFocus={true}
+                  />
+                  {inputErrorMessageHandler(formSubmission, errors, "name")}
                 </div>
                 {/* date */}
                 <div className="flex flex-col items-start justify-start">
-                  <label className="leading-[10px] mb-[5px] mt-[6px] md:mt-0" htmlFor="date">Date</label>
+                  <label
+                    className="leading-[10px] mb-[5px] mt-[6px] md:mt-0"
+                    htmlFor="date"
+                  >
+                    Date
+                  </label>
                   <input
-                  className={inputBorderHandler(formSubmission, errors, "startDate") ? 'form-input form-input-error' : 'form-input'}
-                  onChange={handleChange}
-                  id="date"
-                  type="date"
-                  name="startDate"
-                />
-                {inputErrorMessageHandler(formSubmission ,errors, "startDate")}
+                    className={
+                      inputBorderHandler(formSubmission, errors, "startDate")
+                        ? "form-input form-input-error"
+                        : "form-input"
+                    }
+                    onChange={handleChange}
+                    id="date"
+                    type="date"
+                    name="startDate"
+                  />
+                  {inputErrorMessageHandler(
+                    formSubmission,
+                    errors,
+                    "startDate"
+                  )}
                 </div>
               </div>
               {/* phone and email */}
@@ -165,26 +222,30 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="phone">Phone</label>
                   <input
-                  className="form-input"
-                  onChange={handleChange}
-                  id="phone"
-                  type="text"
-                  name="phone"
-                  maxLength={11}
-                />
+                    className="form-input"
+                    onChange={handleChange}
+                    id="phone"
+                    type="text"
+                    name="phone"
+                    maxLength={11}
+                  />
                 </div>
                 {/* email */}
                 <div>
                   <label htmlFor="email">Email</label>
                   <input
-                  className={inputBorderHandler(formSubmission, errors, "email") ? 'form-input form-input-error' : 'form-input'}
-                  onChange={handleChange}
-                  id="email"
-                  type="text"
-                  name="email"
-                  maxLength={40}
-                />
-                {inputErrorMessageHandler(formSubmission, errors, "email")}
+                    className={
+                      inputBorderHandler(formSubmission, errors, "email")
+                        ? "form-input form-input-error"
+                        : "form-input"
+                    }
+                    onChange={handleChange}
+                    id="email"
+                    type="text"
+                    name="email"
+                    maxLength={40}
+                  />
+                  {inputErrorMessageHandler(formSubmission, errors, "email")}
                 </div>
               </div>
             </div>
@@ -199,19 +260,11 @@ const Form = (props) => {
           {/* office */}
           <div>
             <label htmlFor="office">Office</label>
-            <div className="select-container">
-              <select
-                className="non-required-selects"
-                onChange={handleChange}
-                id="office"
-                name="office"
-              >
-                <option value="">Select</option>
-                <option value="arabic localizer">Arabic Localizer</option>
-                <option value="other">Others</option>
-              </select>
-              <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-            </div>
+            <SelectBox
+              options={office}
+              name="office"
+              handleSelectChange={handleSelectChange}
+            />
           </div>
           {/* attendance and department */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
@@ -219,23 +272,16 @@ const Form = (props) => {
             <div md="6">
               <div>
                 <label htmlFor="department">Department</label>
-                <div className="select-container">
-                  <select
-                  className={inputBorderHandler(formSubmission, errors, "department") ? 'form-input form-input-error' : 'form-input'}
-                    onChange={handleChange}
-                    id="depratment"
-                    name="department"
-                  >
-                    <option value="">Select</option>
-                    <option value="arabic localizer">Arabic Localizer</option>
-                    <option value="astonish office">Astonish Office</option>
-                    <option value="groundwork support">
-                      Groundwork Support
-                    </option>
-                    <option value="other">Others</option>
-                  </select>
-                  <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-                </div>
+                <SelectBox
+                  inputBorderError={inputBorderHandler(
+                    formSubmission,
+                    errors,
+                    "department"
+                  )}
+                  options={department}
+                  name="department"
+                  handleSelectChange={handleSelectChange}
+                />
                 {inputErrorMessageHandler(formSubmission, errors, "department")}
               </div>
             </div>
@@ -243,21 +289,16 @@ const Form = (props) => {
             <div md="6">
               <div>
                 <label htmlFor="attendance">Attendance Profile</label>
-                <div className="select-container">
-                  <select
-                  className={inputBorderHandler(formSubmission, errors, "attendance") ? 'form-input form-input-error' : 'form-input'}
-                    onChange={handleChange}
-                    id="attendance"
-                    name="attendance"
-                  >
-                    <option value="">Select</option>
-                    <option value="present">Present</option>
-                    <option value="absent">Absent</option>
-                    <option value="weekend">Weekend</option>
-                    <option value="holiday">Holiday</option>
-                  </select>
-                  <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-                </div>
+                <SelectBox
+                  inputBorderError={inputBorderHandler(
+                    formSubmission,
+                    errors,
+                    "attendance"
+                  )}
+                  options={attendance}
+                  name="attendance"
+                  handleSelectChange={handleSelectChange}
+                />
                 {inputErrorMessageHandler(formSubmission, errors, "attendance")}
               </div>
             </div>
@@ -268,44 +309,27 @@ const Form = (props) => {
             <div>
               <div>
                 <label htmlFor="role">Role</label>
-                <div className="select-container">
-                  <select
-                    className="non-required-selects"
-                    onChange={handleChange}
-                    id="role"
-                    name="role"
-                  >
-                    <option value="">Select</option>
-                    <option value="employee">Employee</option>
-                    <option value="office manager">Office Manager</option>
-                    <option value="receptionist">Receptionist</option>
-                    <option value="other">Others</option>
-                  </select>
-                  <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-                </div>
+                <SelectBox
+                  options={role}
+                  name="role"
+                  handleSelectChange={handleSelectChange}
+                />
               </div>
             </div>
             {/* position */}
             <div>
               <div>
                 <label htmlFor="position">Position</label>
-                <div className="select-container">
-                  <select
-                    className={inputBorderHandler(formSubmission, errors, "position") ? 'form-input form-input-error' : 'form-input'}
-                    onChange={handleChange}
-                    id="position"
-                    name="position"
-                  >
-                    <option value="">Select</option>
-                    <option value="executive">Executive</option>
-                    <option value="manager">Manager</option>
-                    <option value="operations and production">
-                      Operations And Production
-                    </option>
-                    <option value="other">Others</option>
-                  </select>
-                  <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-                </div>
+                <SelectBox
+                  inputBorderError={inputBorderHandler(
+                    formSubmission,
+                    errors,
+                    "position"
+                  )}
+                  options={positions}
+                  name="position"
+                  handleSelectChange={handleSelectChange}
+                />
                 {inputErrorMessageHandler(formSubmission, errors, "position")}
               </div>
             </div>
@@ -313,24 +337,14 @@ const Form = (props) => {
           {/* direct manager */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
             <div>
-                <div>
-                  <label htmlFor="manager">Direct Manager</label>
-                    <div className="select-container">
-                      <select
-                        className="non-required-selects"
-                        onChange={handleChange}
-                        id="manager"
-                        name="manager"
-                      >
-                        <option value="">Select Option</option>
-                        <option value="mohamed tarek">Mohamed Tarek</option>
-                        <option value="eslam ahmed">Eslam Ahmed</option>
-                        <option value="khaled youssef">Khaled Youssef</option>
-                        <option value="other">Others</option>
-                      </select>
-                      <FontAwesomeIcon className="select-icon" icon={faAngleDown} />
-                    </div>
-                </div>
+              <div>
+                <label htmlFor="manager">Direct Manager</label>
+                <SelectBox
+                  options={directManager}
+                  name="manager"
+                  handleSelectChange={handleSelectChange}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -348,42 +362,36 @@ const Form = (props) => {
               id="workHome"
               type="checkbox"
             />
-            {
-            employee.workFromHome 
-              ? <FontAwesomeIcon
-                  className={employee.workFromHome ? 'custom-check-input-icon custom-input-active' : 'custom-check-input-icon'}
-                  icon={faCheck}
-                />
-              : <FontAwesomeIcon
-                  className='empty-custom-check-input'
-                  icon={faCheck}
-                />
-            }
-            <p className={!employee.workFromHome ? 'check-p-off' : ''}>Allow Employee To Work From Home.</p>
+            {employee.workFromHome ? (
+              <FontAwesomeIcon
+                className={
+                  employee.workFromHome
+                    ? "custom-check-input-icon custom-input-active"
+                    : "custom-check-input-icon"
+                }
+                icon={faCheck}
+              />
+            ) : (
+              <FontAwesomeIcon
+                className="empty-custom-check-input"
+                icon={faCheck}
+              />
+            )}
+            <p className={!employee.workFromHome ? "check-p-off" : ""}>
+              Allow Employee To Work From Home.
+            </p>
           </label>
-          {/* <div className='check-box-container'>
-                    <div className='check-input-container'>
-                        <input className='check-input' checked={employee.workFromHome} onChange={handleChange} id='workHome' type='checkbox' />
-                        <div className='custom-check-input'>
-                            <div className='check-input-icon'></div>
-                        </div>
-                    </div>
-                    <label className='check-label' htmlFor='workHome'>Allow Employee To Work From Home</label>
-                </div> */}
         </div>
         {/* Work from home */}
         <div className="form-line"></div>
         <div className="form-buttons">
-
           <button className="submit-button">Save</button>
 
           <button onClick={handleCancelButton} className="cancel-button">
             Cancel
           </button>
-
         </div>
       </form>
-      
     </div>
   );
 };

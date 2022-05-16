@@ -84,7 +84,7 @@
     margin-bottom: 3px;
 }
 
-.select-icon{
+/* .select-icon{
    position: absolute;
    top: 50%;
    right: 10px;
@@ -94,7 +94,7 @@
    -moz-transform: translate(-50%, -50%);
    -ms-transform: translate(-50%, -50%);
    -o-transform: translate(-50%, -50%);
-}
+} */
 
 .form-input{
     -webkit-appearance: none;
