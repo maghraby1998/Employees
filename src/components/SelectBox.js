@@ -15,8 +15,8 @@ const SelectBox = (props) => {
         onClick={() => handleChange(option)}
         className={
           selected === option
-            ? "px-2 py-3 cursor-pointer bg-[#EEEEEE]"
-            : "px-2 py-3 cursor-pointer hover:bg-[#EEEEEE]"
+            ? "px-2 py-1 cursor-pointer bg-[#EEEEEE]"
+            : "px-2 py-1 cursor-pointer hover:bg-[#EEEEEE]"
         }
         key={index}
       >

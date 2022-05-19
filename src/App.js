@@ -4,7 +4,6 @@ import SideNav from "./components/SideNav";
 import TopNav from "./components/TopNav";
 import Employee from "./components/Employee";
 import { useSelector } from "react-redux";
-import SelectBox from "./components/SelectBox";
 
 const App = () => {
   const formDisplay = useSelector((state) => state.formDisplay);
