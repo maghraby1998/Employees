@@ -2,31 +2,38 @@ import { useState, useEffect } from "react";
 import Card from "./Card";
 import "../css/Employee.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faPlus,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import Form from "./Form";
 import { useSelector, useDispatch } from "react-redux";
 import { openForm, closeForm } from "../actions/formDisplayActions";
+import { getUsers, getUser } from "../queries/queries";
+import { useQuery } from "@apollo/client";
+import FilteredUsers from "./FilteredUsers";
+import DeleteConfirmation from "./DeleteConfirmation";
+import Pagination from "./Pagination";
 
-const Employee = (props) => {
+const Employees = (props) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
+
+  const { loading, error, data } = useQuery(getUsers, {
+    variables: {
+      page: currentPage,
+      name: filter,
+    },
+  });
+
+  const deleteWidnowStatu = useSelector((state) => state.deleteWindow);
 
   const dispatch = useDispatch();
 
   const formDisplay = useSelector((state) => state.formDisplay);
 
   const employees = useSelector((state) => state.employees);
-
-  function filterEmployees(employees) {
-    if (filter) {
-      return employees.filter((employee) => {
-        return employee.name.toUpperCase().indexOf(filter.toUpperCase()) >= 0;
-      });
-    } else {
-      return employees;
-    }
-  }
-
-  let filteredEmployees = filterEmployees(employees);
 
   const handleAddBtn = (e) => {
     e.stopPropagation();
@@ -37,6 +44,18 @@ const Employee = (props) => {
     let { value } = e.target;
     setFilter(value);
   };
+
+  // if (loading) {
+  //   return (
+  //     <h1 className="flex flex-col items-center justify-center absolute top-0 left-0 h-screen w-full text-5xl font-bold bg-blue-400/50 text-white z-50">
+  //       <FontAwesomeIcon
+  //         className="animate-spin text-9xl mb-5"
+  //         icon={faSpinner}
+  //       />
+  //       Loading...
+  //     </h1>
+  //   );
+  // }
 
   return (
     <div className="employee-page">
@@ -50,6 +69,7 @@ const Employee = (props) => {
           <input
             id="search"
             onChange={handleChange}
+            value={filter}
             className="w-full h-full outline-none text-[13px]"
             type="text"
             placeholder="Search"
@@ -65,14 +85,26 @@ const Employee = (props) => {
         </button>
       </div>
       <div className="grid gap-[45px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filteredEmployees.map((employee, index) => {
-          return <Card key={`${employee.id}-${index}`} employee={employee} />;
+        {data?.company_users?.data.map((user, index) => {
+          return <Card key={index} user={user} />;
         })}
       </div>
+      {loading ? (
+        <h1 className="text-xl font-semibold">Loading...</h1>
+      ) : (
+        <div className="mt-5 w-full flex items-center justify-center">
+          <Pagination
+            nums={data?.company_users?.paginatorInfo?.lastPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </div>
+      )}
 
+      {deleteWidnowStatu ? <DeleteConfirmation /> : ""}
       {formDisplay ? <Form /> : ""}
     </div>
   );
 };
 
-export default Employee;
+export default Employees;

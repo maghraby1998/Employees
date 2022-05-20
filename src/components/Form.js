@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/Form.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +12,17 @@ import { closeForm } from "../actions/formDisplayActions";
 import { useDispatch } from "react-redux";
 import { addEmployee } from "../actions/employeesActions";
 import SelectBox from "./SelectBox";
+import {
+  getDepartments,
+  getPositions,
+  getOffices,
+  getAttendanceProfiles,
+  getRoles,
+  getManagers,
+  getUsers,
+  addUser,
+} from "../queries/queries";
+import { useQuery, useMutation } from "@apollo/client";
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -27,8 +38,13 @@ const Form = (props) => {
     role: "",
     position: "",
     manager: "",
-    workFromHome: false,
+    copiedManagers: [],
+    workFromHome: 0,
+    companyId: 1,
   });
+
+  const [addAUser, { data: add_user_data, error: add_user_error }] =
+    useMutation(addUser);
 
   const [errors, setErrors] = useState({
     name: true,
@@ -42,27 +58,56 @@ const Form = (props) => {
   const dispatch = useDispatch();
   const [formSubmission, setFormSubmission] = useState(false);
 
-  const positions = [
-    "executive",
-    "manager",
-    "operations and production",
-    "others",
-  ];
-  const attendance = ["present", "absent", "weekend", "holiday"];
-  const office = ["arabic localizer", "others"];
-  const department = [
-    "arabic localizer",
-    "astonish office",
-    "groudnwork support",
-    "others",
-  ];
-  const role = ["employee", "office manager", "receptionist", "others"];
-  const directManager = [
-    "mohamed tarek",
-    "eslam ahmed",
-    "khaled youssef",
-    "others",
-  ];
+  const { data: departments_data, error, loading } = useQuery(getDepartments);
+
+  const {
+    data: positions_data,
+    error: positions_error,
+    loading: position_loading,
+  } = useQuery(getPositions);
+
+  const {
+    data: offices_data,
+    error: offices_error,
+    loading: offices_loading,
+  } = useQuery(getOffices);
+
+  const {
+    data: attendance_data,
+    error: attendance_error,
+    loading: attendance_loading,
+  } = useQuery(getAttendanceProfiles);
+
+  const {
+    data: roles_data,
+    error: roles_error,
+    loading: roles_loading,
+  } = useQuery(getRoles);
+
+  let {
+    data: managers_data,
+    error: managers_error,
+    loading: managers_loading,
+  } = useQuery(getManagers);
+
+  managers_data = managers_data?.managers?.filter((manager) => {
+    return !employee.copiedManagers.includes(manager.id);
+  });
+
+  let {
+    data: copied_managers_data,
+    error: copied_managers_error,
+    loading: copied_managers_loading,
+  } = useQuery(getManagers);
+
+  copied_managers_data = copied_managers_data?.managers?.filter(
+    (copied_manager) => {
+      return (
+        copied_manager.id != employee.manager &&
+        !employee.copiedManagers.includes(copied_manager.id)
+      );
+    }
+  );
 
   const handleChange = (e) => {
     // console.log(employee);
@@ -70,7 +115,7 @@ const Form = (props) => {
     value = value.trim();
     if (type === "checkbox") {
       setEmployee((prev) => {
-        return { ...prev, workFromHome: !prev.workFromHome };
+        return { ...prev, workFromHome: prev.workFromHome === 0 ? 1 : 0 };
       });
     } else {
       setEmployee((prev) => {
@@ -83,14 +128,27 @@ const Form = (props) => {
     setErrors(updatedErrors);
   };
 
+  useEffect(() => {
+    console.log(employee);
+  }, [employee]);
+
   const handleSelectChange = (name, value) => {
-    setEmployee((prev) => {
-      return { ...prev, [name]: value };
-    });
-    if (value) {
-      setErrors((prev) => {
-        return { ...prev, [name]: false };
+    if (name === "copiedManagers") {
+      setEmployee((prev) => {
+        return {
+          ...prev,
+          copiedManagers: [...employee.copiedManagers, value.id],
+        };
       });
+    } else {
+      setEmployee((prev) => {
+        return { ...prev, [name]: value.id };
+      });
+      if (value) {
+        setErrors((prev) => {
+          return { ...prev, [name]: false };
+        });
+      }
     }
   };
 
@@ -98,7 +156,32 @@ const Form = (props) => {
     e.preventDefault();
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
-      dispatch(addEmployee(employee));
+      addAUser({
+        variables: {
+          name: employee.name,
+          email: employee.email,
+          phone: employee.phone,
+          starts_at: employee.startDate,
+          can_work_home: employee.workFromHome,
+          role_id: employee.role,
+          position_id: employee.position,
+          att_profile_id: employee.attendance,
+          manager_id: employee.manager,
+          department_id: employee.department,
+          company_id: 1,
+          office_id: employee.office,
+          has_credentials: 1,
+          copied_managers: employee.copiedManagers,
+          max_homeDays_per_week: 0,
+          flexiable_home: 0,
+          can_ex_days: 0,
+          start_at: employee.startDate,
+          salary_management_type: 2,
+        },
+        refetchQueries: [
+          getUsers
+      ]
+      });
       dispatch(closeForm());
     }
   };
@@ -261,7 +344,7 @@ const Form = (props) => {
           <div>
             <label htmlFor="office">Office</label>
             <SelectBox
-              options={office}
+              options={offices_data?.company_offices?.data}
               name="office"
               handleSelectChange={handleSelectChange}
             />
@@ -278,7 +361,7 @@ const Form = (props) => {
                     errors,
                     "department"
                   )}
-                  options={department}
+                  options={departments_data?.company_departments?.data}
                   name="department"
                   handleSelectChange={handleSelectChange}
                 />
@@ -295,7 +378,7 @@ const Form = (props) => {
                     errors,
                     "attendance"
                   )}
-                  options={attendance}
+                  options={attendance_data?.company_attendance_profiles?.data}
                   name="attendance"
                   handleSelectChange={handleSelectChange}
                 />
@@ -310,7 +393,7 @@ const Form = (props) => {
               <div>
                 <label htmlFor="role">Role</label>
                 <SelectBox
-                  options={role}
+                  options={roles_data?.roles}
                   name="role"
                   handleSelectChange={handleSelectChange}
                 />
@@ -326,7 +409,7 @@ const Form = (props) => {
                     errors,
                     "position"
                   )}
-                  options={positions}
+                  options={positions_data?.company_positions?.data}
                   name="position"
                   handleSelectChange={handleSelectChange}
                 />
@@ -334,15 +417,27 @@ const Form = (props) => {
               </div>
             </div>
           </div>
-          {/* direct manager */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-[32px]">
+            {/* direct manager */}
             <div>
               <div>
                 <label htmlFor="manager">Direct Manager</label>
                 <SelectBox
-                  options={directManager}
+                  options={managers_data}
                   name="manager"
                   handleSelectChange={handleSelectChange}
+                />
+              </div>
+            </div>
+            {/* copied managers */}
+            <div>
+              <div>
+                <label htmlFor="manager">Copied Managers</label>
+                <SelectBox
+                  options={copied_managers_data}
+                  name="copiedManagers"
+                  handleSelectChange={handleSelectChange}
+                  values={employee.copiedManagers}
                 />
               </div>
             </div>

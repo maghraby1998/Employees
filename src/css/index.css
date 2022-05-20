@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-*{
+* {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
 }
 
-body{
+body {
   min-height: 100vh;
   background-color: #f7f8f9;
 }
@@ -14,3 +14,11 @@ body{
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pagination-span {
+  @apply hover:bg-gray-700 w-14 h-14 mx-1 bg-gray-500 text-white grid place-items-center rounded text-lg font-semibold
+}
+
+.pagination-active{
+  @apply w-14 h-14 mx-1 bg-gray-700 text-white grid place-items-center rounded text-lg font-semibold
+}

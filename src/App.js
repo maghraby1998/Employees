@@ -2,7 +2,7 @@ import "./css/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideNav from "./components/SideNav";
 import TopNav from "./components/TopNav";
-import Employee from "./components/Employee";
+import Employee from "./components/Employees";
 import { useSelector } from "react-redux";
 
 const App = () => {
