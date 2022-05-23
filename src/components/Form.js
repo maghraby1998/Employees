@@ -23,6 +23,7 @@ import {
   addUser,
 } from "../queries/queries";
 import { useQuery, useMutation } from "@apollo/client";
+import Select from 'react-select'
 
 const Form = (props) => {
   const [employee, setEmployee] = useState({
@@ -109,6 +110,14 @@ const Form = (props) => {
     }
   );
 
+  const newOptions = [
+    {value: 'car', label: 'Car'},
+    {value: 'car', label: 'Car'},
+    {value: 'car', label: 'Car'},
+    {value: 'car', label: 'Car'},
+    {value: 'car', label: 'Car'}
+  ]
+
   const handleChange = (e) => {
     // console.log(employee);
     let { name, value, type } = e.target;
@@ -127,6 +136,14 @@ const Form = (props) => {
 
     setErrors(updatedErrors);
   };
+
+  const deleteCopiedManager = (id) => {
+    setEmployee( prev => {
+      return {...prev, copiedManagers: employee.copiedManagers.filter( copiedManager => {
+        return copiedManager != id;
+      })}
+    })
+  }
 
   useEffect(() => {
     console.log(employee);
@@ -438,6 +455,7 @@ const Form = (props) => {
                   name="copiedManagers"
                   handleSelectChange={handleSelectChange}
                   values={employee.copiedManagers}
+                  deleteCopiedManager={deleteCopiedManager}
                 />
               </div>
             </div>

@@ -11,7 +11,7 @@ import Form from "./Form";
 import { useSelector, useDispatch } from "react-redux";
 import { openForm, closeForm } from "../actions/formDisplayActions";
 import { getUsers, getUser } from "../queries/queries";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import FilteredUsers from "./FilteredUsers";
 import DeleteConfirmation from "./DeleteConfirmation";
 import Pagination from "./Pagination";
@@ -20,12 +20,16 @@ const Employees = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
 
-  const { loading, error, data } = useQuery(getUsers, {
-    variables: {
-      page: currentPage,
-      name: filter,
-    },
-  });
+  const [getAllUsers, { loading, error, data }] = useLazyQuery(getUsers);
+
+  useEffect(() => {
+    getAllUsers({
+      variables: {
+        page: filter ? 1 : currentPage,
+        name: filter,
+      },
+    });
+  })  
 
   const deleteWidnowStatu = useSelector((state) => state.deleteWindow);
 

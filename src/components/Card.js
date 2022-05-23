@@ -155,7 +155,7 @@ const Card = (props) => {
               <div className="dropdown-category">
                 <p className="dropdown-header">Copied Manager</p>
                 <p className="dropdown-result">
-                  {copied_managers[0] ? copied_managers[0].name : "---"}
+                  {copied_managers.length > 0 ? copied_managers.map( copiedManager => copiedManager.name) : "---"}
                 </p>
               </div>
               <div className="dropdown-category">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SelectBox = (props) => {
   const [selectDisplay, setSelectDisplay] = useState(false);
@@ -18,7 +18,7 @@ const SelectBox = (props) => {
           handleChange({
             id: option.id,
             name: option.name,
-          }, option.name)
+          })
         }
         className={
           selected === option.name
@@ -36,36 +36,54 @@ const SelectBox = (props) => {
     if (selected) {
       props.handleSelectChange(props.name, selected);
     }
-  }, [selected]);  
+  }, [selected]);
+
+  useEffect(() => {
+    console.log(selectDisplay);
+  }, [selectDisplay]);
 
   const selectOff =
-    "z-20 bg-[#F6F6F6] flex flex-col rounded absolute w-full top-[30px] overflow-hidden hidden max-h-[150px] overflow-y-auto";
+    "z-50 bg-[#F6F6F6] flex flex-col rounded absolute w-full bottom-0 overflow-hidden hidden max-h-[150px] overflow-y-auto -translate-y-full";
   const selectOn =
-    "mt-1 border border-1 border-grey-400 z-20 bg-[#F6F6F6] flex flex-col rounded absolute w-full top-[30px] overflow-hidden max-h-[150px] overflow-y-auto";
+    "mt-1 border border-1 border-grey-400 z-50 bg-[#F6F6F6] flex flex-col rounded absolute w-full bottom-0 overflow-hidden max-h-[150px] overflow-y-auto translate-y-full";
 
   const handleSelect = () => {
     setSelectDisplay((prev) => !prev);
   };
 
-  const handleChange = (value, copied) => {
+  const handleChange = (value) => {
     setSelected(value);
     setSelectDisplay(false);
     if (props.values) {
-      setCopiedManagers( prev => {
-        return [...prev, copied]
-      })
+      setCopiedManagers((prev) => {
+        return [...prev, value];
+      });
     }
   };
 
   const borderError =
-    "flex items-center justify-between cursor-pointer form-input form-input-error h-full w-full block px-2 rounded select-none";
+    "relative text-clip flex items-center justify-between cursor-pointer form-input form-input-error min-h-full w-full block px-2 rounded select-none";
+
   const borderNoError = selectDisplay
-    ? "border border-2 border-[#23aaeb] flex items-center justify-between cursor-pointer text-[13px] pr-[5px] pl-[15px] h-full w-full block px-2 rounded select-none"
-    : "flex items-center justify-between cursor-pointer form-input h-full w-full block px-2 rounded select-none";
+    ? copiedManager.length > 0
+      ? "relative text-clip border border-2 border-[#23aaeb] min-h-[30px] flex items-center w-full cursor-pointer text-[13px] pr-[5px] pl-[15px] block px-2 rounded select-none"
+      : "relative text-clip border border-2 border-[#23aaeb] flex items-center min-h-[30px] w-full justify-between cursor-pointer text-[13px] pr-[5px] pl-[15px] block px-2 rounded select-none"
+    : copiedManager.length > 0
+    ? "relative text-clip cursor-pointer form-input min-h-[30px] flex items-center w-full block px-2 rounded select-none py-1"
+    : "relative text-clip flex items-center justify-between cursor-pointer form-input min-h-[30px] w-full block px-2 rounded select-none py-1";
+
+  const handleDeleteSelect = (value) => {
+    setCopiedManagers((prev) => {
+      return prev.filter((copiedManager) => {
+        return copiedManager.id != value;
+      });
+    });
+    props.deleteCopiedManager(value);
+  };
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      <div className="w-full relative h-[30px]">
+      <div className="w-full relative min-h-[30px]">
         <input
           onClick={handleSelect}
           onBlur={() =>
@@ -73,12 +91,9 @@ const SelectBox = (props) => {
               setSelectDisplay(false);
             }, 100)
           }
-          className="h-full w-full absolute top-0 left-0 opacity-0 cursor-pointer"
+          className="min-h-full w-full absolute opacity-0 top-0 left-0 cursor-pointer z-10"
         />
-        <div
-          onClick={handleSelect}
-          className={props.inputBorderError ? borderError : borderNoError}
-        >
+        <div className={props.inputBorderError ? borderError : borderNoError}>
           {!props.values ? (
             selected ? (
               selected.name.slice(0, 1).toUpperCase() +
@@ -87,14 +102,28 @@ const SelectBox = (props) => {
               <p className="text-[grey]/80">Select</p>
             )
           ) : props.values.length > 0 ? (
-            copiedManager.map((value, index) => {
-              return <p key={index}>{value}</p>;
-            })
+            <div className="w-[95%] overflow-auto">
+              {copiedManager.map((value, index) => {
+                return (
+                  <p
+                    className="px-2 w-fit float-left bg-gray-200 rounded-sm flex items-center justify-between min-w-[60px] mr-2 my-1"
+                    key={index}
+                  >
+                    <span className="truncate mr-1">{value.name}</span>
+                    <FontAwesomeIcon
+                      onClick={() => handleDeleteSelect(value.id)}
+                      icon={faXmark}
+                      className="hover:bg-gray-300 cursor-pointer text-red-400 z-30 px-1"
+                    />
+                  </p>
+                );
+              })}
+            </div>
           ) : (
             <p className="text-[grey]/80">Select</p>
           )}
           <FontAwesomeIcon
-            className="text-[grey] text-[16px] pr-[10px] "
+            className="text-[grey] text-[16px] pr-[10px] absolute top-1/2 -translate-y-1/2 right-[5px]"
             icon={faAngleDown}
           />
         </div>
