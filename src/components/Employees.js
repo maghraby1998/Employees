@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Form from "./Form";
 import { useSelector, useDispatch } from "react-redux";
-import { openForm, closeForm } from "../actions/formDisplayActions";
+import { openForm } from "../actions/formDisplayActions";
 import { getUsers, getUser } from "../queries/queries";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import FilteredUsers from "./FilteredUsers";

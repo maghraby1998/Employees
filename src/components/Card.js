@@ -19,6 +19,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openDeleteWindow } from "../actions/deleteWindowActions";
 import { insertUserId } from "../actions/userIdAction";
+import { setUserInfo } from "../actions/userInfoAction";
+import { openForm } from "../actions/formDisplayActions";
 
 const Card = (props) => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const Card = (props) => {
     position,
     copied_managers,
   } = props.user;
+
   let imgDisplay;
 
   if (face_path) {
@@ -71,6 +74,11 @@ const Card = (props) => {
     dispatch(insertUserId(id));
   };
 
+  const handleEditButton = (e) => {
+    dispatch(setUserInfo(props.user));
+    dispatch(openForm());
+  }
+
   return (
     <div className="flex itesm-center justify-center bg-white relative py-[12px] px-[19px] card">
       {/* Card Image */}
@@ -80,7 +88,11 @@ const Card = (props) => {
           <FontAwesomeIcon className="card-icon-img" icon={faUser} />
         </div>
         <div className="user-icons-container">
-          <FontAwesomeIcon className="edit-icon" icon={faPen} />
+          <FontAwesomeIcon
+            onClick={handleEditButton}
+            className="edit-icon"
+            icon={faPen}
+          />
           <FontAwesomeIcon className="pause-icon" icon={faPause} />
           <DeleteForever
             className="delete-icon"
@@ -145,29 +157,31 @@ const Card = (props) => {
               <div className="dropdown-category">
                 <p className="dropdown-header">Office</p>
                 <p className="dropdown-result">
-                  {office ? office.name : "---"}
+                  {office ? office.name : "--------"}
                 </p>
               </div>
               <div className="dropdown-category">
                 <p className="dropdown-header">Role</p>
-                <p className="dropdown-result">{role ? role : "---"}</p>
+                <p className="dropdown-result">{role ? role : "--------"}</p>
               </div>
               <div className="dropdown-category">
                 <p className="dropdown-header">Copied Manager</p>
                 <p className="dropdown-result">
-                  {copied_managers.length > 0 ? copied_managers.map( copiedManager => copiedManager.name) : "---"}
+                  {copied_managers.length > 0
+                    ? copied_managers.map((copiedManager) => copiedManager.name)
+                    : "--------"}
                 </p>
               </div>
               <div className="dropdown-category">
                 <p className="dropdown-header">Joining Date</p>
                 <p className="dropdown-result">
-                  {starts_at ? starts_at : "---"}
+                  {starts_at ? starts_at : "--------"}
                 </p>
               </div>
               <div className="dropdown-category">
                 <p className="dropdown-header">Manager</p>
                 <p className="dropdown-result">
-                  {manager ? manager.name : "---"}
+                  {manager ? manager.name : "--------"}
                 </p>
               </div>
             </div>

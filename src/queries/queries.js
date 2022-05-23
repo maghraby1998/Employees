@@ -141,66 +141,8 @@ const getManagers = gql`
   }
 `;
 
-// const addUser = gql`
-//   mutation(
-//     $name: String!
-//     $email: String!
-//     $phone: String!
-//     $starts_at: String!
-//     $can_work_home: Int!
-//     $role_id: ID!
-//     $position_id: ID!
-//     $att_profile_id: ID!
-//     $manager_id: ID!
-//     $department_id: ID!
-//     $company_id: ID!
-//     $office_id: ID!
-//     $has_credentials:Int!
-//     $copied_managers: ID!
-//     $max_homeDays_per_week: Int!
-//     $flexiable_home: Int!
-//     $can_ex_days: Int!
-//     $start_at: String!
-//     $salary_management_type: Int!
-//   ){
-//     store_user_with_user_salary_config(
-//       input:{
-//       user_input: {
-//         name: $name
-//         email: $email
-//         phone: $phone
-//         starts_at: $starts_at
-//         department_id: $department_id
-//         role_id: $role_id
-//         position_id: $position_id
-//         att_profile_id: $att_profile_id
-//         manager_id: $manager_id
-//         office_id: $office_id
-//         company_id: $company_id
-//         has_credentials: 1
-//         copied_managers: $copied_managers
-//         can_work_home: $can_work_home
-//         max_homeDays_per_week: 0
-//         flexible_home: 0
-//         can_ex_days: 0
-//       }
-//       user_salary_config_input: {
-//         salary_config:{
-//           start_at: $starts_at
-//           salary_management_type: 2
-//         }
-//       }
-//     ){
-//       id
-//       name
-//       phone
-//       email
-//     }
-//   }
-// `;
-
 const addUser = gql`
-  mutation(
+  mutation (
     $name: String!
     $email: String!
     $phone: String!
@@ -214,43 +156,71 @@ const addUser = gql`
     $company_id: ID!
     $office_id: ID!
     $copied_managers: [ID!]
-  ){
+  ) {
     store_user_with_user_salary_config(
-      input:{
-      user_input: {
-        id: null
-        name: $name
-        email: $email
-        phone: $phone
-        starts_at: $starts_at
-        department_id: $department_id
-        role_id: $role_id
-        position_id: $position_id
-        att_profile_id: $att_profile_id
-        manager_id: $manager_id
-        office_id: $office_id
-        company_id: $company_id
-        has_credentials: 1
-        copied_managers: $copied_managers
-        can_work_home: $can_work_home
-        max_homeDays_per_week: 0
-        flexible_home: 0
-        can_ex_days: 0
-      }
-      user_salary_config_input: {
-        salary_config:{
+      input: {
+        user_input: {
           id: null
-          start_at: $starts_at
-          salary_management_type: 2
+          name: $name
+          email: $email
+          phone: $phone
+          starts_at: $starts_at
+          department_id: $department_id
+          role_id: $role_id
+          position_id: $position_id
+          att_profile_id: $att_profile_id
+          manager_id: $manager_id
+          office_id: $office_id
+          company_id: $company_id
+          has_credentials: 1
+          copied_managers: $copied_managers
+          can_work_home: $can_work_home
+          max_homeDays_per_week: 0
+          flexible_home: 0
+          can_ex_days: 0
+        }
+        user_salary_config_input: {
+          salary_config: {
+            id: null
+            start_at: $starts_at
+            salary_management_type: 2
+          }
         }
       }
+    ) {
+      id
+      name
+      phone
+      email
     }
-    ){
-     id
-     name
-     phone
-     email 
-  }}
+  }
+`;
+
+const updateUser = gql`
+  mutation (
+    $id: ID!
+    $name: String!
+    $phone: String!
+    $email: String!
+    $starts_at: String!
+  ) {
+    update_user(
+      input: {
+        user_input: {
+          id: $id
+          name: $name
+          phone: $phone
+          email: $email
+          starts_at: $starts_at
+        }
+      }
+    ) {
+      name
+      email
+      Phone
+      starts_at
+    }
+  }
 `;
 
 export {
@@ -264,4 +234,5 @@ export {
   getRoles,
   getManagers,
   addUser,
+  updateUser,
 };

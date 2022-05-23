@@ -7,7 +7,6 @@ const SelectBox = (props) => {
   const [selected, setSelected] = useState();
   const [copiedManager, setCopiedManagers] = useState([]);
   const options = props.options;
-  // console.log(props.options)
   const optionMapped = options?.map((option, index) => {
     let optionCapitalized =
       option?.name?.slice(0, 1).toUpperCase() +
@@ -32,15 +31,21 @@ const SelectBox = (props) => {
     );
   });
 
+  useEffect( () => {
+    if (props.currentValue) {
+      if (props.values) {
+        setCopiedManagers(props.currentValue);
+      } else {
+        setSelected(props.currentValue);
+      }
+    }
+  }, [props.currentValue])
+
   useEffect(() => {
     if (selected) {
       props.handleSelectChange(props.name, selected);
     }
   }, [selected]);
-
-  useEffect(() => {
-    console.log(selectDisplay);
-  }, [selectDisplay]);
 
   const selectOff =
     "z-50 bg-[#F6F6F6] flex flex-col rounded absolute w-full bottom-0 overflow-hidden hidden max-h-[150px] overflow-y-auto -translate-y-full";

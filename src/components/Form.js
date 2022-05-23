@@ -9,7 +9,7 @@ import {
   handleSubmitting,
 } from "../functions/validation";
 import { closeForm } from "../actions/formDisplayActions";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { addEmployee } from "../actions/employeesActions";
 import SelectBox from "./SelectBox";
 import {
@@ -21,18 +21,21 @@ import {
   getManagers,
   getUsers,
   addUser,
+  updateUser,
 } from "../queries/queries";
 import { useQuery, useMutation } from "@apollo/client";
-import Select from 'react-select'
+import { closeFormAndResetUserInfo } from "../actions/userInfoAction";
 
 const Form = (props) => {
+  const userInfo = useSelector((state) => state.userInfo);
+  console.log(userInfo)
   const [employee, setEmployee] = useState({
-    id: "",
+    id: userInfo ? userInfo.id : "",
     image: "",
-    name: "",
-    phone: "",
-    startDate: "",
-    email: "",
+    name: userInfo ? userInfo.name : "",
+    phone: userInfo ? userInfo.phone : "",
+    startDate: userInfo ? userInfo.starts_at : "",
+    email: userInfo ? userInfo.email : "",
     office: "",
     department: "",
     attendance: "",
@@ -44,16 +47,27 @@ const Form = (props) => {
     companyId: 1,
   });
 
-  const [addAUser, { data: add_user_data, error: add_user_error }] =
-    useMutation(addUser);
+  const [
+    addAUser,
+    { data: add_user_data, error: add_user_error, loading: add_user_loading },
+  ] = useMutation(addUser);
+
+  const [
+    updateAUser,
+    {
+      data: update_user_data,
+      error: update_user_error,
+      loading: update_user_loading,
+    },
+  ] = useMutation(updateUser);
 
   const [errors, setErrors] = useState({
-    name: true,
-    startDate: true,
-    email: "empty",
-    department: true,
-    position: true,
-    attendance: true,
+    name: employee.name ? false : true,
+    startDate: employee.startDate ? false : true,
+    email: employee.startDate ? false : "empty",
+    department: employee.department ? false : true,
+    position: employee.position ? false : true,
+    attendance: employee.attendance ? false : true,
   });
 
   const dispatch = useDispatch();
@@ -110,16 +124,7 @@ const Form = (props) => {
     }
   );
 
-  const newOptions = [
-    {value: 'car', label: 'Car'},
-    {value: 'car', label: 'Car'},
-    {value: 'car', label: 'Car'},
-    {value: 'car', label: 'Car'},
-    {value: 'car', label: 'Car'}
-  ]
-
   const handleChange = (e) => {
-    // console.log(employee);
     let { name, value, type } = e.target;
     value = value.trim();
     if (type === "checkbox") {
@@ -138,12 +143,15 @@ const Form = (props) => {
   };
 
   const deleteCopiedManager = (id) => {
-    setEmployee( prev => {
-      return {...prev, copiedManagers: employee.copiedManagers.filter( copiedManager => {
-        return copiedManager != id;
-      })}
-    })
-  }
+    setEmployee((prev) => {
+      return {
+        ...prev,
+        copiedManagers: employee.copiedManagers.filter((copiedManager) => {
+          return copiedManager != id;
+        }),
+      };
+    });
+  };
 
   useEffect(() => {
     console.log(employee);
@@ -169,37 +177,45 @@ const Form = (props) => {
     }
   };
 
+  const [sending, setSending] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
-      addAUser({
-        variables: {
-          name: employee.name,
-          email: employee.email,
-          phone: employee.phone,
-          starts_at: employee.startDate,
-          can_work_home: employee.workFromHome,
-          role_id: employee.role,
-          position_id: employee.position,
-          att_profile_id: employee.attendance,
-          manager_id: employee.manager,
-          department_id: employee.department,
-          company_id: 1,
-          office_id: employee.office,
-          has_credentials: 1,
-          copied_managers: employee.copiedManagers,
-          max_homeDays_per_week: 0,
-          flexiable_home: 0,
-          can_ex_days: 0,
-          start_at: employee.startDate,
-          salary_management_type: 2,
-        },
-        refetchQueries: [
-          getUsers
-      ]
-      });
-      dispatch(closeForm());
+      if (userInfo) {
+        console.log('you should update and not submit');
+      } else {
+        addAUser({
+          variables: {
+            name: employee.name,
+            email: employee.email,
+            phone: employee.phone,
+            starts_at: employee.startDate,
+            can_work_home: employee.workFromHome,
+            role_id: employee.role,
+            position_id: employee.position,
+            att_profile_id: employee.attendance,
+            manager_id: employee.manager,
+            department_id: employee.department,
+            company_id: 1,
+            office_id: employee.office,
+            has_credentials: 1,
+            copied_managers: employee.copiedManagers,
+            max_homeDays_per_week: 0,
+            flexiable_home: 0,
+            can_ex_days: 0,
+            start_at: employee.startDate,
+            salary_management_type: 2,
+          },
+          refetchQueries: [getUsers],
+        });
+      }
+      if (add_user_loading) {
+        setSending(true);
+      } else {
+        dispatch(closeFormAndResetUserInfo());
+      }
     }
   };
 
@@ -221,7 +237,7 @@ const Form = (props) => {
   };
 
   const handleCancelButton = () => {
-    dispatch(closeForm());
+    dispatch(closeFormAndResetUserInfo());
   };
 
   let imageDisplay;
@@ -236,7 +252,10 @@ const Form = (props) => {
   }
 
   return (
-    <div onClick={() => dispatch(closeForm())} className="employee-form-page">
+    <div
+      onClick={() => dispatch(closeFormAndResetUserInfo())}
+      className="employee-form-page"
+    >
       <form
         className="employee-form"
         onClick={(e) => e.stopPropagation()}
@@ -286,6 +305,7 @@ const Form = (props) => {
                     type="text"
                     maxLength={35}
                     name="name"
+                    value={employee.name}
                     autoFocus={true}
                   />
                   {inputErrorMessageHandler(formSubmission, errors, "name")}
@@ -308,6 +328,7 @@ const Form = (props) => {
                     id="date"
                     type="date"
                     name="startDate"
+                    value={employee.startDate}
                   />
                   {inputErrorMessageHandler(
                     formSubmission,
@@ -328,6 +349,7 @@ const Form = (props) => {
                     type="text"
                     name="phone"
                     maxLength={11}
+                    value={employee.phone}
                   />
                 </div>
                 {/* email */}
@@ -343,6 +365,7 @@ const Form = (props) => {
                     id="email"
                     type="text"
                     name="email"
+                    value={employee.email}
                     maxLength={40}
                   />
                   {inputErrorMessageHandler(formSubmission, errors, "email")}
@@ -363,6 +386,7 @@ const Form = (props) => {
             <SelectBox
               options={offices_data?.company_offices?.data}
               name="office"
+              currentValue={userInfo?.office}
               handleSelectChange={handleSelectChange}
             />
           </div>
@@ -380,6 +404,7 @@ const Form = (props) => {
                   )}
                   options={departments_data?.company_departments?.data}
                   name="department"
+                  currentValue={userInfo?.deparmtent}
                   handleSelectChange={handleSelectChange}
                 />
                 {inputErrorMessageHandler(formSubmission, errors, "department")}
@@ -412,6 +437,7 @@ const Form = (props) => {
                 <SelectBox
                   options={roles_data?.roles}
                   name="role"
+                  currentValue={userInfo?.role}
                   handleSelectChange={handleSelectChange}
                 />
               </div>
@@ -428,6 +454,7 @@ const Form = (props) => {
                   )}
                   options={positions_data?.company_positions?.data}
                   name="position"
+                  currentValue={userInfo?.position}
                   handleSelectChange={handleSelectChange}
                 />
                 {inputErrorMessageHandler(formSubmission, errors, "position")}
@@ -442,6 +469,7 @@ const Form = (props) => {
                 <SelectBox
                   options={managers_data}
                   name="manager"
+                  currentValue={userInfo?.manager}
                   handleSelectChange={handleSelectChange}
                 />
               </div>
@@ -453,6 +481,7 @@ const Form = (props) => {
                 <SelectBox
                   options={copied_managers_data}
                   name="copiedManagers"
+                  currentValue={userInfo?.copied_managers}
                   handleSelectChange={handleSelectChange}
                   values={employee.copiedManagers}
                   deleteCopiedManager={deleteCopiedManager}
@@ -498,7 +527,9 @@ const Form = (props) => {
         {/* Work from home */}
         <div className="form-line"></div>
         <div className="form-buttons">
-          <button className="submit-button">Save</button>
+          <button className="submit-button">
+            {sending ? "Sending..." : "Save"}
+          </button>
 
           <button onClick={handleCancelButton} className="cancel-button">
             Cancel

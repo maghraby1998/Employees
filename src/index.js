@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./css/index.css";
 import App from "./App";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import allReducers from "./reducers/allReducers";
+import thunk from "redux-thunk";
 import {
   ApolloClient,
   InMemoryCache,
@@ -32,7 +33,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const store = createStore(allReducers);
+const store = createStore(allReducers, applyMiddleware(thunk));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
