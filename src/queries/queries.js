@@ -12,18 +12,27 @@ const getUsers = gql`
         working_status
         face_path
         department {
+          id
           name
         }
         manager {
+          id
           name
         }
         copied_managers {
+          id
           name
         }
         position {
+          id
           name
         }
         office {
+          id
+          name
+        }
+        attendance_profile {
+          id
           name
         }
       }
@@ -31,6 +40,7 @@ const getUsers = gql`
         currentPage
         lastPage
         count
+        total
       }
     }
   }
@@ -47,18 +57,27 @@ const getUser = gql`
         working_status
         face_path
         department {
+          id
           name
         }
         manager {
+          id
           name
         }
         copied_managers {
+          id
           name
         }
         position {
+          id
           name
         }
         office {
+          id
+          name
+        }
+        attendance_profile {
+          id
           name
         }
       }
@@ -79,7 +98,7 @@ const deleteUser = gql`
   }
 `;
 
-const getDepartments = gql`
+const getInputsData = gql`
   {
     company_departments(first: 999) {
       data {
@@ -87,53 +106,28 @@ const getDepartments = gql`
         name
       }
     }
-  }
-`;
-
-const getPositions = gql`
-  {
     company_positions(first: 999) {
       data {
         id
         name
       }
     }
-  }
-`;
-
-const getOffices = gql`
-  {
     company_offices(first: 999) {
       data {
         id
         name
       }
     }
-  }
-`;
-
-const getAttendanceProfiles = gql`
-  {
     company_attendance_profiles(first: 999) {
       data {
         id
         name
       }
     }
-  }
-`;
-
-const getRoles = gql`
-  {
     roles {
       id
       name
     }
-  }
-`;
-
-const getManagers = gql`
-  {
     managers {
       id
       name
@@ -200,39 +194,47 @@ const updateUser = gql`
   mutation (
     $id: ID!
     $name: String!
-    $phone: String!
     $email: String!
+    $phone: String!
     $starts_at: String!
+    $can_work_home: Int!
+    $position_id: ID!
+    $att_profile_id: ID!
+    $manager_id: ID!
+    $department_id: ID!
+    $company_id: ID!
+    $office_id: ID!
+    $copied_managers: [ID!]
   ) {
     update_user(
       input: {
         user_input: {
           id: $id
           name: $name
-          phone: $phone
           email: $email
+          phone: $phone
           starts_at: $starts_at
+          department_id: $department_id
+          position_id: $position_id
+          att_profile_id: $att_profile_id
+          manager_id: $manager_id
+          office_id: $office_id
+          company_id: $company_id
+          has_credentials: 1
+          copied_managers: $copied_managers
+          can_work_home: $can_work_home
+          max_homeDays_per_week: 0
+          flexible_home: 0
+          can_ex_days: 0
         }
       }
     ) {
       name
       email
-      Phone
+      phone
       starts_at
     }
   }
 `;
 
-export {
-  getUsers,
-  getUser,
-  deleteUser,
-  getDepartments,
-  getPositions,
-  getOffices,
-  getAttendanceProfiles,
-  getRoles,
-  getManagers,
-  addUser,
-  updateUser,
-};
+export { getUsers, getUser, deleteUser, getInputsData, addUser, updateUser };

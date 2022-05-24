@@ -15,25 +15,37 @@ import { useQuery, useLazyQuery } from "@apollo/client";
 import FilteredUsers from "./FilteredUsers";
 import DeleteConfirmation from "./DeleteConfirmation";
 import Pagination from "./Pagination";
+import setNumberOfEmployees from "../actions/setNumberOfEmployees";
 
 const Employees = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
+  const dispatch = useDispatch();
 
   const [getAllUsers, { loading, error, data }] = useLazyQuery(getUsers);
 
   useEffect(() => {
+    setCurrentPage(1);
+    getAllUsers({
+    variables: {
+      page: currentPage,
+      name: filter,
+    },
+  });
+    
+  }, [filter]);
+
+  useEffect(() => {
     getAllUsers({
       variables: {
-        page: filter ? 1 : currentPage,
+        page: currentPage,
         name: filter,
       },
     });
-  })  
+    
+  }, [currentPage]);
 
   const deleteWidnowStatu = useSelector((state) => state.deleteWindow);
-
-  const dispatch = useDispatch();
 
   const formDisplay = useSelector((state) => state.formDisplay);
 
@@ -48,18 +60,6 @@ const Employees = (props) => {
     let { value } = e.target;
     setFilter(value);
   };
-
-  // if (loading) {
-  //   return (
-  //     <h1 className="flex flex-col items-center justify-center absolute top-0 left-0 h-screen w-full text-5xl font-bold bg-blue-400/50 text-white z-50">
-  //       <FontAwesomeIcon
-  //         className="animate-spin text-9xl mb-5"
-  //         icon={faSpinner}
-  //       />
-  //       Loading...
-  //     </h1>
-  //   );
-  // }
 
   return (
     <div className="employee-page">

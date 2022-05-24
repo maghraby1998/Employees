@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import deleteWindow from "./deleteConfirmationWindow";
 import userId from "./userId";
 import userInfo from "./userInfo";
+import numberOfEmployees from "./numberOfEmployees";
 
 const allReducers = combineReducers({
   sidenav,
@@ -13,6 +14,7 @@ const allReducers = combineReducers({
   deleteWindow,
   userId,
   userInfo,
+  numberOfEmployees,
 });
 
 export default allReducers;

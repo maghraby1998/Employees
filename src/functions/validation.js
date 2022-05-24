@@ -53,6 +53,7 @@ export const inputBorderHandler = (formSubmission, errors, inputName) => {
 
 export const handleErrors = (name, value, errors) => {
   let validMailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  value = value.trim();
 
   if (name === "email") {
     if (value.length === 0) {

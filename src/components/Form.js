@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import "../css/Form.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faTriangleExclamation,
+  faSpinner
+} from "@fortawesome/free-solid-svg-icons";
 import {
   inputErrorMessageHandler,
   inputBorderHandler,
@@ -13,12 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addEmployee } from "../actions/employeesActions";
 import SelectBox from "./SelectBox";
 import {
-  getDepartments,
-  getPositions,
-  getOffices,
-  getAttendanceProfiles,
-  getRoles,
-  getManagers,
+  getInputsData,
   getUsers,
   addUser,
   updateUser,
@@ -28,7 +27,7 @@ import { closeFormAndResetUserInfo } from "../actions/userInfoAction";
 
 const Form = (props) => {
   const userInfo = useSelector((state) => state.userInfo);
-  console.log(userInfo)
+  // console.log("userinfo" + userInfo)
   const [employee, setEmployee] = useState({
     id: userInfo ? userInfo.id : "",
     image: "",
@@ -36,16 +35,29 @@ const Form = (props) => {
     phone: userInfo ? userInfo.phone : "",
     startDate: userInfo ? userInfo.starts_at : "",
     email: userInfo ? userInfo.email : "",
-    office: "",
-    department: "",
-    attendance: "",
-    role: "",
-    position: "",
-    manager: "",
-    copiedManagers: [],
+    office: userInfo ? userInfo.office?.id : "",
+    department: userInfo ? userInfo.department?.id : "",
+    attendance: userInfo ? userInfo.attendance_profile?.id : "",
+    role: userInfo ? userInfo.role?.id : "",
+    position: userInfo ? userInfo.position?.id : "",
+    manager: userInfo ? userInfo.manager?.id : "",
+    copiedManagers: userInfo ? userInfo.copied_managers : [],
     workFromHome: 0,
     companyId: 1,
   });
+
+  // useEffect( () => {
+  //   if (userInfo) {
+  //     console.log(userInfo.copied_managers)
+  //     userInfo.copied_managers.forEach( copiedManager => {
+  //       if(!employee.copiedManagers.includes(copiedManager.id)){
+  //       setEmployee( prev => {
+  //           return {...prev, copiedManagers: [...prev.copiedManagers, copiedManager.id]}
+  //       })
+  //     }
+  //     })
+  //   }
+  // }, [])
 
   const [
     addAUser,
@@ -73,67 +85,38 @@ const Form = (props) => {
   const dispatch = useDispatch();
   const [formSubmission, setFormSubmission] = useState(false);
 
-  const { data: departments_data, error, loading } = useQuery(getDepartments);
-
   const {
-    data: positions_data,
-    error: positions_error,
-    loading: position_loading,
-  } = useQuery(getPositions);
+    data: inputs_data,
+    inputs_data_error,
+    inputs_data_loading,
+  } = useQuery(getInputsData);
 
-  const {
-    data: offices_data,
-    error: offices_error,
-    loading: offices_loading,
-  } = useQuery(getOffices);
-
-  const {
-    data: attendance_data,
-    error: attendance_error,
-    loading: attendance_loading,
-  } = useQuery(getAttendanceProfiles);
-
-  const {
-    data: roles_data,
-    error: roles_error,
-    loading: roles_loading,
-  } = useQuery(getRoles);
-
-  let {
-    data: managers_data,
-    error: managers_error,
-    loading: managers_loading,
-  } = useQuery(getManagers);
-
-  managers_data = managers_data?.managers?.filter((manager) => {
-    return !employee.copiedManagers.includes(manager.id);
+  let managers = inputs_data?.managers?.filter((manager) => {
+    return !employee.copiedManagers.find((copiedManager) => {
+      return copiedManager.id === manager.id;
+    });
   });
 
-  let {
-    data: copied_managers_data,
-    error: copied_managers_error,
-    loading: copied_managers_loading,
-  } = useQuery(getManagers);
-
-  copied_managers_data = copied_managers_data?.managers?.filter(
-    (copied_manager) => {
-      return (
-        copied_manager.id != employee.manager &&
-        !employee.copiedManagers.includes(copied_manager.id)
-      );
-    }
-  );
+  let copied_managers = inputs_data?.managers?.filter((copied_manager) => {
+    return (
+      copied_manager.id != employee.manager &&
+      !employee.copiedManagers?.find((copiedManager) => {
+        return copied_manager.id === copiedManager.id;
+      })
+    );
+    // console.log(copied_manager)
+  });
 
   const handleChange = (e) => {
     let { name, value, type } = e.target;
-    value = value.trim();
+    // value = value.trim();
     if (type === "checkbox") {
       setEmployee((prev) => {
         return { ...prev, workFromHome: prev.workFromHome === 0 ? 1 : 0 };
       });
     } else {
       setEmployee((prev) => {
-        return { ...prev, [name]: value, id: Math.random() };
+        return { ...prev, [name]: value };
       });
     }
 
@@ -147,7 +130,7 @@ const Form = (props) => {
       return {
         ...prev,
         copiedManagers: employee.copiedManagers.filter((copiedManager) => {
-          return copiedManager != id;
+          return copiedManager.id != id;
         }),
       };
     });
@@ -162,7 +145,7 @@ const Form = (props) => {
       setEmployee((prev) => {
         return {
           ...prev,
-          copiedManagers: [...employee.copiedManagers, value.id],
+          copiedManagers: [...employee.copiedManagers, value],
         };
       });
     } else {
@@ -184,7 +167,32 @@ const Form = (props) => {
     setFormSubmission(true);
     if (handleSubmitting(errors)) {
       if (userInfo) {
-        console.log('you should update and not submit');
+        let newCopiedManagers = employee.copiedManagers.map((copiedManager) => {
+          return copiedManager.id;
+        });
+        updateAUser({
+          variables: {
+            id: employee.id,
+            name: employee.name,
+            email: employee.email,
+            phone: employee.phone,
+            starts_at: employee.startDate,
+            can_work_home: employee.workFromHome,
+            position_id: employee.position,
+            att_profile_id: employee.attendance,
+            manager_id: employee.manager,
+            department_id: employee.department,
+            company_id: 1,
+            office_id: employee.office,
+            has_credentials: 1,
+            copied_managers: newCopiedManagers,
+            max_homeDays_per_week: 0,
+            flexiable_home: 0,
+            can_ex_days: 0,
+          },
+          refetchQueries: [getUsers],
+        });
+        // console.log(newCopiedManagers)
       } else {
         addAUser({
           variables: {
@@ -211,7 +219,7 @@ const Form = (props) => {
           refetchQueries: [getUsers],
         });
       }
-      if (add_user_loading) {
+      if (add_user_loading || update_user_loading) {
         setSending(true);
       } else {
         dispatch(closeFormAndResetUserInfo());
@@ -249,6 +257,29 @@ const Form = (props) => {
         Click to upload
       </span>
     );
+  }
+
+  if (inputs_data_loading) {
+    return (
+      <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50">
+        <FontAwesomeIcon className="text-7xl text-blue-500 animate-spin mb-3" icon={faSpinner} />
+        <span className="text-white shadow-lg capitalize">Loading...</span>
+      </h1>
+    );
+  }
+
+  if (inputs_data_error) {
+    // setTimeout(() => {
+    //   dispatch(closeForm())
+    // }, 3000);
+    return (
+      <h1 className="text-xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-red-500/40 font-semibold flex flex-col items-center justify-center z-50">
+        <FontAwesomeIcon className="text-7xl text-red-700 mb-3 animate-pulse" icon={faTriangleExclamation} />
+        <span className="text-white shadow-lg bg-red-800 p-3 rounded-lg capitalize mb-3">Failed to load the form</span>
+        <button className="bg-red-500 text-white p-2 rounded" onClick={() => dispatch(closeForm())}>Close</button>
+      </h1>
+    );
+    
   }
 
   return (
@@ -384,7 +415,7 @@ const Form = (props) => {
           <div>
             <label htmlFor="office">Office</label>
             <SelectBox
-              options={offices_data?.company_offices?.data}
+              options={inputs_data?.company_offices?.data}
               name="office"
               currentValue={userInfo?.office}
               handleSelectChange={handleSelectChange}
@@ -402,9 +433,9 @@ const Form = (props) => {
                     errors,
                     "department"
                   )}
-                  options={departments_data?.company_departments?.data}
+                  options={inputs_data?.company_departments?.data}
                   name="department"
-                  currentValue={userInfo?.deparmtent}
+                  currentValue={userInfo?.department}
                   handleSelectChange={handleSelectChange}
                 />
                 {inputErrorMessageHandler(formSubmission, errors, "department")}
@@ -420,8 +451,9 @@ const Form = (props) => {
                     errors,
                     "attendance"
                   )}
-                  options={attendance_data?.company_attendance_profiles?.data}
+                  options={inputs_data?.company_attendance_profiles?.data}
                   name="attendance"
+                  currentValue={userInfo?.attendance_profile}
                   handleSelectChange={handleSelectChange}
                 />
                 {inputErrorMessageHandler(formSubmission, errors, "attendance")}
@@ -435,7 +467,7 @@ const Form = (props) => {
               <div>
                 <label htmlFor="role">Role</label>
                 <SelectBox
-                  options={roles_data?.roles}
+                  options={inputs_data?.roles}
                   name="role"
                   currentValue={userInfo?.role}
                   handleSelectChange={handleSelectChange}
@@ -452,7 +484,7 @@ const Form = (props) => {
                     errors,
                     "position"
                   )}
-                  options={positions_data?.company_positions?.data}
+                  options={inputs_data?.company_positions?.data}
                   name="position"
                   currentValue={userInfo?.position}
                   handleSelectChange={handleSelectChange}
@@ -467,7 +499,7 @@ const Form = (props) => {
               <div>
                 <label htmlFor="manager">Direct Manager</label>
                 <SelectBox
-                  options={managers_data}
+                  options={managers}
                   name="manager"
                   currentValue={userInfo?.manager}
                   handleSelectChange={handleSelectChange}
@@ -479,7 +511,7 @@ const Form = (props) => {
               <div>
                 <label htmlFor="manager">Copied Managers</label>
                 <SelectBox
-                  options={copied_managers_data}
+                  options={copied_managers}
                   name="copiedManagers"
                   currentValue={userInfo?.copied_managers}
                   handleSelectChange={handleSelectChange}

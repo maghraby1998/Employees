@@ -79,6 +79,8 @@ const Card = (props) => {
     dispatch(openForm());
   }
 
+  // console.log(props.user)
+
   return (
     <div className="flex itesm-center justify-center bg-white relative py-[12px] px-[19px] card">
       {/* Card Image */}
@@ -120,7 +122,7 @@ const Card = (props) => {
         <h4 className="text-[13px] text-[#313030] font-semibold m-0">
           {department ? department.name : ""}
         </h4>
-        <p>Business Development</p>
+        <p>{position ? position.name : ""}</p>
         {/* {attedanceStatu} */}
         <span className="card-state absent">Absent</span>
       </div>
@@ -168,7 +170,7 @@ const Card = (props) => {
                 <p className="dropdown-header">Copied Manager</p>
                 <p className="dropdown-result">
                   {copied_managers.length > 0
-                    ? copied_managers.map((copiedManager) => copiedManager.name)
+                    ? copied_managers.map((copiedManager, index) => <span key={index} className="block">{copiedManager.name}</span>)
                     : "--------"}
                 </p>
               </div>

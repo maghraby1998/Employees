@@ -9,7 +9,7 @@ const App = () => {
   const formDisplay = useSelector((state) => state.formDisplay);
   const userInfo = useSelector((state) => state.userInfo);
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   return (
     <div className={formDisplay ? "h-screen overflow-hidden" : ""}>
