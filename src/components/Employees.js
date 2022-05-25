@@ -96,7 +96,7 @@ const Employees = (props) => {
       {loading ? (
         <h1 className="text-xl font-semibold">Loading...</h1>
       ) : (
-        <div className="mt-5 w-full flex items-center justify-center">
+        <div className="mt-10 w-full flex items-center justify-center">
           <Pagination
             nums={data?.company_users?.paginatorInfo?.lastPage}
             setCurrentPage={setCurrentPage}

@@ -7,7 +7,7 @@
     /* margin-left: 6.625rem; */
     /* min-height: 90vh; */
     overflow-x: hidden;
-    padding-bottom: 120px;
+    padding-bottom: 50px;
     /* border: 1px solid red; */
     @apply pr-5 mx-auto ml-[6.625rem];
 }

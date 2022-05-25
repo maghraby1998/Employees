@@ -10,6 +10,14 @@ const getUsers = gql`
         phone
         starts_at
         working_status
+        profile_picture{
+          id
+          path
+        }
+        face{
+          id
+          path
+        }
         face_path
         department {
           id
@@ -150,6 +158,7 @@ const addUser = gql`
     $company_id: ID!
     $office_id: ID!
     $copied_managers: [ID!]
+    $user_image: Upload
   ) {
     store_user_with_user_salary_config(
       input: {
@@ -159,6 +168,7 @@ const addUser = gql`
           email: $email
           phone: $phone
           starts_at: $starts_at
+          user_image: $user_image
           department_id: $department_id
           role_id: $role_id
           position_id: $position_id
@@ -203,6 +213,7 @@ const updateUser = gql`
     $manager_id: ID!
     $department_id: ID!
     $company_id: ID!
+    $user_image: Upload
     $office_id: ID!
     $copied_managers: [ID!]
   ) {
@@ -214,6 +225,7 @@ const updateUser = gql`
           email: $email
           phone: $phone
           starts_at: $starts_at
+          user_image: $user_image
           department_id: $department_id
           position_id: $position_id
           att_profile_id: $att_profile_id

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
   faTriangleExclamation,
-  faSpinner
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   inputErrorMessageHandler,
@@ -30,7 +30,8 @@ const Form = (props) => {
   // console.log("userinfo" + userInfo)
   const [employee, setEmployee] = useState({
     id: userInfo ? userInfo.id : "",
-    image: "",
+    imagePreview: "",
+    user_image: null,
     name: userInfo ? userInfo.name : "",
     phone: userInfo ? userInfo.phone : "",
     startDate: userInfo ? userInfo.starts_at : "",
@@ -46,32 +47,19 @@ const Form = (props) => {
     companyId: 1,
   });
 
-  // useEffect( () => {
-  //   if (userInfo) {
-  //     console.log(userInfo.copied_managers)
-  //     userInfo.copied_managers.forEach( copiedManager => {
-  //       if(!employee.copiedManagers.includes(copiedManager.id)){
-  //       setEmployee( prev => {
-  //           return {...prev, copiedManagers: [...prev.copiedManagers, copiedManager.id]}
-  //       })
-  //     }
-  //     })
-  //   }
-  // }, [])
-
-  const [
+  let [
     addAUser,
     { data: add_user_data, error: add_user_error, loading: add_user_loading },
-  ] = useMutation(addUser);
+  ] = useMutation(addUser, { errorPolicy: "all" });
 
-  const [
+  let [
     updateAUser,
     {
       data: update_user_data,
       error: update_user_error,
       loading: update_user_loading,
     },
-  ] = useMutation(updateUser);
+  ] = useMutation(updateUser, { errorPolicy: "all" });
 
   const [errors, setErrors] = useState({
     name: employee.name ? false : true,
@@ -104,7 +92,6 @@ const Form = (props) => {
         return copied_manager.id === copiedManager.id;
       })
     );
-    // console.log(copied_manager)
   });
 
   const handleChange = (e) => {
@@ -165,81 +152,108 @@ const Form = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmission(true);
-    if (handleSubmitting(errors)) {
-      if (userInfo) {
-        let newCopiedManagers = employee.copiedManagers.map((copiedManager) => {
-          return copiedManager.id;
-        });
-        updateAUser({
-          variables: {
-            id: employee.id,
-            name: employee.name,
-            email: employee.email,
-            phone: employee.phone,
-            starts_at: employee.startDate,
-            can_work_home: employee.workFromHome,
-            position_id: employee.position,
-            att_profile_id: employee.attendance,
-            manager_id: employee.manager,
-            department_id: employee.department,
-            company_id: 1,
-            office_id: employee.office,
-            has_credentials: 1,
-            copied_managers: newCopiedManagers,
-            max_homeDays_per_week: 0,
-            flexiable_home: 0,
-            can_ex_days: 0,
-          },
-          refetchQueries: [getUsers],
-        });
-        // console.log(newCopiedManagers)
-      } else {
-        addAUser({
-          variables: {
-            name: employee.name,
-            email: employee.email,
-            phone: employee.phone,
-            starts_at: employee.startDate,
-            can_work_home: employee.workFromHome,
-            role_id: employee.role,
-            position_id: employee.position,
-            att_profile_id: employee.attendance,
-            manager_id: employee.manager,
-            department_id: employee.department,
-            company_id: 1,
-            office_id: employee.office,
-            has_credentials: 1,
-            copied_managers: employee.copiedManagers,
-            max_homeDays_per_week: 0,
-            flexiable_home: 0,
-            can_ex_days: 0,
-            start_at: employee.startDate,
-            salary_management_type: 2,
-          },
-          refetchQueries: [getUsers],
-        });
+    // if (handleSubmitting(errors)) {
+    if (userInfo) {
+      let newCopiedManagers = employee.copiedManagers.map((copiedManager) => {
+        return copiedManager.id;
+      });
+      updateAUser({
+        variables: {
+          id: employee.id,
+          name: employee.name,
+          email: employee.email,
+          phone: employee.phone,
+          starts_at: employee.startDate,
+          can_work_home: employee.workFromHome,
+          position_id: employee.position,
+          att_profile_id: employee.attendance,
+          manager_id: employee.manager,
+          user_image: employee.user_image,
+          department_id: employee.department,
+          company_id: 1,
+          office_id: employee.office,
+          has_credentials: 1,
+          copied_managers: newCopiedManagers,
+          max_homeDays_per_week: 0,
+          flexiable_home: 0,
+          can_ex_days: 0,
+        },
+        refetchQueries: [getUsers],
+      });
+    } else {
+      addAUser({
+        variables: {
+          name: employee.name,
+          email: employee.email,
+          user_image: employee.user_image,
+          phone: employee.phone,
+          starts_at: employee.startDate,
+          can_work_home: employee.workFromHome,
+          role_id: employee.role,
+          position_id: employee.position,
+          att_profile_id: employee.attendance,
+          manager_id: employee.manager,
+          department_id: employee.department,
+          company_id: 1,
+          office_id: employee.office,
+          has_credentials: 1,
+          copied_managers: employee.copiedManagers,
+          max_homeDays_per_week: 0,
+          flexiable_home: 0,
+          can_ex_days: 0,
+          start_at: employee.startDate,
+          salary_management_type: 2,
+        },
+        refetchQueries: [getUsers],
+      });
+    }
+    if (add_user_loading || update_user_loading || add_user_error) {
+      setSending(true);
+    }
+    // }
+  };
+
+  const [serverSideErrors, setServerSideErrors] = useState();
+  console.log(serverSideErrors);
+
+  useEffect(() => {
+    // checking if submit button was clicked and if any errors found, set it to the errors state
+    if (formSubmission) {
+      if (add_user_error) {
+        setServerSideErrors(add_user_error.graphQLErrors[0]);
       }
-      if (add_user_loading || update_user_loading) {
-        setSending(true);
-      } else {
-        dispatch(closeFormAndResetUserInfo());
+      if (update_user_error) {
+        setServerSideErrors(update_user_error.graphQLErrors[0]);
       }
     }
-  };
+  }, [add_user_error, update_user_error]);
+
+  useEffect(() => {
+    // checking if the data sent from the server is equal to something rather than null to close the form
+    if (
+      add_user_data?.store_user_with_user_salary_config ||
+      update_user_data?.update_user
+    ) {
+      dispatch(closeFormAndResetUserInfo());
+    }
+  }, [add_user_data, update_user_data]);
 
   const handleImg = (e) => {
     let file = e.target.files[0];
+    setEmployee((prev) => {
+      return { ...prev, user_image: file };
+    });
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.addEventListener("load", () => {
         setEmployee((prev) => {
-          return { ...prev, image: reader.result };
+          return { ...prev, imagePreview: reader.result };
         });
       });
     } else {
       setEmployee((prev) => {
-        return { ...prev, image: "" };
+        return { ...prev, imagePreview: "" };
       });
     }
   };
@@ -249,8 +263,10 @@ const Form = (props) => {
   };
 
   let imageDisplay;
-  if (employee.image) {
-    imageDisplay = <img src={employee.image} style={{ height: "100%" }} />;
+  if (employee.imagePreview) {
+    imageDisplay = (
+      <img src={employee.imagePreview} style={{ height: "100%" }} />
+    );
   } else {
     imageDisplay = (
       <span className="text-center text-[rgba(40, 104, 174, 0.43)] tracking-widest">
@@ -262,7 +278,10 @@ const Form = (props) => {
   if (inputs_data_loading) {
     return (
       <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50">
-        <FontAwesomeIcon className="text-7xl text-blue-500 animate-spin mb-3" icon={faSpinner} />
+        <FontAwesomeIcon
+          className="text-7xl text-blue-500 animate-spin mb-3"
+          icon={faSpinner}
+        />
         <span className="text-white shadow-lg capitalize">Loading...</span>
       </h1>
     );
@@ -274,12 +293,21 @@ const Form = (props) => {
     // }, 3000);
     return (
       <h1 className="text-xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-red-500/40 font-semibold flex flex-col items-center justify-center z-50">
-        <FontAwesomeIcon className="text-7xl text-red-700 mb-3 animate-pulse" icon={faTriangleExclamation} />
-        <span className="text-white shadow-lg bg-red-800 p-3 rounded-lg capitalize mb-3">Failed to load the form</span>
-        <button className="bg-red-500 text-white p-2 rounded" onClick={() => dispatch(closeForm())}>Close</button>
+        <FontAwesomeIcon
+          className="text-7xl text-red-700 mb-3 animate-pulse"
+          icon={faTriangleExclamation}
+        />
+        <span className="text-white shadow-lg bg-red-800 p-3 rounded-lg capitalize mb-3">
+          Failed to load the form
+        </span>
+        <button
+          className="bg-red-500 text-white p-2 rounded"
+          onClick={() => dispatch(closeForm())}
+        >
+          Close
+        </button>
       </h1>
     );
-    
   }
 
   return (
@@ -327,8 +355,12 @@ const Form = (props) => {
                   </label>
                   <input
                     className={
-                      inputBorderHandler(formSubmission, errors, "name")
-                        ? "form-input form-input-error"
+                      serverSideErrors?.extensions?.validation
+                        ? serverSideErrors.extensions.validation[
+                            "input.user_input.name"
+                          ]
+                          ? "form-input form-input-error"
+                          : "form-input"
                         : "form-input"
                     }
                     onChange={handleChange}
@@ -339,7 +371,14 @@ const Form = (props) => {
                     value={employee.name}
                     autoFocus={true}
                   />
-                  {inputErrorMessageHandler(formSubmission, errors, "name")}
+                  {/* {inputErrorMessageHandler(formSubmission, errors, "name")} */}
+                  <p className="error-container">
+                    {serverSideErrors?.extensions?.validation
+                      ? serverSideErrors.extensions.validation[
+                          "input.user_input.name"
+                        ]
+                      : ""}
+                  </p>
                 </div>
                 {/* date */}
                 <div className="flex flex-col items-start justify-start">
@@ -351,8 +390,12 @@ const Form = (props) => {
                   </label>
                   <input
                     className={
-                      inputBorderHandler(formSubmission, errors, "startDate")
-                        ? "form-input form-input-error"
+                      serverSideErrors?.extensions?.validation
+                        ? serverSideErrors.extensions.validation[
+                            "input.user_salary_config_input.salary_config.start_at"
+                          ]
+                          ? "form-input form-input-error"
+                          : "form-input"
                         : "form-input"
                     }
                     onChange={handleChange}
@@ -361,11 +404,18 @@ const Form = (props) => {
                     name="startDate"
                     value={employee.startDate}
                   />
-                  {inputErrorMessageHandler(
+                  {/* {inputErrorMessageHandler(
                     formSubmission,
                     errors,
                     "startDate"
-                  )}
+                  )} */}
+                  <p className="error-container">
+                    {serverSideErrors?.extensions?.validation
+                      ? serverSideErrors.extensions.validation[
+                          "input.user_salary_config_input.salary_config.start_at"
+                        ]
+                      : ""}
+                  </p>
                 </div>
               </div>
               {/* phone and email */}
@@ -388,8 +438,15 @@ const Form = (props) => {
                   <label htmlFor="email">Email</label>
                   <input
                     className={
-                      inputBorderHandler(formSubmission, errors, "email")
-                        ? "form-input form-input-error"
+                      serverSideErrors?.extensions?.validation
+                        ? serverSideErrors.extensions.validation[
+                            "input.user_input.email"
+                          ] ||
+                          serverSideErrors.extensions.validation[
+                            "input.user_input.force_email"
+                          ]
+                          ? "form-input form-input-error"
+                          : "form-input"
                         : "form-input"
                     }
                     onChange={handleChange}
@@ -399,7 +456,17 @@ const Form = (props) => {
                     value={employee.email}
                     maxLength={40}
                   />
-                  {inputErrorMessageHandler(formSubmission, errors, "email")}
+                  {/* {inputErrorMessageHandler(formSubmission, errors, "email")} */}
+                  <p className="error-container">
+                    {serverSideErrors?.extensions?.validation
+                      ? serverSideErrors.extensions.validation[
+                          "input.user_input.email"
+                        ] ||
+                        serverSideErrors.extensions.validation[
+                          "input.user_input.force_email"
+                        ]
+                      : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -438,7 +505,7 @@ const Form = (props) => {
                   currentValue={userInfo?.department}
                   handleSelectChange={handleSelectChange}
                 />
-                {inputErrorMessageHandler(formSubmission, errors, "department")}
+                {/* {inputErrorMessageHandler(formSubmission, errors, "department")} */}
               </div>
             </div>
             {/* attendance */}
@@ -456,7 +523,7 @@ const Form = (props) => {
                   currentValue={userInfo?.attendance_profile}
                   handleSelectChange={handleSelectChange}
                 />
-                {inputErrorMessageHandler(formSubmission, errors, "attendance")}
+                {/* {inputErrorMessageHandler(formSubmission, errors, "attendance")} */}
               </div>
             </div>
           </div>
@@ -489,7 +556,7 @@ const Form = (props) => {
                   currentValue={userInfo?.position}
                   handleSelectChange={handleSelectChange}
                 />
-                {inputErrorMessageHandler(formSubmission, errors, "position")}
+                {/* {inputErrorMessageHandler(formSubmission, errors, "position")} */}
               </div>
             </div>
           </div>
@@ -560,13 +627,22 @@ const Form = (props) => {
         <div className="form-line"></div>
         <div className="form-buttons">
           <button className="submit-button">
-            {sending ? "Sending..." : "Save"}
+            {add_user_loading || update_user_loading ? (
+              <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
+            ) : (
+              "Save"
+            )}
           </button>
 
           <button onClick={handleCancelButton} className="cancel-button">
             Cancel
           </button>
         </div>
+        <h1 className="text-red-500 font-semibold capitalize text-center">
+          {serverSideErrors?.message === "Internal server error"
+            ? `${serverSideErrors.message}!`
+            : ""}
+        </h1>
       </form>
     </div>
   );

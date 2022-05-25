@@ -98,7 +98,8 @@ const SelectBox = (props) => {
           }
           className="min-h-full w-full absolute opacity-0 top-0 left-0 cursor-pointer z-10"
         />
-        <div className={props.inputBorderError ? borderError : borderNoError}>
+        {/* <div className={props.inputBorderError ? borderError : borderNoError}> */}
+        <div className={borderNoError}>
           {!props.values ? (
             selected ? (
               selected.name.slice(0, 1).toUpperCase() +
