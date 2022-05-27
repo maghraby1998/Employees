@@ -13,8 +13,8 @@ import {
 import CallEnd from "@material-ui/icons/CallEnd";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { deleteEmployee } from "../actions/employeesActions";
-import { deleteUser } from "../queries/queries";
-import { useMutation } from "@apollo/client";
+import { deleteUser, getUser } from "../queries/queries";
+import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openDeleteWindow } from "../actions/deleteWindowActions";
@@ -27,7 +27,7 @@ const Card = (props) => {
 
   let {
     id,
-    face_path,
+    face,
     name,
     phone,
     office,
@@ -40,17 +40,38 @@ const Card = (props) => {
     copied_managers,
   } = props.user;
 
+  const [getAUser, { data, loading, error }] = useLazyQuery(getUser, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy:"network-only",
+    onCompleted: (data) => {
+      console.log("====================================");
+      console.log(data);
+      console.log("====================================");
+      dispatch(setUserInfo(data.user));
+      dispatch(openForm());
+      console.log("Fired");
+      return;
+    },
+  });
+
   let imgDisplay;
 
-  if (face_path) {
+  if (face) {
+    let url = "https://testing.mawared-hr.com";
+    let indexOfUploads = face.path.indexOf("/uploads");
+    let restOfTextAfterUploads = face.path.slice(
+      indexOfUploads,
+      face.path.length
+    );
+    face = url + restOfTextAfterUploads;
     imgDisplay = (
-      <div className="w-full flex items-center justify-center h-[64px] w-[64px] rounded-full overflow-hidden mb-[10px]">
-        <img src={face_path} className="user-img" alt="user-img" />
+      <div className="w-full flex items-center justify-center h-[55px] w-[55px] rounded-full overflow-hidden mb-[10px]">
+        <img src={face} className="user-img" alt="user-img" />
       </div>
     );
   } else {
     imgDisplay = (
-      <div className="card-icon-img-container">
+      <div className="card-icon-img-container min-h-[55px]">
         <FontAwesomeIcon className="card-icon-img" icon={faUser} />
       </div>
     );
@@ -75,9 +96,14 @@ const Card = (props) => {
   };
 
   const handleEditButton = (e) => {
-    dispatch(setUserInfo(props.user));
-    dispatch(openForm());
-  }
+    console.log("s=>", e.target);
+    e.stopPropagation();
+    getAUser({
+      variables: {
+        id: id,
+      },
+    });
+  };
 
   // console.log(props.user)
 
@@ -87,7 +113,8 @@ const Card = (props) => {
       <div className="w-[25%] md:w-[30%] flex flex-col items-between justify-center">
         {/* regular image icon for now */}
         <div className="card-icon-img-container">
-          <FontAwesomeIcon className="card-icon-img" icon={faUser} />
+          {/* <FontAwesomeIcon className="card-icon-img" icon={faUser} /> */}
+          {imgDisplay}
         </div>
         <div className="user-icons-container">
           <FontAwesomeIcon
@@ -170,7 +197,11 @@ const Card = (props) => {
                 <p className="dropdown-header">Copied Manager</p>
                 <p className="dropdown-result">
                   {copied_managers.length > 0
-                    ? copied_managers.map((copiedManager, index) => <span key={index} className="block">{copiedManager.name}</span>)
+                    ? copied_managers.map((copiedManager, index) => (
+                        <span key={index} className="block">
+                          {copiedManager.name}
+                        </span>
+                      ))
                     : "--------"}
                 </p>
               </div>

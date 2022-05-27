@@ -10,7 +10,7 @@ import {
 import Form from "./Form";
 import { useSelector, useDispatch } from "react-redux";
 import { openForm } from "../actions/formDisplayActions";
-import { getUsers, getUser } from "../queries/queries";
+import { getUsers } from "../queries/queries";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import FilteredUsers from "./FilteredUsers";
 import DeleteConfirmation from "./DeleteConfirmation";

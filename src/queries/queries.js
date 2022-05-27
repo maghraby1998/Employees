@@ -9,12 +9,12 @@ const getUsers = gql`
         email
         phone
         starts_at
-        working_status
-        profile_picture{
+        # working_status
+        profile_picture {
           id
           path
         }
-        face{
+        face {
           id
           path
         }
@@ -53,45 +53,49 @@ const getUsers = gql`
     }
   }
 `;
+
 const getUser = gql`
-  query ($page: Int!, $name: String!) {
-    company_users(input: { name: $name }, first: 20, page: $page) {
-      data {
+  query ($id: ID) {
+    user(id: $id) {
+      id
+      name
+      email
+      phone
+      starts_at
+      working_status
+      can_work_home
+      profile_picture {
+        id
+        path
+      }
+      face {
+        id
+        path
+      }
+      face_path
+      department {
         id
         name
-        email
-        phone
-        starts_at
-        working_status
-        face_path
-        department {
-          id
-          name
-        }
-        manager {
-          id
-          name
-        }
-        copied_managers {
-          id
-          name
-        }
-        position {
-          id
-          name
-        }
-        office {
-          id
-          name
-        }
-        attendance_profile {
-          id
-          name
-        }
       }
-      paginatorInfo {
-        currentPage
-        lastPage
+      manager {
+        id
+        name
+      }
+      copied_managers {
+        id
+        name
+      }
+      position {
+        id
+        name
+      }
+      office {
+        id
+        name
+      }
+      attendance_profile {
+        id
+        name
       }
     }
   }
@@ -146,13 +150,13 @@ const getInputsData = gql`
 const addUser = gql`
   mutation (
     $name: String!
-    $email: String!
-    $phone: String!
+    $email: String
+    $phone: String
     $starts_at: String!
-    $can_work_home: Int!
-    $role_id: ID!
-    $position_id: ID!
-    $att_profile_id: ID!
+    $can_work_home: Int
+    $role_id: ID
+    $position_id: ID
+    $att_profile_id: ID
     $manager_id: ID!
     $department_id: ID!
     $company_id: ID!

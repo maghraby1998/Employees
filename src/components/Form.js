@@ -5,6 +5,7 @@ import {
   faCheck,
   faTriangleExclamation,
   faSpinner,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   inputErrorMessageHandler,
@@ -23,15 +24,20 @@ import {
   updateUser,
 } from "../queries/queries";
 import { useQuery, useMutation } from "@apollo/client";
-import { closeFormAndResetUserInfo } from "../actions/userInfoAction";
+import {
+  closeFormAndResetUserInfo,
+  setUserInfo,
+} from "../actions/userInfoAction";
+import validationObject from "../functions/updateValidationObject";
 
 const Form = (props) => {
   const userInfo = useSelector((state) => state.userInfo);
-  // console.log("userinfo" + userInfo)
+  let formDisplay = useSelector((state) => state.formDisplay);
+
   const [employee, setEmployee] = useState({
-    id: userInfo ? userInfo.id : "",
+    id: userInfo ? userInfo.id : null,
     imagePreview: "",
-    user_image: null,
+    user_image: userInfo?.face ? "" : null,
     name: userInfo ? userInfo.name : "",
     phone: userInfo ? userInfo.phone : "",
     startDate: userInfo ? userInfo.starts_at : "",
@@ -43,9 +49,25 @@ const Form = (props) => {
     position: userInfo ? userInfo.position?.id : "",
     manager: userInfo ? userInfo.manager?.id : "",
     copiedManagers: userInfo ? userInfo.copied_managers : [],
-    workFromHome: 0,
+    workFromHome: userInfo ? userInfo.can_work_home : 0,
     companyId: 1,
   });
+
+  useEffect(() => {
+    if (userInfo?.face?.path) {
+      let { face } = userInfo;
+      let url = "https://testing.mawared-hr.com";
+      let indexOfUploads = face?.path.indexOf("/uploads");
+      let restOfTextAfterUploads = face?.path.slice(
+        indexOfUploads,
+        face?.path.length
+      );
+      face = url + restOfTextAfterUploads;
+      setEmployee((prev) => {
+        return { ...prev, imagePreview: face };
+      });
+    }
+  }, [userInfo]);
 
   let [
     addAUser,
@@ -123,9 +145,9 @@ const Form = (props) => {
     });
   };
 
-  useEffect(() => {
-    console.log(employee);
-  }, [employee]);
+  // useEffect(() => {
+  //   console.log(employee);
+  // }, [employee]);
 
   const handleSelectChange = (name, value) => {
     if (name === "copiedManagers") {
@@ -157,28 +179,60 @@ const Form = (props) => {
       let newCopiedManagers = employee.copiedManagers.map((copiedManager) => {
         return copiedManager.id;
       });
+      // if (employee.user_image?.length === 0) {
+      //   updateAUser({
+      //     variables: validationObject(true, newCopiedManagers, employee),
+      //     refetchQueries: [getUsers],
+      //     onCompleted: (data) => {
+      //       if (data?.update_user) {
+      //         dispatch(closeFormAndResetUserInfo())
+      //       }
+      //     },
+      //   });
+      // } else {
+      //   updateAUser({
+      //     variables: validationObject(false, newCopiedManagers, employee),
+      //     refetchQueries: [getUsers],
+      //     onCompleted: (data) => {
+      //       if (data?.update_user) {
+      //         dispatch(closeFormAndResetUserInfo())
+      //       }
+      //     },
+      //   });
+      // }
+      let updateVariables = {
+        id: employee.id,
+        name: employee.name,
+        email: employee.email,
+        phone: employee.phone,
+        starts_at: employee.startDate,
+        can_work_home: employee.workFromHome,
+        position_id: employee.position,
+        user_image: employee.user_image,
+        att_profile_id: employee.attendance,
+        manager_id: employee.manager,
+        department_id: employee.department,
+        company_id: 1,
+        office_id: employee.office,
+        has_credentials: 1,
+        copied_managers: newCopiedManagers,
+        max_homeDays_per_week: 0,
+        flexiable_home: 0,
+        can_ex_days: 0,
+      };
+
+      if (employee.user_image?.length === 0) {
+        delete updateVariables.user_image;
+      }
+
       updateAUser({
-        variables: {
-          id: employee.id,
-          name: employee.name,
-          email: employee.email,
-          phone: employee.phone,
-          starts_at: employee.startDate,
-          can_work_home: employee.workFromHome,
-          position_id: employee.position,
-          att_profile_id: employee.attendance,
-          manager_id: employee.manager,
-          user_image: employee.user_image,
-          department_id: employee.department,
-          company_id: 1,
-          office_id: employee.office,
-          has_credentials: 1,
-          copied_managers: newCopiedManagers,
-          max_homeDays_per_week: 0,
-          flexiable_home: 0,
-          can_ex_days: 0,
-        },
+        variables: updateVariables,
         refetchQueries: [getUsers],
+        onCompleted: (data) => {
+          if (data?.update_user) {
+            dispatch(closeFormAndResetUserInfo());
+          }
+        },
       });
     } else {
       addAUser({
@@ -205,16 +259,17 @@ const Form = (props) => {
           salary_management_type: 2,
         },
         refetchQueries: [getUsers],
+        onCompleted: (data) => {
+          if (data.store_user_with_user_salary_config) {
+            dispatch(closeFormAndResetUserInfo());
+          }
+        },
       });
-    }
-    if (add_user_loading || update_user_loading || add_user_error) {
-      setSending(true);
     }
     // }
   };
 
   const [serverSideErrors, setServerSideErrors] = useState();
-  console.log(serverSideErrors);
 
   useEffect(() => {
     // checking if submit button was clicked and if any errors found, set it to the errors state
@@ -228,22 +283,22 @@ const Form = (props) => {
     }
   }, [add_user_error, update_user_error]);
 
-  useEffect(() => {
-    // checking if the data sent from the server is equal to something rather than null to close the form
-    if (
-      add_user_data?.store_user_with_user_salary_config ||
-      update_user_data?.update_user
-    ) {
-      dispatch(closeFormAndResetUserInfo());
-    }
-  }, [add_user_data, update_user_data]);
+  // useEffect(() => {
+  //   // checking if the data sent from the server is equal to something rather than null to close the form
+  //   if (
+  //     add_user_data?.store_user_with_user_salary_config ||
+  //     update_user_data?.update_user
+  //   ) {
+  //     dispatch(closeFormAndResetUserInfo())
+  //   }
+  // }, [add_user_data, update_user_data]);
 
   const handleImg = (e) => {
     let file = e.target.files[0];
     setEmployee((prev) => {
       return { ...prev, user_image: file };
     });
-    if (file.type.startsWith("image/")) {
+    if (file?.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.addEventListener("load", () => {
@@ -288,9 +343,6 @@ const Form = (props) => {
   }
 
   if (inputs_data_error) {
-    // setTimeout(() => {
-    //   dispatch(closeForm())
-    // }, 3000);
     return (
       <h1 className="text-xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-red-500/40 font-semibold flex flex-col items-center justify-center z-50">
         <FontAwesomeIcon
@@ -310,6 +362,14 @@ const Form = (props) => {
     );
   }
 
+  const handleDeleteImageButton = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setEmployee((prev) => {
+      return { ...prev, imagePreview: "", user_image: null };
+    });
+  };
+
   return (
     <div
       onClick={() => dispatch(closeFormAndResetUserInfo())}
@@ -327,9 +387,18 @@ const Form = (props) => {
           <div className="category-header-line"></div>
           <div className="min-h-[112px] flex flex-col md:flex-row items-center justitfy-center">
             {/* image */}
-            <div className="flex items-center w-full md:w-auto lg:min-w-[258px] md:mr-[13px]">
+            <div className=" relative flex items-center w-full md:w-auto lg:min-w-[258px] md:mr-[13px]">
+              {employee.user_image || employee.imagePreview ? (
+                <FontAwesomeIcon
+                  className="absolute z-50 top-1 right-2 text-lg text-red-500"
+                  icon={faXmark}
+                  onClick={handleDeleteImageButton}
+                />
+              ) : (
+                ""
+              )}
               <label htmlFor="imgInput">
-                <div className="img-upload-container">
+                <div className="img-upload-container relative">
                   {imageDisplay}
                   {/* <span>Click to upload</span> */}
                 </div>
@@ -339,6 +408,11 @@ const Form = (props) => {
                 type="file"
                 id="imgInput"
                 name="image"
+                value={
+                  employee.user_image
+                    ? "C:\\fakepath\\" + employee.user_image?.name
+                    : ""
+                }
               />
             </div>
             {/* personal info other than image */}
@@ -424,7 +498,15 @@ const Form = (props) => {
                 <div>
                   <label htmlFor="phone">Phone</label>
                   <input
-                    className="form-input"
+                    className={
+                      serverSideErrors?.extensions?.validation
+                        ? serverSideErrors.extensions.validation[
+                            "input.user_input.phone"
+                          ]
+                          ? "form-input form-input-error"
+                          : "form-input"
+                        : "form-input"
+                    }
                     onChange={handleChange}
                     id="phone"
                     type="text"
@@ -432,6 +514,13 @@ const Form = (props) => {
                     maxLength={11}
                     value={employee.phone}
                   />
+                  <p className="error-container">
+                    {serverSideErrors?.extensions?.validation
+                      ? serverSideErrors.extensions.validation[
+                          "input.user_input.phone"
+                        ]
+                      : ""}
+                  </p>
                 </div>
                 {/* email */}
                 <div>

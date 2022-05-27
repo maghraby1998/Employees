@@ -1,17 +1,5 @@
-const valid = /^\d+$/;
+const person = {name: 'ahmed', age: 23};
 
-const value = 23324;
+delete person.name;
 
-const checkInt = (int) => {
-    let result;
-
-    if (int.toString().match(valid)) {
-        result = true;
-    } else {
-        result= false
-    }
-
-    return result;
-}
-
-console.log(checkInt(value))
+console.log(person)
