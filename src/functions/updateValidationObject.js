@@ -26,7 +26,6 @@ const validationObject = (indicator, newCopiedManagers, employee) => {
         name: employee.name,
         email: employee.email,
         phone: employee.phone,
-        starts_at: employee.startDate,
         can_work_home: employee.workFromHome,
         position_id: employee.position,
         user_image: employee.user_image,

@@ -19,10 +19,10 @@ const DeleteConfirmation = (props) => {
       setinputError("empty");
       return;
     }
-    if (password != "123456") {
-      setinputError("incorrect");
-      return;
-    }
+    // if (password != "123456") {
+    //   setinputError("incorrect");
+    //   return;
+    // }
     deleteAUser({
         variables: {
             id: userId,

@@ -19,6 +19,7 @@ import { addEmployee } from "../actions/employeesActions";
 import SelectBox from "./SelectBox";
 import {
   getInputsData,
+  getInputsDataAndUserInfo,
   getUsers,
   addUser,
   updateUser,
@@ -28,17 +29,27 @@ import {
   closeFormAndResetUserInfo,
   setUserInfo,
 } from "../actions/userInfoAction";
-import validationObject from "../functions/updateValidationObject";
 
 const Form = (props) => {
   const userInfo = useSelector((state) => state.userInfo);
+  const inputsData = useSelector( state => state.inputsData);
   let formDisplay = useSelector((state) => state.formDisplay);
+
+  // const {
+  //   data: inputsData,
+  //   inputsData_error,
+  //   inputsData_loading,
+  // } = useQuery(getInputsDataAndUserInfo, {
+  //   variables: {
+  //     getUserInfo: false,
+  //   },
+  // });
 
   const [employee, setEmployee] = useState({
     id: userInfo ? userInfo.id : null,
     imagePreview: "",
     user_image: userInfo?.face ? "" : null,
-    name: userInfo ? userInfo.name : "",
+    name: userInfo ? userInfo?.name : "",
     phone: userInfo ? userInfo.phone : "",
     startDate: userInfo ? userInfo.starts_at : "",
     email: userInfo ? userInfo.email : "",
@@ -52,6 +63,14 @@ const Form = (props) => {
     workFromHome: userInfo ? userInfo.can_work_home : 0,
     companyId: 1,
   });
+
+  // useEffect( () => {
+  //   if (inputsData) {
+  //     setEmployee( prev => {
+  //       return {...prev, name: inputsData.user.name}
+  //     })
+  //   }
+  // }, [inputsData])
 
   useEffect(() => {
     if (userInfo?.face?.path) {
@@ -95,26 +114,22 @@ const Form = (props) => {
   const dispatch = useDispatch();
   const [formSubmission, setFormSubmission] = useState(false);
 
-  const {
-    data: inputs_data,
-    inputs_data_error,
-    inputs_data_loading,
-  } = useQuery(getInputsData);
-
-  let managers = inputs_data?.managers?.filter((manager) => {
-    return !employee.copiedManagers.find((copiedManager) => {
+  let managers = inputsData?.managers?.filter((manager) => {
+    return !employee?.copiedManagers?.find((copiedManager) => {
       return copiedManager.id === manager.id;
     });
   });
 
-  let copied_managers = inputs_data?.managers?.filter((copied_manager) => {
-    return (
-      copied_manager.id != employee.manager &&
-      !employee.copiedManagers?.find((copiedManager) => {
-        return copied_manager.id === copiedManager.id;
-      })
-    );
-  });
+  let copied_managers = inputsData?.managers?.filter(
+    (copied_manager) => {
+      return (
+        copied_manager.id != employee.manager &&
+        !employee.copiedManagers?.find((copiedManager) => {
+          return copied_manager.id === copiedManager.id;
+        })
+      );
+    }
+  );
 
   const handleChange = (e) => {
     let { name, value, type } = e.target;
@@ -176,30 +191,9 @@ const Form = (props) => {
     setFormSubmission(true);
     // if (handleSubmitting(errors)) {
     if (userInfo) {
-      let newCopiedManagers = employee.copiedManagers.map((copiedManager) => {
+      let newCopiedManagers = employee.copiedManagers?.map((copiedManager) => {
         return copiedManager.id;
       });
-      // if (employee.user_image?.length === 0) {
-      //   updateAUser({
-      //     variables: validationObject(true, newCopiedManagers, employee),
-      //     refetchQueries: [getUsers],
-      //     onCompleted: (data) => {
-      //       if (data?.update_user) {
-      //         dispatch(closeFormAndResetUserInfo())
-      //       }
-      //     },
-      //   });
-      // } else {
-      //   updateAUser({
-      //     variables: validationObject(false, newCopiedManagers, employee),
-      //     refetchQueries: [getUsers],
-      //     onCompleted: (data) => {
-      //       if (data?.update_user) {
-      //         dispatch(closeFormAndResetUserInfo())
-      //       }
-      //     },
-      //   });
-      // }
       let updateVariables = {
         id: employee.id,
         name: employee.name,
@@ -272,7 +266,6 @@ const Form = (props) => {
   const [serverSideErrors, setServerSideErrors] = useState();
 
   useEffect(() => {
-    // checking if submit button was clicked and if any errors found, set it to the errors state
     if (formSubmission) {
       if (add_user_error) {
         setServerSideErrors(add_user_error.graphQLErrors[0]);
@@ -283,17 +276,8 @@ const Form = (props) => {
     }
   }, [add_user_error, update_user_error]);
 
-  // useEffect(() => {
-  //   // checking if the data sent from the server is equal to something rather than null to close the form
-  //   if (
-  //     add_user_data?.store_user_with_user_salary_config ||
-  //     update_user_data?.update_user
-  //   ) {
-  //     dispatch(closeFormAndResetUserInfo())
-  //   }
-  // }, [add_user_data, update_user_data]);
-
   const handleImg = (e) => {
+    console.log(e)
     let file = e.target.files[0];
     setEmployee((prev) => {
       return { ...prev, user_image: file };
@@ -306,6 +290,8 @@ const Form = (props) => {
           return { ...prev, imagePreview: reader.result };
         });
       });
+      console.log(reader)
+
     } else {
       setEmployee((prev) => {
         return { ...prev, imagePreview: "" };
@@ -330,37 +316,39 @@ const Form = (props) => {
     );
   }
 
-  if (inputs_data_loading) {
-    return (
-      <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50">
-        <FontAwesomeIcon
-          className="text-7xl text-blue-500 animate-spin mb-3"
-          icon={faSpinner}
-        />
-        <span className="text-white shadow-lg capitalize">Loading...</span>
-      </h1>
-    );
-  }
+  // if (inputsData) {
+  //   if (formDisplay){
+  //   return (
+  //     <h1 className="text-xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-red-500/40 font-semibold flex flex-col items-center justify-center z-50">
+  //       <FontAwesomeIcon
+  //         className="text-7xl text-red-700 mb-3 animate-pulse"
+  //         icon={faTriangleExclamation}
+  //       />
+  //       <span className="text-white shadow-lg bg-red-800 p-3 rounded-lg capitalize mb-3">
+  //         Failed to load the form
+  //       </span>
+  //       <button
+  //         className="bg-red-500 text-white p-2 rounded"
+  //         onClick={() => dispatch(closeForm())}
+  //       >
+  //         Close
+  //       </button>
+  //     </h1>
+  //   );
+  //   }
+  // }
 
-  if (inputs_data_error) {
-    return (
-      <h1 className="text-xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-red-500/40 font-semibold flex flex-col items-center justify-center z-50">
-        <FontAwesomeIcon
-          className="text-7xl text-red-700 mb-3 animate-pulse"
-          icon={faTriangleExclamation}
-        />
-        <span className="text-white shadow-lg bg-red-800 p-3 rounded-lg capitalize mb-3">
-          Failed to load the form
-        </span>
-        <button
-          className="bg-red-500 text-white p-2 rounded"
-          onClick={() => dispatch(closeForm())}
-        >
-          Close
-        </button>
-      </h1>
-    );
-  }
+  // if (!inputsData) {
+  //   return (
+  //     <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50 h-screen w-full bg-red-400">
+  //       <FontAwesomeIcon
+  //         className="text-7xl text-blue-500 animate-spin mb-3"
+  //         icon={faSpinner}
+  //       />
+  //       <span className="text-white shadow-lg capitalize">Loading...</span>
+  //     </h1>
+  //   );
+  // }
 
   const handleDeleteImageButton = (e) => {
     e.stopPropagation();
@@ -571,7 +559,7 @@ const Form = (props) => {
           <div>
             <label htmlFor="office">Office</label>
             <SelectBox
-              options={inputs_data?.company_offices?.data}
+              options={inputsData?.company_offices?.data}
               name="office"
               currentValue={userInfo?.office}
               handleSelectChange={handleSelectChange}
@@ -589,7 +577,7 @@ const Form = (props) => {
                     errors,
                     "department"
                   )}
-                  options={inputs_data?.company_departments?.data}
+                  options={inputsData?.company_departments?.data}
                   name="department"
                   currentValue={userInfo?.department}
                   handleSelectChange={handleSelectChange}
@@ -607,7 +595,9 @@ const Form = (props) => {
                     errors,
                     "attendance"
                   )}
-                  options={inputs_data?.company_attendance_profiles?.data}
+                  options={
+                    inputsData?.company_attendance_profiles?.data
+                  }
                   name="attendance"
                   currentValue={userInfo?.attendance_profile}
                   handleSelectChange={handleSelectChange}
@@ -623,7 +613,7 @@ const Form = (props) => {
               <div>
                 <label htmlFor="role">Role</label>
                 <SelectBox
-                  options={inputs_data?.roles}
+                  options={inputsData?.roles}
                   name="role"
                   currentValue={userInfo?.role}
                   handleSelectChange={handleSelectChange}
@@ -640,7 +630,7 @@ const Form = (props) => {
                     errors,
                     "position"
                   )}
-                  options={inputs_data?.company_positions?.data}
+                  options={inputsData?.company_positions?.data}
                   name="position"
                   currentValue={userInfo?.position}
                   handleSelectChange={handleSelectChange}

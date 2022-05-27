@@ -16,23 +16,35 @@ import FilteredUsers from "./FilteredUsers";
 import DeleteConfirmation from "./DeleteConfirmation";
 import Pagination from "./Pagination";
 import setNumberOfEmployees from "../actions/setNumberOfEmployees";
+import { getInputsDataAndUserInfo } from "../queries/queries";
+import { setInputsData } from "../actions/inputsDataActions";
+import {setFormLoading} from "../actions/isFormLoadingActions";
 
 const Employees = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const dispatch = useDispatch();
 
+
   const [getAllUsers, { loading, error, data }] = useLazyQuery(getUsers);
+
+  const [
+    executeInputsAndUserData,
+    {
+      data: inputs_and_user_data,
+      error: inputs_and_user_data_error,
+      loading: inputs_and_user_data_loading,
+    },
+  ] = useLazyQuery(getInputsDataAndUserInfo);
 
   useEffect(() => {
     setCurrentPage(1);
     getAllUsers({
-    variables: {
-      page: currentPage,
-      name: filter,
-    },
-  });
-    
+      variables: {
+        page: currentPage,
+        name: filter,
+      },
+    });
   }, [filter]);
 
   useEffect(() => {
@@ -42,24 +54,52 @@ const Employees = (props) => {
         name: filter,
       },
     });
-    
   }, [currentPage]);
 
   const deleteWidnowStatu = useSelector((state) => state.deleteWindow);
 
   const formDisplay = useSelector((state) => state.formDisplay);
 
-  const employees = useSelector((state) => state.employees);
 
   const handleAddBtn = (e) => {
     e.stopPropagation();
-    dispatch(openForm());
+    executeInputsAndUserData({
+      variables: {
+        getUserInfo: false,
+      },
+      onCompleted: (data) => {
+        dispatch(openForm());
+        dispatch(
+          setInputsData({
+            company_attendance_profiles: data.company_attendance_profiles,
+            company_departments: data.company_departments,
+            company_offices: data.company_offices,
+            company_positions: data.company_positions,
+            managers: data.managers,
+            roles: data.roles,
+          })
+        );
+      },
+    });
+    // dispatch(openForm());
   };
 
   const handleChange = (e) => {
     let { value } = e.target;
     setFilter(value);
   };
+
+  if (inputs_and_user_data_loading) {
+    return (
+      <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50 h-screen w-full bg-red-400">
+        <FontAwesomeIcon
+          className="text-7xl text-blue-500 animate-spin mb-3"
+          icon={faSpinner}
+        />
+        <span className="text-white shadow-lg capitalize">Loading...</span>
+      </h1>
+    );
+  }
 
   return (
     <div className="employee-page">

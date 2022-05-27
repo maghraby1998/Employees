@@ -111,7 +111,86 @@ const deleteUser = gql`
 `;
 
 const getInputsData = gql`
-  {
+  query ($isDepartment: Boolean!) {
+    company_departments(first: 999) {
+      data {
+        id
+        name @include(if: $isDepartment)
+      }
+    }
+    company_positions(first: 999) {
+      data {
+        id
+        name
+      }
+    }
+    company_offices(first: 999) {
+      data {
+        id
+        name
+      }
+    }
+    company_attendance_profiles(first: 999) {
+      data {
+        id
+        name
+      }
+    }
+    roles {
+      id
+      name
+    }
+    managers {
+      id
+      name
+    }
+  }
+`;
+
+const getInputsDataAndUserInfo = gql`
+  query ($getUserInfo: Boolean!, $id: ID) {
+    user(id: $id) @include(if: $getUserInfo) {
+      id
+      name
+      email
+      phone
+      starts_at
+      working_status
+      can_work_home
+      profile_picture {
+        id
+        path
+      }
+      face {
+        id
+        path
+      }
+      face_path
+      department {
+        id
+        name
+      }
+      manager {
+        id
+        name
+      }
+      copied_managers {
+        id
+        name
+      }
+      position {
+        id
+        name
+      }
+      office {
+        id
+        name
+      }
+      attendance_profile {
+        id
+        name
+      }
+    }
     company_departments(first: 999) {
       data {
         id
@@ -253,4 +332,12 @@ const updateUser = gql`
   }
 `;
 
-export { getUsers, getUser, deleteUser, getInputsData, addUser, updateUser };
+export {
+  getUsers,
+  getUser,
+  deleteUser,
+  getInputsData,
+  addUser,
+  updateUser,
+  getInputsDataAndUserInfo,
+};

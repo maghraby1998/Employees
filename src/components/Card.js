@@ -9,22 +9,22 @@ import {
   faExclamation,
   faUser,
   faSortUp,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import CallEnd from "@material-ui/icons/CallEnd";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { deleteEmployee } from "../actions/employeesActions";
-import { deleteUser, getUser } from "../queries/queries";
 import { useLazyQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { openDeleteWindow } from "../actions/deleteWindowActions";
 import { insertUserId } from "../actions/userIdAction";
 import { setUserInfo } from "../actions/userInfoAction";
 import { openForm } from "../actions/formDisplayActions";
+import { getInputsDataAndUserInfo } from "../queries/queries";
+import { setInputsData } from "../actions/inputsDataActions";
+import {setFormLoading} from "../actions/isFormLoadingActions";
 
 const Card = (props) => {
-  const dispatch = useDispatch();
-
   let {
     id,
     face,
@@ -40,19 +40,29 @@ const Card = (props) => {
     copied_managers,
   } = props.user;
 
-  const [getAUser, { data, loading, error }] = useLazyQuery(getUser, {
-    fetchPolicy: "network-only",
-    nextFetchPolicy:"network-only",
-    onCompleted: (data) => {
-      console.log("====================================");
-      console.log(data);
-      console.log("====================================");
-      dispatch(setUserInfo(data.user));
-      dispatch(openForm());
-      console.log("Fired");
-      return;
+  const [
+    executeInputsAndUserData,
+    {
+      data: inputs_and_user_data,
+      error: inputs_and_user_data_error,
+      loading: inputs_and_user_data_loading,
     },
-  });
+  ] = useLazyQuery(getInputsDataAndUserInfo);
+  const dispatch = useDispatch();
+
+  // const [getAUser, { data, loading, error }] = useLazyQuery(getUser, {
+  //   fetchPolicy: "network-only",
+  //   nextFetchPolicy:"network-only",
+  //   onCompleted: (data) => {
+  //     console.log("====================================");
+  //     console.log(data);
+  //     console.log("====================================");
+  //     dispatch(setUserInfo(data.user));
+  //     dispatch(openForm());
+  //     console.log("Fired");
+  //     return;
+  //   },
+  // });
 
   let imgDisplay;
 
@@ -96,16 +106,46 @@ const Card = (props) => {
   };
 
   const handleEditButton = (e) => {
-    console.log("s=>", e.target);
-    e.stopPropagation();
-    getAUser({
+    // console.log("s=>", e.target);
+    // e.stopPropagation();
+    executeInputsAndUserData({
       variables: {
+        getUserInfo: true,
         id: id,
       },
+      onCompleted: (data) => {
+        dispatch(openForm());
+        dispatch(setUserInfo(data.user));
+        dispatch(
+          setInputsData({
+            company_attendance_profiles: data.company_attendance_profiles,
+            company_departments: data.company_departments,
+            company_offices: data.company_offices,
+            company_positions: data.company_positions,
+            managers: data.managers,
+            roles: data.roles,
+          })
+        );
+      },
     });
+    // getAUser({
+    //   variables: {
+    //     id: id,
+    //   },
+    // });
   };
 
-  // console.log(props.user)
+  if (inputs_and_user_data_loading) {
+    return (
+      <h1 className="text-4xl fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-center h-full w-full bg-blue-400/50 font-semibold flex flex-col items-center justify-center z-50 h-screen w-full bg-red-400">
+        <FontAwesomeIcon
+          className="text-7xl text-blue-500 animate-spin mb-3"
+          icon={faSpinner}
+        />
+        <span className="text-white shadow-lg capitalize">Loading...</span>
+      </h1>
+    );
+  }
 
   return (
     <div className="flex itesm-center justify-center bg-white relative py-[12px] px-[19px] card">
